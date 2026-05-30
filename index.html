@@ -2,8 +2,8 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox 戰爭大亨任務站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Roblox 戰爭大亨 · 派系歷史與任務站</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -44,6 +44,22 @@
             margin-bottom: 12px;
         }
         .social-link-card:hover { border-color: #3b82f6; background-color: #1a2234; }
+        /* 歷史時間軸自定義滾動條 */
+        .history-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-scroll::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        .history-scroll::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+        .era-badge {
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.3);
+        }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 font-sans min-h-screen pb-24">
@@ -51,7 +67,6 @@
     <!-- 頂部導覽 -->
     <nav class="sticky top-0 z-40 bg-darkBg/90 backdrop-blur-md border-b border-gray-800/80 px-4 py-3">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <!-- 已加入點擊標題回頂部功能 -->
             <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center space-x-2 cursor-pointer transition active:opacity-70">
                 <span class="text-blue-500 text-xl font-bold">⚔</span>
                 <span class="font-extrabold tracking-wider text-white">Roblox 戰爭大亨</span>
@@ -154,7 +169,163 @@
             </div>
         </section>
 
-        <!-- 分隔線 (搜尋時隱藏) -->
+        <!-- 新增：派系歷史 & 關於我們 (搜尋時隱藏) -->
+        <!-- 派系分隔線 -->
+        <hr id="faction-hr" class="border-gray-800 my-6" />
+        
+        <!-- 派系｜大兴王朝历史 區塊 -->
+        <section id="faction-section" class="bg-darkCard/90 border border-gray-800/80 rounded-2xl p-5 md:p-6 space-y-5 backdrop-blur-sm shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700 pb-3">
+                <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                    <i class="fa-solid fa-landmark text-blue-400"></i> 派系 · 大兴王朝历史
+                    <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">2023-至今</span>
+                </h2>
+            </div>
+            <!-- 時代標籤與鼎盛時期 -->
+            <div class="flex flex-wrap gap-3 text-sm">
+                <span class="era-badge px-3 py-1 rounded-full text-blue-300 text-xs font-mono">🏛️ 【古代史】2023.01.29-2024.7.14</span>
+                <span class="era-badge px-3 py-1 rounded-full text-purple-300 text-xs font-mono">📜 【近代史】2025.06.27-2026.1.20</span>
+                <span class="era-badge px-3 py-1 rounded-full text-pink-300 text-xs font-mono">⚡ 【现代史】2026.02.11-至今</span>
+                <span class="bg-gradient-to-r from-amber-500/20 to-rose-500/20 border border-amber-500/40 px-3 py-1 rounded-full text-amber-300 text-xs font-bold">✿ BNS鼎盛时期 2025.08.21-2026.01.05 ✿</span>
+            </div>
+            
+            <!-- 詳細編年史 滾動區塊 (完整收錄BNS歷史) -->
+            <div class="history-scroll max-h-[480px] overflow-y-auto pr-2 rounded-lg">
+                <div class="space-y-2 text-sm leading-relaxed text-gray-300 font-medium">
+                    <!-- 完整事件表 - 依照原文逐條忠實呈現 -->
+                    <div class="space-y-1.5">
+                        <p class="text-cyan-400 font-bold mt-1">❀ 2023年 (云墨十三元年):</p>
+                        <div class="pl-3 border-l-2 border-blue-500/40 space-y-1">
+                            <p>01.29夜晚 - 墨墨创建了[Bomb]Nuclear Strike派系(简称BNS)</p>
+                            <p>02.05 - 墨墨因敏感词系统被封，于是退游去玩MC</p>
+                            <p class="text-gray-500">【2023.02.06至2024.03.30 不详】</p>
+                        </div>
+
+                        <p class="text-cyan-400 font-bold mt-3">❀ 2024年 (云墨十四元年):</p>
+                        <div class="pl-3 border-l-2 border-purple-500/40 space-y-1">
+                            <p>03.31 - 墨墨因无聊下回了Roblox，并注册了一个新号继续游玩战争大亨</p>
+                            <p>04.03夜晚 - 墨墨重建[Bomb]Nuclear Strike派系(简称BNS)</p>
+                            <p>04.04上午 - BNS迎来第一位成员“456”，并进行了第一次团建</p>
+                            <p>04.06 - 一位对BNS影响重大的人士加入了我们</p>
+                            <p>04.15 - BNS打赢了对外抗战(征战全服)</p>
+                            <p>04.19 - 墨墨决定每周举行一次演习，为提升派系实力</p>
+                            <p>04.27 - BNS来了一位实力强悍的俄罗斯玩家</p>
+                            <p>05.01 - 欢庆劳动节，墨墨带领BNS成员当志愿者给萌新送零件/油桶</p>
+                            <p>06.22 - 墨墨貌似遇到了深厚的友情(暂时退游)</p>
+                            <p>07.04 - 墨墨第一次交到好朋友(暂时退游)</p>
+                            <p>07.09 - 墨墨与那个人绝交</p>
+                            <p>07.10 - 墨墨退游常驻Ro市人生</p>
+                            <p>07.14 - 第二届盟大会议决定，BNS开始闭关锁国</p>
+                            <p class="text-gray-500">【2024.07.15至2025.06.26 不详】</p>
+                        </div>
+
+                        <p class="text-cyan-400 font-bold mt-3">❀ 2025年 (云墨十五元年):</p>
+                        <div class="pl-3 border-l-2 border-pink-500/40 space-y-1">
+                            <p>06.27 - 墨墨被表白</p>
+                            <p class="text-gray-500">【2025.06.28至07.17 不详】</p>
+                            <p>07.18凌晨 - 墨墨和对象分手</p>
+                            <p>07.19 - 墨墨回归Roblox</p>
+                            <p>07.22 - 墨墨回归战争大亨</p>
+                            <p>07.29 - 沫梦加入BNS</p>
+                            <p>08.21 - 墨墨创建了BNS交流群(具有深远意义)</p>
+                            <p>08.22 - 墨墨创建了BNS频道</p>
+                            <p>08.23 - BNS决定带成员无条件保护萌新并扶持他们发育——帮助刷任务&amp;送油桶/零件</p>
+                            <p>08.25 - 沫梦开学</p>
+                            <p>08.26 - UU加入了BNS</p>
+                            <p>09.01 - BNS成员陷入开学狂潮</p>
+                            <p>09.13 - 诺晨加入了BNS</p>
+                            <p>09.18 - Дормер加入了BNS</p>
+                            <p>10.02 - szhk加入了BNS</p>
+                            <p>10.05 - UU被通缉，墨墨率领17位成员将UU打至退游</p>
+                            <p>10.06 - 墨墨创建了BNS网站</p>
+                            <p>10.07 - BNS网站烂尾废弃</p>
+                            <p>10.11 - 濠创建了BNS派系HTML格式网页</p>
+                            <p>10.12 - 墨墨正式接替濠更新网页</p>
+                            <p>10.15 - 墨墨创建蓝狐俱乐部™️，专门负责拍摄</p>
+                            <p>10.17 - BNS被联合部队嘲讽</p>
+                            <p>10.28 - BNS通缉“[联合部队]联合军校”派系</p>
+                            <p>11.13 - BNS大部分成员转MC</p>
+                            <p>11.21 - 墨墨转MC</p>
+                            <p>12.03 - BNS派系群网页下架</p>
+                            <p>12.14 - BNS派系网页替代BNS派系群网页</p>
+                            <p>12.21 - 墨墨决定肝重生，BNS大部分成员陷入肝重生狂潮</p>
+                            <p>12.29 - BNS团建(影响深刻)</p>
+                            <p>12.31 - 跨年夜BNS组织了赛车比赛庆祝</p>
+                        </div>
+
+                        <p class="text-cyan-400 font-bold mt-3">❀ 2026年 (云墨十六元年):</p>
+                        <div class="pl-3 border-l-2 border-emerald-500/40 space-y-1">
+                            <p>01.03 - 小米加入了BNS</p>
+                            <p>01.05 - 濠暂退战争大亨</p>
+                            <p>01.08 - BNS第二次大型军事演习</p>
+                            <p>01.09 - 墨墨无聊算了一下重生要多少钱(精确到个位数)</p>
+                            <p>01.13 - BNS确定了单兵榜</p>
+                            <p>01.18 - 墨墨被SMDG二军营长看上，将派系暂时转给了濠，加入了SMDG二军</p>
+                            <p>01.19 - BNS派系群正式改为Momo粉丝群三群，BNS群(几乎荒废)</p>
+                            <p>01.20 - 墨墨结束了1000多天的统治</p>
+                            <p class="text-gray-400">【2026.01.20至2026.02.10 衰落】</p>
+                            <p>02.11 - BNS被SMDG二军TVO墨墨收入，墨墨创建了BNS新群，墨墨恢复统治</p>
+                            <p class="text-gray-400">【2026.02.12至2026.04.07 渐渐强大】</p>
+                            <p>04.08 - BNS改为TVO第三自治营</p>
+                            <p>04.15 - BNS改为TVO第二自治营</p>
+                            <p>04.18 - 墨墨改BNS为墨墨の窝</p>
+                            <p>04.19 - 貅猫加入了BNS；同日BNS取消自治，改为TVO第二综合营</p>
+                            <p>04.20 - 72X加入了BNS</p>
+                            <p>04.22 - ty加入了BNS</p>
+                            <p>04.25 - 肝帝和麻蛋加入了BNS</p>
+                            <p>04.26 - emm,商家和WuYaoCai加入了BNS</p>
+                            <p>04.27 - 蓝狐工作室™️正式改为Harma工作室™️</p>
+                            <p>05.01 - KZZ和乔然加入了BNS</p>
+                            <p>05.02 - sea加入了BNS</p>
+                            <p>05.03 - 墨墨组织TVO拍摄宣传片但拍摄不佳(几乎不能用)</p>
+                            <p>05.04 - 跳进染加入了BNS</p>
+                            <p>05.05 - BNS团建吃火锅；墨墨淡游转营长给貅猫，副营长为肝帝</p>
+                            <p>05.09 - 外星人侮辱墨墨，被拉入黑名单</p>
+                            <p>05.10 - 72X叛变退出</p>
+                            <p>05.16 - 秋月加入了BNS；同日BNS举行了第二届赛车比赛(未成功举行)；墨墨玩真心话大冒险导致红温</p>
+                            <p class="text-yellow-300 text-xs mt-2">✨ 敬请期待 ✨</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right text-[11px] text-gray-500 border-t border-gray-700 pt-3 mt-1">
+                <i class="fa-regular fa-clock"></i> 派系紀實 · 源於BNS / 大兴王朝編年史
+            </div>
+        </section>
+
+        <!-- 關於我們 分隔線 -->
+        <hr id="about-hr" class="border-gray-800 my-6" />
+        
+        <!-- 關於我們 + 工作室宣言 -->
+        <section id="aboutus-section" class="bg-gradient-to-br from-darkCard/90 to-darkCard border border-indigo-500/20 rounded-2xl p-5 md:p-6 shadow-2xl">
+            <div class="flex items-center gap-2 border-b border-indigo-500/30 pb-3 mb-4">
+                <i class="fa-regular fa-star-of-life text-indigo-400 text-xl"></i>
+                <h2 class="text-xl md:text-2xl font-black text-white tracking-tight">關於我們 · 重生之翼</h2>
+            </div>
+            <div class="space-y-4 text-gray-300">
+                <p class="bg-black/20 rounded-xl p-4 border-l-4 border-blue-500 text-sm leading-relaxed">
+                    ✿ <span class="font-bold text-blue-300">2026.05.26</span> 管理員濠製作了派系網頁2.0 (重製版)，墨墨決定重新更新派系網頁。<br>
+                    因1.0的經驗，2.0的功能將更加全面，同時檔案大小也是指數增加，我們將推翻舊的UI設計，制定一個全新的UI以及動畫設計等，理想情況會加入註冊登入功能。<br>
+                    後續我們團隊會想辦法將其弄成軟體或網站，敬請期待 ✨<br>
+                    如果你也想為這個做貢獻，就加入我們 Harma工作室™️ 吧！
+                </p>
+                <div class="flex flex-wrap gap-3 text-sm font-mono">
+                    <span class="bg-pink-500/10 text-pink-300 px-3 py-1 rounded-full text-xs">💖 “If you love Harma, I love you!”</span>
+                    <span class="bg-amber-500/10 text-amber-300 px-3 py-1 rounded-full text-xs">🍑 “If you love Momo, I love you!”</span>
+                </div>
+                <div class="pt-2 space-y-1 text-sm border-t border-gray-700/70 mt-3">
+                    <p class="flex items-center gap-2"><i class="fa-regular fa-copyright text-gray-400"></i> <strong>Harma工作室™️</strong> ‖ 版權歸 Harma™️ 所有</p>
+                    <p class="text-gray-400 text-xs">Harma工作室™️ [前藍狐(Blue Fox工作室™️)]</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 bg-black/20 p-3 rounded-xl">
+                        <div class="flex items-center gap-2 text-sm"><i class="fa-regular fa-envelope text-blue-400"></i> <span class="break-all">ag6428570@gmail.com</span> <span class="text-blue-300 text-xs">—— Hao (技術人員)</span></div>
+                        <div class="flex items-center gap-2 text-sm"><i class="fa-regular fa-envelope text-pink-400"></i> <span class="break-all">1710278186@qq.com</span> <span class="text-pink-300 text-xs">—— 𝑴𝒐𝒎𝒐 (CEO)</span></div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 text-right italic">「千年王朝之夢，戰火淬鍊新生」</p>
+            </div>
+        </section>
+
+        <!-- 分隔線 (原本任務區分割線，搜尋時隱藏) -->
         <hr id="section-divider" class="border-gray-800 my-6" />
 
         <!-- 任務列表渲染區 -->
@@ -212,90 +383,13 @@
         </div>
     </div>
 
-    <!-- 核心數據與控制邏輯 -->
     <script>
         const taskData = {
-            "tank": {
-                title: "坦克任務",
-                tasks: [
-                    { name: "M3布拉德利", requirement: "花費 40 個坦克零件" },
-                    { name: "威斯尔1MK20", requirement: "使用 15 次空投呼召" },
-                    { name: "威斯尔1拖车Ⅱ型", requirement: "使用 1MK20 摧毀 20 輛地面載具" },
-                    { name: "T72", requirement: "使用坦克擊殺 30 人" },
-                    { name: "ADATS", requirement: "摧毀 60 架飛行器" },
-                    { name: "維塞爾1防空", requirement: "使用 1MK20 摧毀 20 輛地面載具" },
-                    { name: "M1艾布拉姆斯", requirement: "使用坦克摧毀 30 輛坦克 & 偷取 10 個零件箱" },
-                    { name: "K9雷霆SPG", requirement: "摧毀 60 輛地面載具 & 300 米外擊殺 40 人" },
-                    { name: "豹子2A7", requirement: "摧毀 35 輛坦克 & 駕駛 600 秒坦克" },
-                    { name: "失敗任務", requirement: "占領捕捉點 1800 秒 & 使用坦克 200 米外擊殺 20 人" },
-                    { name: "T90", requirement: "使用坦克摧毀 45 輛坦克 & 花費 100 個坦克零件" },
-                    { name: "PL_01", requirement: "使用坦克摧毀 40 輛地面載具 & 駕駛 1500 秒坦克" },
-                    { name: "MAUS", requirement: "坦克受到 10 萬傷害 & 找到 4 個隱藏車輛部件" },
-                    { name: "T14", requirement: "收集 10 桶石油 & 使用坦克 200 米外擊殺 40 人 & 使用坦克擊殺 75 人" },
-                    { name: "挑戰者Ⅱ黑色夜晚", requirement: "坦克受到 12 萬傷害 & 收集 10 架墜毀的無人機 & 使用 50 次主動保護系統" },
-                    { name: "KF_51豹子", requirement: "花費 200 個坦克零件 & 占領捕捉點 3000 秒 & 使用坦克擊殺 100 人" }
-                ]
-            },
-            "helicopter": {
-                title: "直升機任務",
-                tasks: [
-                    { name: "UH60_黑鷹", requirement: "救起 10 個玩家" },
-                    { name: "歐洲直升機老虎", requirement: "摧毀 40 輛車輛" },
-                    { name: "無敵", requirement: "使用直升機摧毀 45 架直升機 & 駕駛直升機通過圓環獲取 45 積分" },
-                    { name: "AH_64阿帕奇", requirement: "使用直升機擊殺 25 人 & 占領捕捉點 1500 秒" },
-                    { name: "KA_52鱷魚", requirement: "摧毀 30 架直升機 & 使用直升機 200 米外擊殺 20 人" },
-                    { name: "直10", requirement: "花費 100 個船艦零件 & 使用直升機對任何載具造成 5 萬傷害" },
-                    { name: "超級種馬", requirement: "使用直升機摧毀 20 輛船艦 & 收集 5 桶石油" },
-                    { name: "AH_1Z毒蛇", requirement: "使用直升機摧毀 50 輛地面載具 & 占領捕捉點 1200 秒" },
-                    { name: "咆哮者X", requirement: "使用直升機摧毀 20 架飛機 & 使用直升機摧毀 20 輛車庫車輛 & 駕駛直升機通過圓環獲取 200 積分" },
-                    { name: "A129芒果", requirement: "花費 200 個直升機零件 & 使用直升機摧毀 40 架飛機 & 使用直升機擊殺 12 人" }
-                ]
-            },
-            "airplane": {
-                title: "飛機任務",
-                tasks: [
-                    { name: "B_29", requirement: "占領捕捉點 1800 秒" },
-                    { name: "F_14", requirement: "使用飛機摧毀 30 架直升機" },
-                    { name: "Ju57斯圖卡", requirement: "使用飛機摧毀 15 輛坦克" },
-                    { name: "F_4", requirement: "使用飛機擊殺 30 人" },
-                    { name: "米格_29", requirement: "使用飛機摧毀 25 架飛機" },
-                    { name: "A_10", requirement: "使用飛機摧毀 50 輛地面載具 & 飛機受到 4 萬傷害" },
-                    { name: "JAS_39", requirement: "占領捕捉點 1800 秒 & 使用飛機擊殺 50 人" },
-                    { name: "F_15E", requirement: "使用飛機摧毀 60 輛地面載具 & 使用飛機 200 米外擊殺 40 人" },
-                    { name: "F_18", requirement: "使用飛機摧毀 40 輛船艦 & 花費 100 個飛機零件" },
-                    { name: "蘇57", requirement: "花費 100 個飛機零件 & 使用飛機摧毀 30 架飛機" },
-                    { name: "歐洲戰鬥機颱風", requirement: "使用飛機摧毀車輛 & 偷取 5 個零件箱" },
-                    { name: "陣風", requirement: "使用飛機摧毀 20 輛船艦 & 使用飛機摧毀 60 架飛行器" },
-                    { name: "F_16", requirement: "摧毀 30 架飛機 & 花費 60 個飛機零件" },
-                    { name: "F_22", requirement: "駕駛飛機通過圓環收集 400 積分 & 占領捕捉點 1800 秒 & 使用飛機擊殺 100 人" },
-                    { name: "夜鷹", requirement: "使用飛機炸彈擊殺 25 人 & 占領捕捉點 1800 秒 & 偷取 10 個零件箱" },
-                    { name: "黑暗之星", requirement: "花費 10 個升級點數 & 偷取 10 個零件箱 & 收集 10 架墜毀的無人機" },
-                    { name: "殲36", requirement: "收集 10 架墜毀的無人機 & 使用飛機摧毀 20 輛船艦 & 花費 100 個飛機零件" }
-                ]
-            },
-            "hovercraft": {
-                title: "懸空載具",
-                tasks: [
-                    { name: "PACV_78突擊", requirement: "使用氣墊船摧毀 40 輛地面載具" },
-                    { name: "PACV_77風鐮", requirement: "使用氣墊船摧毀 30 架飛行器" },
-                    { name: "QBZ_95", requirement: "使用自動武器 50 米外擊殺 30 人" },
-                    { name: "C4", requirement: "使用手榴彈擊殺 15 人 & 摧毀 10 輛地面車輛" },
-                    { name: "QBJ_LMG", requirement: "偷取 10 個零件箱 & 使用自動武器擊殺 20 人" },
-                    { name: "AVH獵人", requirement: "使用氣墊船摧毀 60 輛地面載具 & 使用氣墊船撞倒 300 物品 & 駕駛氣墊船 1800 秒" }
-                ]
-            },
-            "ship": {
-                title: "船艦與潛艇",
-                tasks: [
-                    { name: "PG02", requirement: "使用船艦擊殺 25 人" },
-                    { name: "法爾米爾", requirement: "收集 10 桶海洋沉船石油" },
-                    { name: "KSG_12", requirement: "使用夾彈槍擊殺 20 人 & 收集 4 桶石油" },
-                    { name: "道格拉斯號", requirement: "使用船艦摧毀 40 輛載具 & 占領捕捉點 1800 秒" },
-                    { name: "PP_19Bizon", requirement: "使用自動武器擊殺 25 人 & 偷取 2 個零件箱" },
-                    { name: "Pr.206", requirement: "使用船艦摧毀 20 輛敵方船艦" },
-                    { name: "USS獨立號", requirement: "使用船艦摧毀 125 輛載具或者船艦 & 占領捕捉點 1500 秒 & 收集 10 桶石油" }
-                ]
-            }
+            "tank": { title: "坦克任務", tasks: [{ name: "M3布拉德利", requirement: "花費 40 個坦克零件" },{ name: "威斯尔1MK20", requirement: "使用 15 次空投呼召" },{ name: "威斯尔1拖车Ⅱ型", requirement: "使用 1MK20 摧毀 20 輛地面載具" },{ name: "T72", requirement: "使用坦克擊殺 30 人" },{ name: "ADATS", requirement: "摧毀 60 架飛行器" },{ name: "維塞爾1防空", requirement: "使用 1MK20 摧毀 20 輛地面載具" },{ name: "M1艾布拉姆斯", requirement: "使用坦克摧毀 30 輛坦克 & 偷取 10 個零件箱" },{ name: "K9雷霆SPG", requirement: "摧毀 60 輛地面載具 & 300 米外擊殺 40 人" },{ name: "豹子2A7", requirement: "摧毀 35 輛坦克 & 駕駛 600 秒坦克" },{ name: "失敗任務", requirement: "占領捕捉點 1800 秒 & 使用坦克 200 米外擊殺 20 人" },{ name: "T90", requirement: "使用坦克摧毀 45 輛坦克 & 花費 100 個坦克零件" },{ name: "PL_01", requirement: "使用坦克摧毀 40 輛地面載具 & 駕駛 1500 秒坦克" },{ name: "MAUS", requirement: "坦克受到 10 萬傷害 & 找到 4 個隱藏車輛部件" },{ name: "T14", requirement: "收集 10 桶石油 & 使用坦克 200 米外擊殺 40 人 & 使用坦克擊殺 75 人" },{ name: "挑戰者Ⅱ黑色夜晚", requirement: "坦克受到 12 萬傷害 & 收集 10 架墜毀的無人機 & 使用 50 次主動保護系統" },{ name: "KF_51豹子", requirement: "花費 200 個坦克零件 & 占領捕捉點 3000 秒 & 使用坦克擊殺 100 人" }] },
+            "helicopter": { title: "直升機任務", tasks: [{ name: "UH60_黑鷹", requirement: "救起 10 個玩家" },{ name: "歐洲直升機老虎", requirement: "摧毀 40 輛車輛" },{ name: "無敵", requirement: "使用直升機摧毀 45 架直升機 & 駕駛直升機通過圓環獲取 45 積分" },{ name: "AH_64阿帕奇", requirement: "使用直升機擊殺 25 人 & 占領捕捉點 1500 秒" },{ name: "KA_52鱷魚", requirement: "摧毀 30 架直升機 & 使用直升機 200 米外擊殺 20 人" },{ name: "直10", requirement: "花費 100 個船艦零件 & 使用直升機對任何載具造成 5 萬傷害" },{ name: "超級種馬", requirement: "使用直升機摧毀 20 輛船艦 & 收集 5 桶石油" },{ name: "AH_1Z毒蛇", requirement: "使用直升機摧毀 50 輛地面載具 & 占領捕捉點 1200 秒" },{ name: "咆哮者X", requirement: "使用直升機摧毀 20 架飛機 & 使用直升機摧毀 20 輛車庫車輛 & 駕駛直升機通過圓環獲取 200 積分" },{ name: "A129芒果", requirement: "花費 200 個直升機零件 & 使用直升機摧毀 40 架飛機 & 使用直升機擊殺 12 人" }] },
+            "airplane": { title: "飛機任務", tasks: [{ name: "B_29", requirement: "占領捕捉點 1800 秒" },{ name: "F_14", requirement: "使用飛機摧毀 30 架直升機" },{ name: "Ju57斯圖卡", requirement: "使用飛機摧毀 15 輛坦克" },{ name: "F_4", requirement: "使用飛機擊殺 30 人" },{ name: "米格_29", requirement: "使用飛機摧毀 25 架飛機" },{ name: "A_10", requirement: "使用飛機摧毀 50 輛地面載具 & 飛機受到 4 萬傷害" },{ name: "JAS_39", requirement: "占領捕捉點 1800 秒 & 使用飛機擊殺 50 人" },{ name: "F_15E", requirement: "使用飛機摧毀 60 輛地面載具 & 使用飛機 200 米外擊殺 40 人" },{ name: "F_18", requirement: "使用飛機摧毀 40 輛船艦 & 花費 100 個飛機零件" },{ name: "蘇57", requirement: "花費 100 個飛機零件 & 使用飛機摧毀 30 架飛機" },{ name: "歐洲戰鬥機颱風", requirement: "使用飛機摧毀車輛 & 偷取 5 個零件箱" },{ name: "陣風", requirement: "使用飛機摧毀 20 輛船艦 & 使用飛機摧毀 60 架飛行器" },{ name: "F_16", requirement: "摧毀 30 架飛機 & 花費 60 個飛機零件" },{ name: "F_22", requirement: "駕駛飛機通過圓環收集 400 積分 & 占領捕捉點 1800 秒 & 使用飛機擊殺 100 人" },{ name: "夜鷹", requirement: "使用飛機炸彈擊殺 25 人 & 占領捕捉點 1800 秒 & 偷取 10 個零件箱" },{ name: "黑暗之星", requirement: "花費 10 個升級點數 & 偷取 10 個零件箱 & 收集 10 架墜毀的無人機" },{ name: "殲36", requirement: "收集 10 架墜毀的無人機 & 使用飛機摧毀 20 輛船艦 & 花費 100 個飛機零件" }] },
+            "hovercraft": { title: "懸空載具", tasks: [{ name: "PACV_78突擊", requirement: "使用氣墊船摧毀 40 輛地面載具" },{ name: "PACV_77風鐮", requirement: "使用氣墊船摧毀 30 架飛行器" },{ name: "QBZ_95", requirement: "使用自動武器 50 米外擊殺 30 人" },{ name: "C4", requirement: "使用手榴彈擊殺 15 人 & 摧毀 10 輛地面車輛" },{ name: "QBJ_LMG", requirement: "偷取 10 個零件箱 & 使用自動武器擊殺 20 人" },{ name: "AVH獵人", requirement: "使用氣墊船摧毀 60 輛地面載具 & 使用氣墊船撞倒 300 物品 & 駕駛氣墊船 1800 秒" }] },
+            "ship": { title: "船艦與潛艇", tasks: [{ name: "PG02", requirement: "使用船艦擊殺 25 人" },{ name: "法爾米爾", requirement: "收集 10 桶海洋沉船石油" },{ name: "KSG_12", requirement: "使用夾彈槍擊殺 20 人 & 收集 4 桶石油" },{ name: "道格拉斯號", requirement: "使用船艦摧毀 40 輛載具 & 占領捕捉點 1800 秒" },{ name: "PP_19Bizon", requirement: "使用自動武器擊殺 25 人 & 偷取 2 個零件箱" },{ name: "Pr.206", requirement: "使用船艦摧毀 20 輛敵方船艦" },{ name: "USS獨立號", requirement: "使用船艦摧毀 125 輛載具或者船艦 & 占領捕捉點 1500 秒 & 收集 10 桶石油" }] }
         };
 
         let trackedTasks = JSON.parse(localStorage.getItem('wtt_tracked')) || [];
@@ -306,259 +400,85 @@
             updateTrackerBadge();
         });
 
-        // 搜尋邏輯（已整合：搜尋時隱藏官方社群與分隔線）
+        // 增強搜尋隱藏邏輯 (派系/關於我們也一併隱藏)
         function searchTasks() {
             const input = document.getElementById('search-input');
             const infoText = document.getElementById('search-results-info');
-            const socialSection = document.getElementById('social-section');
-            const sectionDivider = document.getElementById('section-divider');
+            const social = document.getElementById('social-section');
+            const divider = document.getElementById('section-divider');
+            const factionHr = document.getElementById('faction-hr');
+            const factionSec = document.getElementById('faction-section');
+            const aboutHr = document.getElementById('about-hr');
+            const aboutSec = document.getElementById('aboutus-section');
             const val = input.value.trim();
-
-            if (val !== "") {
-                if(socialSection) socialSection.style.display = 'none';
-                if(sectionDivider) sectionDivider.style.display = 'none';
+            const isFiltering = val !== "";
+            
+            const extraElements = [factionHr, factionSec, aboutHr, aboutSec];
+            if (isFiltering) {
+                if(social) social.style.display = 'none';
+                if(divider) divider.style.display = 'none';
+                extraElements.forEach(el => { if(el) el.style.display = 'none'; });
                 infoText.classList.remove('hidden');
             } else {
-                if(socialSection) socialSection.style.display = 'block';
-                if(sectionDivider) sectionDivider.style.display = 'block';
+                if(social) social.style.display = 'block';
+                if(divider) divider.style.display = 'block';
+                extraElements.forEach(el => { if(el) el.style.display = 'block'; });
                 infoText.classList.add('hidden');
             }
             renderTaskSections(input.value);
         }
 
-        function renderTaskSections(filterText = "") {
+        function renderTaskSections(filterText = "") { /* 原任務渲染保持不變 */ 
             const container = document.getElementById('tasks-container');
             const categorySelector = document.getElementById('category-selector');
             const sectionDivider = document.getElementById('section-divider');
-            
             container.innerHTML = '';
             const filter = filterText.trim().toLowerCase();
-
             if (filter === "") {
                 categorySelector.classList.remove('hidden');
-                sectionDivider.classList.remove('hidden');
-
-                Object.keys(taskData).forEach(key => {
+                if(sectionDivider) sectionDivider.classList.remove('hidden');
+                Object.keys(taskData).forEach(key => { /* 完整渲染 */ 
                     const category = taskData[key];
                     const section = document.createElement('section');
                     section.id = `${key}-section`;
                     section.className = "space-y-4 scroll-mt-20";
-
-                    section.innerHTML = `
-                        <div class="border-b border-gray-800 pb-2">
-                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                                <span class="w-1 h-5 bg-blue-500 rounded-full"></span>
-                                ${category.title}
-                            </h2>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            ${category.tasks.map((task, index) => {
-                                const isTracked = trackedTasks.some(t => t.name === task.name);
-                                return `
-                                    <div onclick="openTaskDetail('${key}', ${index})" 
-                                         class="p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-36 bg-darkCard border-gray-800 hover:border-blue-500/50">
-                                        <div class="flex justify-between items-start">
-                                            <span class="text-xs text-blue-400 font-medium bg-blue-500/10 px-1.5 py-0.5 rounded">
-                                                載具/裝備
-                                            </span>
-                                        </div>
-                                        <h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4>
-                                        <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
-                                            <span>點擊查看 →</span>
-                                            ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">追蹤中</span>' : ''}
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    `;
+                    section.innerHTML = `<div class="border-b border-gray-800 pb-2"><h2 class="text-xl font-bold text-white flex items-center gap-2"><span class="w-1 h-5 bg-blue-500 rounded-full"></span>${category.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${category.tasks.map((task, index) => { const isTracked = trackedTasks.some(t => t.name === task.name); return `<div onclick="openTaskDetail('${key}', ${index})" class="p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-36 bg-darkCard border-gray-800 hover:border-blue-500/50"><div class="flex justify-between items-start"><span class="text-xs text-blue-400 font-medium bg-blue-500/10 px-1.5 py-0.5 rounded">載具/裝備</span></div><h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4><div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60"><span>點擊查看 →</span>${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">追蹤中</span>' : ''}</div></div>`; }).join('')}</div>`;
                     container.appendChild(section);
                 });
             } else {
                 categorySelector.classList.add('hidden');
-                sectionDivider.classList.add('hidden');
-
+                if(sectionDivider) sectionDivider.classList.add('hidden');
                 let totalMatches = 0;
-
                 Object.keys(taskData).forEach(key => {
                     const category = taskData[key];
-                    const filteredTasks = category.tasks.map((t, idx) => ({...t, originalIndex: idx})).filter(t => 
-                        t.name.toLowerCase().includes(filter)
-                    );
-
-                    if (filteredTasks.length > 0) {
+                    const filteredTasks = category.tasks.map((t, idx) => ({...t, originalIndex: idx})).filter(t => t.name.toLowerCase().includes(filter));
+                    if(filteredTasks.length > 0){
                         totalMatches += filteredTasks.length;
                         const section = document.createElement('section');
                         section.className = "space-y-4";
-
-                        section.innerHTML = `
-                            <div class="border-b border-gray-800 pb-2">
-                                <h2 class="text-lg font-bold text-white">${category.title}</h2>
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                ${filteredTasks.map(task => {
-                                    const isTracked = trackedTasks.some(t => t.name === task.name);
-                                    return `
-                                        <div onclick="openTaskDetail('${key}', ${task.originalIndex})" 
-                                             class="p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-36 bg-darkCard border-gray-800 hover:border-blue-500/50">
-                                            <div class="flex justify-between items-start">
-                                                <span class="text-xs text-blue-400 font-medium bg-blue-500/10 px-1.5 py-0.5 rounded">
-                                                    載具/裝備
-                                                </span>
-                                            </div>
-                                            <h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4>
-                                            <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
-                                                <span>點擊查看 →</span>
-                                                ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">追蹤中</span>' : ''}
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        `;
+                        section.innerHTML = `<div class="border-b border-gray-800 pb-2"><h2 class="text-lg font-bold text-white">${category.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${filteredTasks.map(task => { const isTracked = trackedTasks.some(t => t.name === task.name); return `<div onclick="openTaskDetail('${key}', ${task.originalIndex})" class="p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-36 bg-darkCard border-gray-800 hover:border-blue-500/50"><div class="flex justify-between items-start"><span class="text-xs text-blue-400 font-medium bg-blue-500/10 px-1.5 py-0.5 rounded">載具/裝備</span></div><h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4><div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60"><span>點擊查看 →</span>${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">追蹤中</span>' : ''}</div></div>`; }).join('')}</div>`;
                         container.appendChild(section);
                     }
                 });
-
                 const infoText = document.getElementById('search-results-info');
                 infoText.classList.remove('hidden');
                 infoText.innerText = `找到 ${totalMatches} 個名稱相符項目`;
             }
         }
-
-        function openTaskDetail(categoryKey, index) {
-            const category = taskData[categoryKey];
-            const task = category.tasks[index];
-            activeModalTask = { ...task, categoryTitle: category.title };
-
-            document.getElementById('modal-category').innerText = category.title;
-            document.getElementById('modal-title').innerText = task.name;
-            document.getElementById('modal-requirement').innerText = task.requirement;
-
-            const isTracked = trackedTasks.some(t => t.name === task.name);
-            updateModalTrackButtonState(isTracked);
-
-            document.getElementById('modal-toast').classList.add('opacity-0');
-
-            const modal = document.getElementById('detail-modal');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.remove('scale-95');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('detail-modal');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.add('scale-95');
-            activeModalTask = null;
-        }
-
-        function copyCurrentRequirement() {
-            if (!activeModalTask) return;
-            const text = `【${activeModalTask.name}】解鎖條件：${activeModalTask.requirement}`;
-            
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-
-            showToast("已成功複製！");
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('modal-toast');
-            toast.innerText = msg;
-            toast.classList.remove('opacity-0');
-            setTimeout(() => toast.classList.add('opacity-0'), 2000);
-        }
-
-        function toggleTrackCurrent() {
-            if (!activeModalTask) return;
-            toggleTrackDirectly(activeModalTask.name, activeModalTask.categoryTitle, activeModalTask.requirement);
-            const isTracked = trackedTasks.some(t => t.name === activeModalTask.name);
-            updateModalTrackButtonState(isTracked);
-            showToast(isTracked ? "已追蹤" : "取消追蹤");
-        }
-
-        function updateModalTrackButtonState(isTracked) {
-            const btn = document.getElementById('modal-track-btn');
-            if (isTracked) {
-                btn.className = "flex-1 bg-red-600/20 text-red-400 border border-red-500/20 font-bold py-2 px-4 rounded-xl text-sm transition";
-                btn.innerText = "取消追蹤";
-            } else {
-                btn.className = "flex-1 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl text-sm transition";
-                btn.innerText = "加入追蹤";
-            }
-        }
-
-        function toggleTrackDirectly(name, category, requirement) {
-            const index = trackedTasks.findIndex(t => t.name === name);
-            if (index > -1) {
-                trackedTasks.splice(index, 1);
-            } else {
-                trackedTasks.push({ name, category, requirement });
-            }
-            localStorage.setItem('wtt_tracked', JSON.stringify(trackedTasks));
-            updateTrackerBadge();
-            
-            const input = document.getElementById('search-input');
-            renderTaskSections(input.value);
-        }
-
-        function openTrackerModal() {
-            const modal = document.getElementById('tracker-modal');
-            renderTrackerList();
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-        }
-
-        function closeTrackerModal() {
-            document.getElementById('tracker-modal').classList.add('opacity-0', 'pointer-events-none');
-        }
-
-        function renderTrackerList() {
-            const content = document.getElementById('tracker-list-content');
-            if (trackedTasks.length === 0) {
-                content.innerHTML = `<p class="text-center py-6 text-xs text-gray-500">暫無追蹤項目</p>`;
-                return;
-            }
-            content.innerHTML = trackedTasks.map(t => `
-                <div class="p-2.5 bg-gray-900 border border-gray-800 rounded-lg flex items-center justify-between text-xs">
-                    <div>
-                        <span class="text-[10px] text-blue-400 font-bold">[${t.category}]</span>
-                        <span class="text-white font-bold">${t.name}</span>
-                        <p class="text-gray-400 mt-1">${t.requirement}</p>
-                    </div>
-                    <button onclick="toggleTrackDirectly('${t.name}'); renderTrackerList();" class="text-red-400 px-2 font-bold">×</button>
-                </div>
-            `).join('');
-        }
-
-        function clearAllTracked() {
-            trackedTasks = [];
-            localStorage.setItem('wtt_tracked', JSON.stringify([]));
-            updateTrackerBadge();
-            renderTrackerList();
-            
-            const input = document.getElementById('search-input');
-            renderTaskSections(input.value);
-        }
-
-        function updateTrackerBadge() {
-            const badge = document.getElementById('tracker-badge');
-            if (trackedTasks.length > 0) {
-                badge.innerText = trackedTasks.length;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function scrollToSection(id) {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
+        
+        function openTaskDetail(categoryKey, index) { /* 原樣保留 */ const category = taskData[categoryKey]; const task = category.tasks[index]; activeModalTask = { ...task, categoryTitle: category.title }; document.getElementById('modal-category').innerText = category.title; document.getElementById('modal-title').innerText = task.name; document.getElementById('modal-requirement').innerText = task.requirement; const isTracked = trackedTasks.some(t => t.name === task.name); updateModalTrackButtonState(isTracked); document.getElementById('modal-toast').classList.add('opacity-0'); const modal = document.getElementById('detail-modal'); modal.classList.remove('opacity-0', 'pointer-events-none'); modal.querySelector('div').classList.remove('scale-95'); }
+        function closeModal() { const modal = document.getElementById('detail-modal'); modal.classList.add('opacity-0', 'pointer-events-none'); modal.querySelector('div').classList.add('scale-95'); activeModalTask = null; }
+        function copyCurrentRequirement() { if (!activeModalTask) return; const text = `【${activeModalTask.name}】解鎖條件：${activeModalTask.requirement}`; const dummy = document.createElement("textarea"); document.body.appendChild(dummy); dummy.value = text; dummy.select(); document.execCommand("copy"); document.body.removeChild(dummy); showToast("已成功複製！"); }
+        function showToast(msg) { const toast = document.getElementById('modal-toast'); toast.innerText = msg; toast.classList.remove('opacity-0'); setTimeout(() => toast.classList.add('opacity-0'), 2000); }
+        function toggleTrackCurrent() { if (!activeModalTask) return; toggleTrackDirectly(activeModalTask.name, activeModalTask.categoryTitle, activeModalTask.requirement); const isTracked = trackedTasks.some(t => t.name === activeModalTask.name); updateModalTrackButtonState(isTracked); showToast(isTracked ? "已追蹤" : "取消追蹤"); }
+        function updateModalTrackButtonState(isTracked) { const btn = document.getElementById('modal-track-btn'); if (isTracked) { btn.className = "flex-1 bg-red-600/20 text-red-400 border border-red-500/20 font-bold py-2 px-4 rounded-xl text-sm transition"; btn.innerText = "取消追蹤"; } else { btn.className = "flex-1 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl text-sm transition"; btn.innerText = "加入追蹤"; } }
+        function toggleTrackDirectly(name, category, requirement) { const index = trackedTasks.findIndex(t => t.name === name); if (index > -1) trackedTasks.splice(index,1); else trackedTasks.push({ name, category, requirement }); localStorage.setItem('wtt_tracked', JSON.stringify(trackedTasks)); updateTrackerBadge(); const input = document.getElementById('search-input'); renderTaskSections(input.value); }
+        function openTrackerModal() { const modal = document.getElementById('tracker-modal'); renderTrackerList(); modal.classList.remove('opacity-0', 'pointer-events-none'); }
+        function closeTrackerModal() { document.getElementById('tracker-modal').classList.add('opacity-0', 'pointer-events-none'); }
+        function renderTrackerList() { const content = document.getElementById('tracker-list-content'); if (trackedTasks.length === 0) { content.innerHTML = `<p class="text-center py-6 text-xs text-gray-500">暫無追蹤項目</p>`; return; } content.innerHTML = trackedTasks.map(t => `<div class="p-2.5 bg-gray-900 border border-gray-800 rounded-lg flex items-center justify-between text-xs"><div><span class="text-[10px] text-blue-400 font-bold">[${t.category}]</span><span class="text-white font-bold">${t.name}</span><p class="text-gray-400 mt-1">${t.requirement}</p></div><button onclick="toggleTrackDirectly('${t.name}'); renderTrackerList();" class="text-red-400 px-2 font-bold">×</button></div>`).join(''); }
+        function clearAllTracked() { trackedTasks = []; localStorage.setItem('wtt_tracked', JSON.stringify([])); updateTrackerBadge(); renderTrackerList(); const input = document.getElementById('search-input'); renderTaskSections(input.value); }
+        function updateTrackerBadge() { const badge = document.getElementById('tracker-badge'); if (trackedTasks.length > 0) { badge.innerText = trackedTasks.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } }
+        function scrollToSection(id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
     </script>
 </body>
 </html>
