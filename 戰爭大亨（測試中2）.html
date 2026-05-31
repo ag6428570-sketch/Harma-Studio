@@ -30,7 +30,6 @@
         html {
             scroll-behavior: smooth;
         }
-        /* 官方社群卡片样式 */
         .social-link-card {
             background-color: #131926;
             border: 1px solid #1f2937;
@@ -44,7 +43,6 @@
             margin-bottom: 12px;
         }
         .social-link-card:hover { border-color: #3b82f6; background-color: #1a2234; }
-        /* 历史时间轴自定义滚动条 */
         .history-scroll::-webkit-scrollbar {
             width: 4px;
         }
@@ -60,7 +58,6 @@
             background: rgba(59,130,246,0.15);
             border: 1px solid rgba(59,130,246,0.3);
         }
-        /* 彩蛋页面动画 */
         .code-typing {
             border-right: 2px solid #3b82f6;
             white-space: nowrap;
@@ -74,13 +71,44 @@
         .easter-egg-bg {
             background: radial-gradient(circle at 20% 30%, rgba(59,130,246,0.15) 0%, #090d16 90%);
         }
+        .keyboard-glow {
+            animation: keyFlash 0.8s infinite ease-in-out;
+        }
+        @keyframes keyFlash {
+            0%, 100% { text-shadow: 0 0 2px #3b82f6; opacity: 0.7; }
+            50% { text-shadow: 0 0 12px #a855f7, 0 0 5px #3b82f6; opacity: 1; }
+        }
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .coder-wave {
+            animation: wave 1.5s infinite;
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            20% { transform: rotate(15deg); }
+            40% { transform: rotate(-10deg); }
+            60% { transform: rotate(5deg); }
+            80% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
+        }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 font-sans min-h-screen">
 
     <!-- ========== 主页面内容 ========== -->
     <div id="main-app">
-        <!-- 顶部导览 -->
         <nav class="sticky top-0 z-40 bg-darkBg/90 backdrop-blur-md border-b border-gray-800/80 px-4 py-3">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
                 <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center space-x-2 cursor-pointer transition active:opacity-70">
@@ -94,7 +122,6 @@
             </div>
         </nav>
 
-        <!-- 主标题与搜索（添加彩蛋按钮） -->
         <header class="relative pt-10 pb-6 px-4 text-center">
             <div class="max-w-3xl mx-auto space-y-3">
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
@@ -104,8 +131,6 @@
                     现代化任务网站 | 坦克 | 飞机 | 直升机 | 船舰
                 </p>
             </div>
-
-            <!-- 搜索栏 + 彩蛋按钮 同一行 -->
             <div class="max-w-md mx-auto mt-6 px-2">
                 <div class="flex items-center gap-2">
                     <div class="relative flex-1">
@@ -113,7 +138,6 @@
                             placeholder="输入「任务/载具名称」进行精确搜索..." 
                             class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                     </div>
-                    <!-- 彩蛋按钮 -->
                     <button id="easter-egg-btn" onclick="showEasterEggPage()" class="group bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/40 hover:to-orange-500/40 border border-amber-500/50 rounded-xl py-3 px-4 transition-all duration-300">
                         <i class="fa-solid fa-dragon text-amber-400 text-xl group-hover:scale-110 transition-transform"></i>
                         <span class="sr-only">彩蛋秘境</span>
@@ -123,53 +147,19 @@
             </div>
         </header>
 
-        <!-- 内容区 -->
         <main class="max-w-6xl mx-auto px-4 mt-2 space-y-10">
-            <!-- 任务分类快速跳转 -->
             <section id="category-selector" class="space-y-4">
                 <h2 class="text-base font-bold text-gray-400">选择任务分类</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <div onclick="scrollToSection('tank-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg">
-                        <div class="space-y-1 text-white">
-                            <h3 class="text-lg font-black">坦克任务</h3>
-                            <p class="text-blue-100 text-xs opacity-90">16 个项目</p>
-                        </div>
-                    </div>
-                    <div onclick="scrollToSection('helicopter-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 to-violet-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg">
-                        <div class="space-y-1 text-white">
-                            <h3 class="text-lg font-black">直升机任务</h3>
-                            <p class="text-purple-100 text-xs opacity-90">10 个项目</p>
-                        </div>
-                    </div>
-                    <div onclick="scrollToSection('airplane-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-600 to-rose-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg">
-                        <div class="space-y-1 text-white">
-                            <h3 class="text-lg font-black">飞机任务</h3>
-                            <p class="text-pink-100 text-xs opacity-90">17 个项目</p>
-                        </div>
-                    </div>
-                    <div onclick="scrollToSection('hovercraft-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg">
-                        <div class="space-y-1 text-white">
-                            <h3 class="text-lg font-black">悬空载具</h3>
-                            <p class="text-cyan-100 text-xs opacity-90">6 个项目</p>
-                        </div>
-                    </div>
-                    <div onclick="scrollToSection('ship-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-850 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg">
-                        <div class="space-y-1 text-white">
-                            <h3 class="text-lg font-black">船舰与潜艇</h3>
-                            <p class="text-emerald-100 text-xs opacity-90">7 个项目</p>
-                        </div>
-                    </div>
+                    <div onclick="scrollToSection('tank-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg"><div class="space-y-1 text-white"><h3 class="text-lg font-black">坦克任务</h3><p class="text-blue-100 text-xs opacity-90">16 个项目</p></div></div>
+                    <div onclick="scrollToSection('helicopter-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 to-violet-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg"><div class="space-y-1 text-white"><h3 class="text-lg font-black">直升机任务</h3><p class="text-purple-100 text-xs opacity-90">10 个项目</p></div></div>
+                    <div onclick="scrollToSection('airplane-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-600 to-rose-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg"><div class="space-y-1 text-white"><h3 class="text-lg font-black">飞机任务</h3><p class="text-pink-100 text-xs opacity-90">17 个项目</p></div></div>
+                    <div onclick="scrollToSection('hovercraft-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-700 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg"><div class="space-y-1 text-white"><h3 class="text-lg font-black">悬空载具</h3><p class="text-cyan-100 text-xs opacity-90">6 个项目</p></div></div>
+                    <div onclick="scrollToSection('ship-section')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-850 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg"><div class="space-y-1 text-white"><h3 class="text-lg font-black">船舰与潜艇</h3><p class="text-emerald-100 text-xs opacity-90">7 个项目</p></div></div>
                 </div>
-                <div class="mt-4">
-                    <a href="https://wttd.trade/" target="_blank" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg block max-w-xs text-center">
-                        <div class="text-white">
-                            <h3 class="text-lg font-black">⚔ 交易市场 (wttd.trade)</h3>
-                        </div>
-                    </a>
-                </div>
+                <div class="mt-4"><a href="https://wttd.trade/" target="_blank" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 p-4 cursor-pointer transform hover:-translate-y-1 transition duration-300 shadow-lg block max-w-xs text-center"><div class="text-white"><h3 class="text-lg font-black">⚔ 交易市场 (wttd.trade)</h3></div></a></div>
             </section>
 
-            <!-- 官方社群区块 (搜索时隐藏) -->
             <section id="social-section" class="max-w-xl space-y-4">
                 <h2 class="text-lg font-bold text-gray-300">官方社群</h2>
                 <div class="space-y-3">
@@ -181,38 +171,14 @@
                 </div>
             </section>
 
-            <!-- 派系分隔线 -->
             <hr id="faction-hr" class="border-gray-800 my-6" />
-            
-            <!-- 派系｜大兴王朝历史 区块 -->
             <section id="faction-section" class="bg-darkCard/90 border border-gray-800/80 rounded-2xl p-5 md:p-6 space-y-5 backdrop-blur-sm shadow-xl">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700 pb-3">
-                    <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2"><i class="fa-solid fa-landmark text-blue-400"></i> 派系 · 大兴王朝历史<span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">2023-至今</span></h2>
-                </div>
-                <div class="flex flex-wrap gap-3 text-sm">
-                    <span class="era-badge px-3 py-1 rounded-full text-blue-300 text-xs font-mono">🏛️ 【古代史】2023.01.29-2024.7.14</span>
-                    <span class="era-badge px-3 py-1 rounded-full text-purple-300 text-xs font-mono">📜 【近代史】2025.06.27-2026.1.20</span>
-                    <span class="era-badge px-3 py-1 rounded-full text-pink-300 text-xs font-mono">⚡ 【现代史】2026.02.11-至今</span>
-                    <span class="bg-gradient-to-r from-amber-500/20 to-rose-500/20 border border-amber-500/40 px-3 py-1 rounded-full text-amber-300 text-xs font-bold">✿ BNS鼎盛时期 2025.08.21-2026.01.05 ✿</span>
-                </div>
-                <div class="history-scroll max-h-[480px] overflow-y-auto pr-2 rounded-lg">
-                    <div class="space-y-2 text-sm leading-relaxed text-gray-300 font-medium">
-                        <div class="space-y-1.5">
-                            <p class="text-cyan-400 font-bold mt-1">❀ 2023年 (云墨十三元年):</p>
-                            <div class="pl-3 border-l-2 border-blue-500/40 space-y-1"><p>01.29夜晚 - 墨墨创建了[Bomb]Nuclear Strike派系(简称BNS)</p><p>02.05 - 墨墨因敏感词系统被封，于是退游去玩MC</p><p class="text-gray-500">【2023.02.06至2024.03.30 不详】</p></div>
-                            <p class="text-cyan-400 font-bold mt-3">❀ 2024年 (云墨十四元年):</p>
-                            <div class="pl-3 border-l-2 border-purple-500/40 space-y-1"><p>03.31 - 墨墨因无聊下回了Roblox，并注册了一个新号继续游玩战争大亨</p><p>04.03夜晚 - 墨墨重建[Bomb]Nuclear Strike派系(简称BNS)</p><p>04.04上午 - BNS迎来第一位成员“456”，并进行了第一次团建</p><p>04.06 - 一位对BNS影响重大的人士加入了我们</p><p>04.15 - BNS打赢了对外抗战(征战全服)</p><p>04.19 - 墨墨决定每周举行一次演习，为提升派系实力</p><p>04.27 - BNS来了一位实力强悍的俄罗斯玩家</p><p>05.01 - 欢庆劳动节，墨墨带领BNS成员当志愿者给萌新送零件/油桶</p><p>06.22 - 墨墨貌似遇到了深厚的友情(暂时退游)</p><p>07.04 - 墨墨第一次交到好朋友(暂时退游)</p><p>07.09 - 墨墨与那个人绝交</p><p>07.10 - 墨墨退游常驻Ro市人生</p><p>07.14 - 第二届盟大会议决定，BNS开始闭关锁国</p><p class="text-gray-500">【2024.07.15至2025.06.26 不详】</p></div>
-                            <p class="text-cyan-400 font-bold mt-3">❀ 2025年 (云墨十五元年):</p>
-                            <div class="pl-3 border-l-2 border-pink-500/40 space-y-1"><p>06.27 - 墨墨被表白</p><p class="text-gray-500">【2025.06.28至07.17 不详】</p><p>07.18凌晨 - 墨墨和对象分手</p><p>07.19 - 墨墨回归Roblox</p><p>07.22 - 墨墨回归战争大亨</p><p>07.29 - 沫梦加入BNS</p><p>08.21 - 墨墨创建了BNS交流群(具有深远意义)</p><p>08.22 - 墨墨创建了BNS频道</p><p>08.23 - BNS决定带成员无条件保护萌新并扶持他们发育——帮助刷任务&amp;送油桶/零件</p><p>08.25 - 沫梦开学</p><p>08.26 - UU加入了BNS</p><p>09.01 - BNS成员陷入开学狂潮</p><p>09.13 - 诺晨加入了BNS</p><p>09.18 - Дормер加入了BNS</p><p>10.02 - szhk加入了BNS</p><p>10.05 - UU被通缉，墨墨率领17位成员将UU打至退游</p><p>10.06 - 墨墨创建了BNS网站</p><p>10.07 - BNS网站烂尾废弃</p><p>10.11 - 濠创建了BNS派系HTML格式网页</p><p>10.12 - 墨墨正式接替濠更新网页</p><p>10.15 - 墨墨创建蓝狐俱乐部™️，专门负责拍摄</p><p>10.17 - BNS被联合部队嘲讽</p><p>10.28 - BNS通缉“[联合部队]联合军校”派系</p><p>11.13 - BNS大部分成员转MC</p><p>11.21 - 墨墨转MC</p><p>12.03 - BNS派系群网页下架</p><p>12.14 - BNS派系网页替代BNS派系群网页</p><p>12.21 - 墨墨决定肝重生，BNS大部分成员陷入肝重生狂潮</p><p>12.29 - BNS团建(影响深刻)</p><p>12.31 - 跨年夜BNS组织了赛车比赛庆祝</p></div>
-                            <p class="text-cyan-400 font-bold mt-3">❀ 2026年 (云墨十六元年):</p>
-                            <div class="pl-3 border-l-2 border-emerald-500/40 space-y-1"><p>01.03 - 小米加入了BNS</p><p>01.05 - 濠暂退战争大亨</p><p>01.08 - BNS第二次大型军事演习</p><p>01.09 - 墨墨无聊算了一下重生要多少钱(精确到个位数)</p><p>01.13 - BNS确定了单兵榜</p><p>01.18 - 墨墨被SMDG二军营长看上，将派系暂时转给了濠，加入了SMDG二军</p><p>01.19 - BNS派系群正式改为Momo粉丝群三群，BNS群(几乎荒废)</p><p>01.20 - 墨墨结束了1000多天的统治</p><p class="text-gray-400">【2026.01.20至2026.02.10 衰落】</p><p>02.11 - BNS被SMDG二军TVO墨墨收入，墨墨创建了BNS新群，墨墨恢复统治</p><p class="text-gray-400">【2026.02.12至2026.04.07 渐渐强大】</p><p>04.08 - BNS改为TVO第三自治营</p><p>04.15 - BNS改为TVO第二自治营</p><p>04.18 - 墨墨改BNS为墨墨の窝</p><p>04.19 - 貅猫加入了BNS；同日BNS取消自治，改为TVO第二综合营</p><p>04.20 - 72X加入了BNS</p><p>04.22 - ty加入了BNS</p><p>04.25 - 肝帝和麻蛋加入了BNS</p><p>04.26 - emm,商家和WuYaoCai加入了BNS</p><p>04.27 - 蓝狐工作室™️正式改为Harma工作室™️</p><p>05.01 - KZZ和乔然加入了BNS</p><p>05.02 - sea加入了BNS</p><p>05.03 - 墨墨组织TVO拍摄宣传片但拍摄不佳(几乎不能用)</p><p>05.04 - 跳进染加入了BNS</p><p>05.05 - BNS团建吃火锅；墨墨淡游转营长给貅猫，副营长为肝帝</p><p>05.09 - 外星人侮辱墨墨，被拉入黑名单</p><p>05.10 - 72X叛变退出</p><p>05.16 - 秋月加入了BNS；同日BNS举行了第二届赛车比赛(未成功举行)；墨墨玩真心话大冒险导致红温</p><p class="text-yellow-300 text-xs mt-2">✨ 敬请期待 ✨</p></div>
-                        </div>
-                    </div>
-                </div>
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700 pb-3"><h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2"><i class="fa-solid fa-landmark text-blue-400"></i> 派系 · 大兴王朝历史<span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">2023-至今</span></h2></div>
+                <div class="flex flex-wrap gap-3 text-sm"><span class="era-badge px-3 py-1 rounded-full text-blue-300 text-xs font-mono">🏛️ 【古代史】2023.01.29-2024.7.14</span><span class="era-badge px-3 py-1 rounded-full text-purple-300 text-xs font-mono">📜 【近代史】2025.06.27-2026.1.20</span><span class="era-badge px-3 py-1 rounded-full text-pink-300 text-xs font-mono">⚡ 【现代史】2026.02.11-至今</span><span class="bg-gradient-to-r from-amber-500/20 to-rose-500/20 border border-amber-500/40 px-3 py-1 rounded-full text-amber-300 text-xs font-bold">✿ BNS鼎盛时期 2025.08.21-2026.01.05 ✿</span></div>
+                <div class="history-scroll max-h-[480px] overflow-y-auto pr-2 rounded-lg"><div class="space-y-2 text-sm leading-relaxed text-gray-300 font-medium"><div class="space-y-1.5"><p class="text-cyan-400 font-bold mt-1">❀ 2023年 (云墨十三元年):</p><div class="pl-3 border-l-2 border-blue-500/40 space-y-1"><p>01.29夜晚 - 墨墨创建了[Bomb]Nuclear Strike派系(简称BNS)</p><p>02.05 - 墨墨因敏感词系统被封，于是退游去玩MC</p><p class="text-gray-500">【2023.02.06至2024.03.30 不详】</p></div><p class="text-cyan-400 font-bold mt-3">❀ 2024年 (云墨十四元年):</p><div class="pl-3 border-l-2 border-purple-500/40 space-y-1"><p>03.31 - 墨墨因无聊下回了Roblox，并注册了一个新号继续游玩战争大亨</p><p>04.03夜晚 - 墨墨重建[Bomb]Nuclear Strike派系(简称BNS)</p><p>04.04上午 - BNS迎来第一位成员“456”，并进行了第一次团建</p><p>04.06 - 一位对BNS影响重大的人士加入了我们</p><p>04.15 - BNS打赢了对外抗战(征战全服)</p><p>04.19 - 墨墨决定每周举行一次演习，为提升派系实力</p><p>04.27 - BNS来了一位实力强悍的俄罗斯玩家</p><p>05.01 - 欢庆劳动节，墨墨带领BNS成员当志愿者给萌新送零件/油桶</p><p>06.22 - 墨墨貌似遇到了深厚的友情(暂时退游)</p><p>07.04 - 墨墨第一次交到好朋友(暂时退游)</p><p>07.09 - 墨墨与那个人绝交</p><p>07.10 - 墨墨退游常驻Ro市人生</p><p>07.14 - 第二届盟大会议决定，BNS开始闭关锁国</p><p class="text-gray-500">【2024.07.15至2025.06.26 不详】</p></div><p class="text-cyan-400 font-bold mt-3">❀ 2025年 (云墨十五元年):</p><div class="pl-3 border-l-2 border-pink-500/40 space-y-1"><p>06.27 - 墨墨被表白</p><p class="text-gray-500">【2025.06.28至07.17 不详】</p><p>07.18凌晨 - 墨墨和对象分手</p><p>07.19 - 墨墨回归Roblox</p><p>07.22 - 墨墨回归战争大亨</p><p>07.29 - 沫梦加入BNS</p><p>08.21 - 墨墨创建了BNS交流群(具有深远意义)</p><p>08.22 - 墨墨创建了BNS频道</p><p>08.23 - BNS决定带成员无条件保护萌新并扶持他们发育——帮助刷任务&amp;送油桶/零件</p><p>08.25 - 沫梦开学</p><p>08.26 - UU加入了BNS</p><p>09.01 - BNS成员陷入开学狂潮</p><p>09.13 - 诺晨加入了BNS</p><p>09.18 - Дормер加入了BNS</p><p>10.02 - szhk加入了BNS</p><p>10.05 - UU被通缉，墨墨率领17位成员将UU打至退游</p><p>10.06 - 墨墨创建了BNS网站</p><p>10.07 - BNS网站烂尾废弃</p><p>10.11 - 濠创建了BNS派系HTML格式网页</p><p>10.12 - 墨墨正式接替濠更新网页</p><p>10.15 - 墨墨创建蓝狐俱乐部™️，专门负责拍摄</p><p>10.17 - BNS被联合部队嘲讽</p><p>10.28 - BNS通缉“[联合部队]联合军校”派系</p><p>11.13 - BNS大部分成员转MC</p><p>11.21 - 墨墨转MC</p><p>12.03 - BNS派系群网页下架</p><p>12.14 - BNS派系网页替代BNS派系群网页</p><p>12.21 - 墨墨决定肝重生，BNS大部分成员陷入肝重生狂潮</p><p>12.29 - BNS团建(影响深刻)</p><p>12.31 - 跨年夜BNS组织了赛车比赛庆祝</p></div><p class="text-cyan-400 font-bold mt-3">❀ 2026年 (云墨十六元年):</p><div class="pl-3 border-l-2 border-emerald-500/40 space-y-1"><p>01.03 - 小米加入了BNS</p><p>01.05 - 濠暂退战争大亨</p><p>01.08 - BNS第二次大型军事演习</p><p>01.09 - 墨墨无聊算了一下重生要多少钱(精确到个位数)</p><p>01.13 - BNS确定了单兵榜</p><p>01.18 - 墨墨被SMDG二军营长看上，将派系暂时转给了濠，加入了SMDG二军</p><p>01.19 - BNS派系群正式改为Momo粉丝群三群，BNS群(几乎荒废)</p><p>01.20 - 墨墨结束了1000多天的统治</p><p class="text-gray-400">【2026.01.20至2026.02.10 衰落】</p><p>02.11 - BNS被SMDG二军TVO墨墨收入，墨墨创建了BNS新群，墨墨恢复统治</p><p class="text-gray-400">【2026.02.12至2026.04.07 渐渐强大】</p><p>04.08 - BNS改为TVO第三自治营</p><p>04.15 - BNS改为TVO第二自治营</p><p>04.18 - 墨墨改BNS为墨墨の窝</p><p>04.19 - 貅猫加入了BNS；同日BNS取消自治，改为TVO第二综合营</p><p>04.20 - 72X加入了BNS</p><p>04.22 - ty加入了BNS</p><p>04.25 - 肝帝和麻蛋加入了BNS</p><p>04.26 - emm,商家和WuYaoCai加入了BNS</p><p>04.27 - 蓝狐工作室™️正式改为Harma工作室™️</p><p>05.01 - KZZ和乔然加入了BNS</p><p>05.02 - sea加入了BNS</p><p>05.03 - 墨墨组织TVO拍摄宣传片但拍摄不佳(几乎不能用)</p><p>05.04 - 跳进染加入了BNS</p><p>05.05 - BNS团建吃火锅；墨墨淡游转营长给貅猫，副营长为肝帝</p><p>05.09 - 外星人侮辱墨墨，被拉入黑名单</p><p>05.10 - 72X叛变退出</p><p>05.16 - 秋月加入了BNS；同日BNS举行了第二届赛车比赛(未成功举行)；墨墨玩真心话大冒险导致红温</p><p class="text-yellow-300 text-xs mt-2">✨ 敬请期待 ✨</p></div></div></div></div>
                 <div class="text-right text-[11px] text-gray-500 border-t border-gray-700 pt-3 mt-1"><i class="fa-regular fa-clock"></i> 派系纪实 · 源于BNS / 大兴王朝编年史</div>
             </section>
 
-            <!-- 关于我们 -->
             <hr id="about-hr" class="border-gray-800 my-6" />
             <section id="aboutus-section" class="bg-gradient-to-br from-darkCard/90 to-darkCard border border-indigo-500/20 rounded-2xl p-5 md:p-6 shadow-2xl">
                 <div class="flex items-center gap-2 border-b border-indigo-500/30 pb-3 mb-4"><i class="fa-regular fa-star-of-life text-indigo-400 text-xl"></i><h2 class="text-xl md:text-2xl font-black text-white tracking-tight">关于我们 · 重生之翼</h2></div>
@@ -224,30 +190,33 @@
                     <p class="text-xs text-gray-500 text-right italic">「千年王朝之梦，战火淬炼新生」</p>
                 </div>
             </section>
-
             <hr id="section-divider" class="border-gray-800 my-6" />
             <div id="tasks-container" class="space-y-12"></div>
         </main>
     </div>
 
-    <!-- ========== 彩蛋页面：一个人在电脑桌前编写代码 ========== -->
+    <!-- ========== 彩蛋页面（已删除头像上传，新增 CloverMo） ========== -->
     <div id="easteregg-page" class="fixed inset-0 z-50 bg-darkBg easter-egg-bg hidden overflow-y-auto">
         <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
-            <!-- 返回按钮 -->
             <button onclick="hideEasterEggPage()" class="absolute top-6 left-6 bg-gray-800/80 hover:bg-gray-700 text-white px-4 py-2 rounded-xl backdrop-blur-sm border border-gray-600 transition flex items-center gap-2">
                 <i class="fa-solid fa-arrow-left"></i> 返回主世界
             </button>
             
-            <!-- 程序员工作台场景 -->
-            <div class="max-w-4xl w-full bg-darkCard/90 border border-indigo-500/30 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-md">
+            <div class="max-w-5xl w-full bg-darkCard/90 border border-indigo-500/30 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-md">
                 <div class="bg-gradient-to-r from-slate-800 to-gray-900 p-4 border-b border-indigo-500/30 flex items-center gap-3">
                     <i class="fa-solid fa-laptop-code text-cyan-400 text-2xl"></i>
                     <span class="font-mono text-cyan-300 font-bold">~/developer_den</span>
-                    <span class="text-xs text-gray-400 ml-auto"><i class="fa-regular fa-eye"></i> 彩蛋模式</span>
+                    <span class="text-xs text-gray-400 ml-auto"><i class="fa-regular fa-eye"></i> 彩蛋模式 · 致敬创作者</span>
                 </div>
                 <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start">
-                    <!-- 左侧: 人物 + 电脑插图 -->
-                    <div class="flex-shrink-0 flex flex-col items-center space-y-4">
+                    <!-- 左侧：人物卡片区（GeoffreyLei + CloverMo） -->
+                    <div class="flex-shrink-0 flex flex-col items-center space-y-6">
+                        <!-- 顶部宽图（保留原风格） -->
+                        <div class="rounded-2xl overflow-hidden border-2 border-amber-500/40 shadow-xl bg-black/30 p-1">
+                            <img src="https://placehold.co/400x200/1e293b/3b82f6?text=⚔+War+Tycoon+⚔" alt="派系纪念图" class="w-48 h-auto object-cover rounded-xl">
+                        </div>
+
+                        <!-- GeoffreyLei 卡片 -->
                         <div class="relative">
                             <div class="w-48 h-48 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center border-2 border-indigo-400/40">
                                 <i class="fa-solid fa-user-astronaut text-7xl text-indigo-300"></i>
@@ -261,47 +230,105 @@
                             <p class="text-gray-300 font-bold">GeoffreyLei</p>
                             <p class="text-xs text-gray-400">「键盘为剑，代码为盾」</p>
                         </div>
+
+                        <!-- 分隔装饰 -->
+                        <div class="w-16 h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
+
+                        <!-- CloverMo 卡片（新成员） -->
+                        <div class="relative">
+                            <div class="w-48 h-48 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center border-2 border-pink-400/40">
+                                <i class="fa-solid fa-crown text-6xl text-pink-400"></i>
+                            </div>
+                            <div class="absolute -bottom-2 -right-2 bg-amber-500/30 rounded-full p-2 backdrop-blur-sm">
+                                <i class="fa-solid fa-hand-sparkles text-amber-400"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-mono text-pink-300 text-sm">👑 首席执行官 👑</p>
+                            <p class="text-gray-300 font-bold">CloverMo</p>
+                            <p class="text-xs text-gray-400">Harma工作室™️ CEO</p>
+                        </div>
                     </div>
                     
-                    <!-- 右侧: 电脑桌前 + 代码编辑器模拟 -->
-                    <div class="flex-1 bg-black/40 rounded-xl p-5 border border-gray-700 shadow-inner">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            <span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span>
+                    <!-- 右侧：动态编码区 + 动态图（保持不变） -->
+                    <div class="flex-1 space-y-5">
+                        <div class="bg-black/40 rounded-xl p-5 border border-gray-700 shadow-inner">
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                <span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span>
+                            </div>
+                            <div class="font-mono text-sm space-y-1">
+                                <p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p>
+                                <p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p>
+                                <p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p>
+                                <p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p>
+                                <p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p>
+                                <p class="text-cyan-400">};</p>
+                                <p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p>
+                                <p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"✨ 秘密基地已解锁 ✨"</span>);</p>
+                                <p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p>
+                                <p class="text-purple-400">}</p>
+                                <div class="code-typing inline-block text-blue-400 text-xs mt-3">_ 正在部署新功能...</div>
+                            </div>
+                            <div class="mt-4 flex justify-end text-[10px] text-gray-500">
+                                <i class="fa-regular fa-keyboard mr-1"></i> 机械键盘 · 深夜编码
+                            </div>
                         </div>
-                        <div class="font-mono text-sm space-y-1">
-                            <p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p>
-                            <p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p>
-                            <p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p>
-                            <p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p>
-                            <p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p>
-                            <p class="text-cyan-400">};</p>
-                            <p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p>
-                            <p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"✨ 秘密基地已解锁 ✨"</span>);</p>
-                            <p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p>
-                            <p class="text-purple-400">}</p>
-                            <div class="code-typing inline-block text-blue-400 text-xs mt-3">_ 正在部署新功能...</div>
-                        </div>
-                        <!-- 模拟键盘敲击光效 -->
-                        <div class="mt-4 flex justify-end text-[10px] text-gray-500">
-                            <i class="fa-regular fa-keyboard mr-1"></i> 机械键盘 · 深夜编码
+
+                        <!-- 动态图：一个人在电脑桌前编写代码 -->
+                        <div class="bg-gradient-to-r from-indigo-950/40 to-purple-950/40 rounded-xl p-4 border border-indigo-400/30 backdrop-blur-sm">
+                            <div class="flex items-center gap-3 border-b border-indigo-400/20 pb-2 mb-3">
+                                <i class="fa-solid fa-video text-pink-400"></i>
+                                <span class="text-xs font-bold text-indigo-300 tracking-wider">LIVE · 动态编码室</span>
+                                <span class="typing-dot"></span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-center gap-4">
+                                <div class="relative bg-black/50 rounded-xl p-3 flex items-center justify-center w-full sm:w-auto">
+                                    <div class="text-center">
+                                        <div class="text-5xl mb-1 animate-bounce">
+                                            <i class="fa-solid fa-laptop-code coder-wave"></i>
+                                        </div>
+                                        <div class="flex justify-center gap-1 mt-1">
+                                            <span class="keyboard-glow text-yellow-300 text-lg">⌨️</span>
+                                            <span class="keyboard-glow text-cyan-300 text-lg">🖱️</span>
+                                        </div>
+                                        <div class="flex items-center gap-1 mt-2 text-[10px] text-gray-400">
+                                            <i class="fa-regular fa-circle-check text-green-400"></i>
+                                            <span>coding in progress</span>
+                                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 space-y-1 font-mono text-[11px] bg-black/40 p-2 rounded-lg">
+                                    <p class="text-green-400"><span class="text-gray-500">$></span> 编译战争模块...</p>
+                                    <p class="text-cyan-300 animate-pulse">[INFO] 正在加载派系引擎</p>
+                                    <p class="text-yellow-300"><span class="text-gray-500">>></span> 敲击键盘: <span class="inline-block keyboard-glow">████████░░ 78%</span></p>
+                                    <div class="flex gap-1 mt-1">
+                                        <div class="h-1 w-6 bg-blue-500 rounded-sm animate-pulse"></div>
+                                        <div class="h-1 w-8 bg-purple-500 rounded-sm animate-pulse delay-75"></div>
+                                        <div class="h-1 w-4 bg-pink-500 rounded-sm animate-pulse delay-150"></div>
+                                    </div>
+                                    <p class="text-gray-400 mt-1">👨‍💻 创作者正在编写下一页传奇...</p>
+                                </div>
+                            </div>
+                            <div class="text-center text-[10px] text-gray-400 mt-3 border-t border-indigo-500/20 pt-2">
+                                <i class="fa-regular fa-clock"></i> 实时动态 · 键盘与灵感共振
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- 底部彩蛋信息 - 已去除“战争大亨同人站” -->
                 <div class="bg-black/40 p-3 text-center text-xs text-gray-500 border-t border-gray-700">
                     <i class="fa-solid fa-dragon"></i> 彩蛋·致敬每一位创作者 | Harma工作室
                 </div>
             </div>
-            <!-- 装饰元素: 飘浮代码 -->
             <div class="absolute bottom-10 right-10 opacity-20 text-4xl"><i class="fa-solid fa-terminal"></i></div>
             <div class="absolute top-20 left-10 opacity-10 text-6xl"><i class="fa-solid fa-code"></i></div>
         </div>
     </div>
 
-    <!-- 任务详情弹窗、追踪模态框 (保持不变) -->
+    <!-- 弹窗模板（保持不变） -->
     <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div id="modal-header-accent" class="h-2 w-full bg-blue-500"></div><div class="p-6 space-y-4"><div class="flex justify-between items-start"><div><span id="modal-category" class="text-xs font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-400">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400 hover:text-white transition text-xl">×</button></div><div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100 font-semibold leading-relaxed">要求详情</p></div><div class="flex space-x-2 pt-2"><button id="modal-track-btn" onclick="toggleTrackCurrent()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-sm transition">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-xl text-sm transition">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 font-medium opacity-0 transition-opacity duration-200"></p></div></div></div>
     <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div class="p-6 space-y-4"><div class="flex justify-between items-center"><h3 class="text-lg font-bold text-white">我的资料追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div><div class="border-t border-gray-800 pt-4 flex justify-between items-center"><span class="text-xs text-gray-500">提示：资料已储存于浏览器缓存中。</span><button onclick="clearAllTracked()" class="text-xs text-red-400 hover:text-red-300">全部清除</button></div></div></div></div>
 
@@ -325,7 +352,6 @@
         function clearAllTracked() { trackedTasks = []; localStorage.setItem('wtt_tracked', JSON.stringify([])); updateTrackerBadge(); renderTrackerList(); const input = document.getElementById('search-input'); renderTaskSections(input.value); }
         function updateTrackerBadge() { const badge = document.getElementById('tracker-badge'); if (trackedTasks.length > 0) { badge.innerText = trackedTasks.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } }
         function scrollToSection(id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
-        // 彩蛋页面控制
         function showEasterEggPage() { document.getElementById('main-app').style.display = 'none'; document.getElementById('easteregg-page').classList.remove('hidden'); }
         function hideEasterEggPage() { document.getElementById('main-app').style.display = 'block'; document.getElementById('easteregg-page').classList.add('hidden'); }
     </script>
