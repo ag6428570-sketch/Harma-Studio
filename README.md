@@ -22,7 +22,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ========== 全局通用样式 ========== */
+        /* ========== 全局样式 ========== */
         .gradient-text {
             background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
             -webkit-background-clip: text;
@@ -62,7 +62,7 @@
             background: rgba(59,130,246,0.15);
             border: 1px solid rgba(59,130,246,0.3);
         }
-        /* 成就弹窗动画 */
+        /* 成就模态框动画 */
         .achievement-modal-content {
             transition: transform 0.2s ease-out, opacity 0.2s ease;
             transform: scale(0.95);
@@ -105,7 +105,7 @@
             font-size: 10px;
             color: #5b6e8c;
         }
-        /* 成就Toast通知 */
+        /* 成就Toast */
         .achievement-toast {
             position: fixed;
             top: 80px;
@@ -197,41 +197,40 @@
             100% { transform: translateY(0px); }
         }
 
-        /* ========== CloverMo 专用动画：七芒星3D竖转 + 三叶草随风飘动 ========== */
-        /* 橙色底板保持不变 */
-        .clover-orange-bg {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-        }
-        /* 七芒星（皇冠）3D 绕Y轴旋转 */
+        /* ========== CloverMo 专用动画 ========== */
+        /* 七芒星3D旋转 (绕Y轴) */
         .heptagram-3d {
             display: inline-block;
             transform-style: preserve-3d;
-            animation: spinY 4s infinite linear;
-            color: #facc15; /* 黄色 */
-            text-shadow: 0 0 5px rgba(250,204,21,0.5);
+            animation: spinY 6s infinite linear;
         }
         @keyframes spinY {
             0% { transform: rotateY(0deg); }
             100% { transform: rotateY(360deg); }
         }
-        /* 三叶草：左右飘移 + 轻微上下浮动，模拟风吹 */
+        /* 三叶草风吹飘动 */
         .clover-wind {
             display: inline-block;
             animation: swayWind 2.5s ease-in-out infinite;
-            color: #4ade80; /* 绿色 */
-            filter: drop-shadow(0 0 2px #22c55e);
+            filter: drop-shadow(0 0 3px #22c55e);
         }
         @keyframes swayWind {
             0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            25% { transform: translateX(6px) translateY(-2px) rotate(8deg); }
+            25% { transform: translateX(8px) translateY(-3px) rotate(10deg); }
             50% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            75% { transform: translateX(-6px) translateY(2px) rotate(-8deg); }
+            75% { transform: translateX(-8px) translateY(3px) rotate(-10deg); }
             100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
         }
+        /* 橙色底板 */
+        .clover-orange-bg {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
         /* 层级容器 */
-        .clover-container {
+        .clover-avatar-container {
             position: relative;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .heptagram-layer {
             position: absolute;
@@ -248,11 +247,17 @@
             z-index: 2;
             pointer-events: none;
         }
+        /* 七芒星 SVG 容器尺寸 */
+        .heptagram-svg {
+            width: 80px;
+            height: 80px;
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 font-sans min-h-screen pb-24">
 
-    <!-- ========== 主页面内容（完整） ========== -->
+    <!-- ========== 主页面内容 ========== -->
     <div id="main-app">
         <nav class="sticky top-0 z-40 bg-darkBg/90 backdrop-blur-md border-b border-gray-800/80 px-4 py-3">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -287,7 +292,7 @@
         </header>
 
         <main class="max-w-6xl mx-auto px-4 mt-2 space-y-10">
-            <!-- 任务分类快速跳转（触发成就） -->
+            <!-- 任务分类快速跳转 -->
             <section id="category-selector" class="space-y-4">
                 <h2 class="text-base font-bold text-gray-400">选择任务分类</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -340,7 +345,7 @@
         </main>
     </div>
 
-    <!-- ========== 成就模态框 ========== -->
+    <!-- 成就模态框 -->
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-200 achievement-modal-content">
             <div class="p-5">
@@ -348,19 +353,17 @@
                     <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3>
                     <button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button>
                 </div>
-                <div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto pr-1">
-                    <div class="text-center text-xs text-gray-500 py-4">暂无成就，快去探索吧！</div>
-                </div>
+                <div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto pr-1"></div>
                 <div class="mt-3 text-right text-[10px] text-gray-500">成就将自动保存</div>
             </div>
         </div>
     </div>
 
-    <!-- ========== 彩蛋页面（CloverMo 橙色底板 + 三叶草在前飘动 + 七芒星在后3D旋转） ========== -->
+    <!-- ========== 彩蛋页面 ========== -->
     <div id="easteregg-page" class="fixed inset-0 z-50 bg-darkBg easter-egg-bg hidden overflow-y-auto">
         <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
             <div class="max-w-5xl w-full space-y-10">
-                <!-- GeoffreyLei 区域（保持不变） -->
+                <!-- GeoffreyLei 区域 -->
                 <div class="bg-darkCard/80 border border-blue-500/30 rounded-2xl backdrop-blur-md shadow-2xl overflow-hidden">
                     <div class="bg-gradient-to-r from-slate-800 to-gray-900 px-4 py-2 border-b border-indigo-500/30 flex items-center justify-between">
                         <div class="flex items-center gap-3">
@@ -390,24 +393,24 @@
                     </div>
                 </div>
 
-                <!-- CloverMo 区域（橙色底板 + 七芒星3D旋转 + 三叶草在前飘动） -->
+                <!-- CloverMo 区域（橙色底板 + 金色七芒星 3D 旋转 + 绿色三叶草风吹飘动） -->
                 <div class="bg-darkCard/80 border border-pink-500/30 rounded-2xl backdrop-blur-md p-6 flex flex-col items-center shadow-2xl">
                     <div class="relative mb-4">
                         <!-- 橙色圆形底板 -->
-                        <div class="w-48 h-48 rounded-full clover-orange-bg flex items-center justify-center shadow-xl relative" style="box-shadow: 0 0 20px rgba(251,146,60,0.6);">
-                            <!-- 七芒星（皇冠）3D 竖转，位于底层 -->
-                            <div class="heptagram-layer">
-                                <i class="fa-solid fa-crown text-6xl heptagram-3d"></i>
+                        <div class="w-48 h-48 rounded-full clover-orange-bg flex items-center justify-center shadow-xl clover-avatar-container" style="box-shadow: 0 0 20px rgba(251,146,60,0.6);">
+                            <!-- 七芒星 SVG (金色) 3D 旋转 -->
+                            <div class="heptagram-layer heptagram-3d">
+                                <svg class="heptagram-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <polygon points="50,5 61,35 93,35 68,53 79,83 50,65 21,83 32,53 7,35 39,35" fill="#facc15" stroke="#eab308" stroke-width="2" />
+                                    <circle cx="50" cy="45" r="4" fill="#fef08a" />
+                                </svg>
                             </div>
-                            <!-- 三叶草（绿色），位于上层，随风飘动 -->
+                            <!-- 三叶草（绿色，位于前面，风吹动画） -->
                             <div class="clover-layer">
-                                <i class="fa-solid fa-leaf text-4xl clover-wind" style="color: #4ade80;"></i>
+                                <i class="fa-solid fa-leaf text-4xl clover-wind" style="color: #4ade80; filter: drop-shadow(0 0 4px #22c55e);"></i>
                             </div>
                         </div>
                     </div>
                     <div class="text-center space-y-2">
                         <p class="font-mono text-pink-300 text-sm">👑 首席执行官 👑</p>
-                        <p class="text-2xl font-bold text-white">CloverMo</p>
-                        <p class="text-amber-300 text-sm">Harma工作室™️ CEO</p>
-                        <div class="mt-3 px-4 py-2 bg-amber-500/10 rounded-full inline-block border border-amber-500/30">
-           
+                        <p c
