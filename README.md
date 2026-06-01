@@ -28,9 +28,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
         .social-link-card {
             background-color: #131926;
             border: 1px solid #1f2937;
@@ -82,29 +80,12 @@
             gap: 12px;
             transition: all 0.2s;
         }
-        .achievement-item:hover {
-            background: #1a2234;
-        }
-        .achievement-item i {
-            font-size: 20px;
-            width: 32px;
-            text-align: center;
-        }
-        .achievement-info {
-            flex: 1;
-        }
-        .achievement-name {
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .achievement-desc {
-            font-size: 11px;
-            color: #94a3b8;
-        }
-        .achievement-date {
-            font-size: 10px;
-            color: #5b6e8c;
-        }
+        .achievement-item:hover { background: #1a2234; }
+        .achievement-item i { font-size: 20px; width: 32px; text-align: center; }
+        .achievement-info { flex: 1; }
+        .achievement-name { font-weight: bold; font-size: 14px; }
+        .achievement-desc { font-size: 11px; color: #94a3b8; }
+        .achievement-date { font-size: 10px; color: #5b6e8c; }
         /* 成就Toast */
         .achievement-toast {
             position: fixed;
@@ -125,20 +106,10 @@
             background-color: rgba(30,41,59,0.95);
             border: 1px solid #fbbf24;
         }
-        .achievement-toast.show {
-            transform: translateX(0);
-        }
-        .achievement-toast i {
-            font-size: 28px;
-            color: #fbbf24;
-        }
-        .achievement-toast .text {
-            font-size: 14px;
-        }
-        .achievement-toast .title {
-            font-weight: bold;
-            color: #fbbf24;
-        }
+        .achievement-toast.show { transform: translateX(0); }
+        .achievement-toast i { font-size: 28px; color: #fbbf24; }
+        .achievement-toast .text { font-size: 14px; }
+        .achievement-toast .title { font-weight: bold; color: #fbbf24; }
         /* 彩蛋页面通用动画 */
         .code-typing {
             border-right: 2px solid #3b82f6;
@@ -146,20 +117,10 @@
             overflow: hidden;
             animation: blink-caret 0.75s step-end infinite;
         }
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #3b82f6; }
-        }
-        .easter-egg-bg {
-            background: radial-gradient(circle at 20% 30%, rgba(59,130,246,0.15) 0%, #090d16 90%);
-        }
-        .keyboard-glow {
-            animation: keyFlash 0.8s infinite ease-in-out;
-        }
-        @keyframes keyFlash {
-            0%, 100% { text-shadow: 0 0 2px #3b82f6; opacity: 0.7; }
-            50% { text-shadow: 0 0 12px #a855f7, 0 0 5px #3b82f6; opacity: 1; }
-        }
+        @keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: #3b82f6; } }
+        .easter-egg-bg { background: radial-gradient(circle at 20% 30%, rgba(59,130,246,0.15) 0%, #090d16 90%); }
+        .keyboard-glow { animation: keyFlash 0.8s infinite ease-in-out; }
+        @keyframes keyFlash { 0%,100% { text-shadow: 0 0 2px #3b82f6; opacity: 0.7; } 50% { text-shadow: 0 0 12px #a855f7,0 0 5px #3b82f6; opacity: 1; } }
         .typing-dot {
             display: inline-block;
             width: 8px;
@@ -168,47 +129,22 @@
             border-radius: 50%;
             animation: pulse 1.2s infinite;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
+        @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
         /* Geoffrey 头像动画 */
-        .geoffrey-avatar {
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 0 8px rgba(59,130,246,0.5));
-        }
-        .geoffrey-avatar:hover {
-            transform: scale(1.02) translateY(-4px);
-            filter: drop-shadow(0 0 18px rgba(59,130,246,0.8));
-        }
-        .avatar-glow {
-            animation: gentleGlow 3s infinite alternate;
-        }
-        @keyframes gentleGlow {
-            0% { box-shadow: 0 0 5px rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.5);}
-            100% { box-shadow: 0 0 20px rgba(59,130,246,0.8); border-color: #3b82f6;}
-        }
-        .float-slow {
-            animation: float 4s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
-        }
+        .geoffrey-avatar { transition: all 0.3s ease; filter: drop-shadow(0 0 8px rgba(59,130,246,0.5)); }
+        .geoffrey-avatar:hover { transform: scale(1.02) translateY(-4px); filter: drop-shadow(0 0 18px rgba(59,130,246,0.8)); }
+        .avatar-glow { animation: gentleGlow 3s infinite alternate; }
+        @keyframes gentleGlow { 0% { box-shadow: 0 0 5px rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.5);} 100% { box-shadow: 0 0 20px rgba(59,130,246,0.8); border-color: #3b82f6;} }
+        .float-slow { animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
 
         /* ========== CloverMo 专用动画 ========== */
-        /* 七芒星3D旋转 (绕Y轴) */
         .heptagram-3d {
             display: inline-block;
             transform-style: preserve-3d;
             animation: spinY 6s infinite linear;
         }
-        @keyframes spinY {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-        /* 三叶草风吹飘动 */
+        @keyframes spinY { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
         .clover-wind {
             display: inline-block;
             animation: swayWind 2.5s ease-in-out infinite;
@@ -221,38 +157,11 @@
             75% { transform: translateX(-8px) translateY(3px) rotate(-10deg); }
             100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
         }
-        /* 橙色底板 */
-        .clover-orange-bg {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-        }
-        /* 层级容器 */
-        .clover-avatar-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .heptagram-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-        }
-        .clover-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            pointer-events: none;
-        }
-        /* 七芒星 SVG 容器尺寸 */
-        .heptagram-svg {
-            width: 80px;
-            height: 80px;
-            display: block;
-        }
+        .clover-orange-bg { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .clover-avatar-container { position: relative; display: flex; align-items: center; justify-content: center; }
+        .heptagram-layer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; }
+        .clover-layer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; pointer-events: none; }
+        .heptagram-svg { width: 80px; height: 80px; display: block; }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 font-sans min-h-screen pb-24">
@@ -349,10 +258,7 @@
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-200 achievement-modal-content">
             <div class="p-5">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3>
-                    <button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button>
-                </div>
+                <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3><button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button></div>
                 <div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto pr-1"></div>
                 <div class="mt-3 text-right text-[10px] text-gray-500">成就将自动保存</div>
             </div>
@@ -366,51 +272,33 @@
                 <!-- GeoffreyLei 区域 -->
                 <div class="bg-darkCard/80 border border-blue-500/30 rounded-2xl backdrop-blur-md shadow-2xl overflow-hidden">
                     <div class="bg-gradient-to-r from-slate-800 to-gray-900 px-4 py-2 border-b border-indigo-500/30 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <button onclick="hideEasterEggPage()" class="flex items-center gap-1 text-gray-300 hover:text-white transition text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-md px-2 py-1"><i class="fa-solid fa-arrow-left text-[10px]"></i><span>返回主页</span></button>
-                            <div class="flex items-center gap-2"><i class="fa-solid fa-terminal text-cyan-400 text-sm"></i><span class="font-mono text-cyan-300 text-xs font-bold">~/developer_den</span></div>
-                        </div>
+                        <div class="flex items-center gap-3"><button onclick="hideEasterEggPage()" class="flex items-center gap-1 text-gray-300 hover:text-white transition text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-md px-2 py-1"><i class="fa-solid fa-arrow-left text-[10px]"></i><span>返回主页</span></button><div class="flex items-center gap-2"><i class="fa-solid fa-terminal text-cyan-400 text-sm"></i><span class="font-mono text-cyan-300 text-xs font-bold">~/developer_den</span></div></div>
                         <div class="text-[10px] text-gray-400"><span>© 彩蛋模式·致敬创作者</span></div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex flex-col md:flex-row gap-6">
-                            <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3">
-                                <div class="relative geoffrey-avatar float-slow"><div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow"><i class="fa-solid fa-user-ninja text-6xl text-white"></i></div><div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div></div>
-                                <div><p class="font-mono text-cyan-300 text-sm">✨ 首席架构师 ✨</p><p class="text-2xl font-bold text-white">GeoffreyLei</p><p class="text-blue-300 text-sm">「键盘为剑，代码为盾」</p></div>
-                            </div>
-                            <div class="md:w-2/3 space-y-4">
-                                <div class="bg-black/40 rounded-xl p-4 border border-gray-700">
-                                    <div class="flex items-center gap-2 mb-3"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span></div>
-                                    <div class="font-mono text-sm space-y-1"><p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p><p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p><p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p><p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p><p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p><p class="text-cyan-400">};</p><p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p><p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"🔒 秘密基地已解锁 🔒"</span>);</p><p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p><p class="text-purple-400">}</p><div class="code-typing inline-block text-blue-400 text-xs mt-2">正在部署新功能...</div></div>
-                                </div>
-                                <div class="bg-gradient-to-r from-indigo-950/40 to-purple-950/40 rounded-xl p-4 border border-indigo-400/30">
-                                    <div class="flex items-center gap-2 border-b border-indigo-400/20 pb-2 mb-3"><i class="fa-solid fa-video text-pink-400"></i><span class="text-xs font-bold text-indigo-300">LIVE · 动态编码室</span><span class="typing-dot"></span></div>
-                                    <div class="space-y-2 text-xs font-mono"><p class="text-green-400"><span class="text-gray-300">$&gt;</span> 编译战争模块...</p><p class="text-cyan-300 animate-pulse">[INFO] 正在加载派系引擎</p><p class="text-yellow-300"><span class="text-gray-500">&gt;&gt;</span> 敲击键盘: <span class="inline-block keyboard-glow">████████░░ 78%</span></p><div class="flex gap-1 mt-1"><div class="h-1 w-6 bg-blue-500 rounded-sm animate-pulse"></div><div class="h-1 w-8 bg-purple-500 rounded-sm animate-pulse delay-75"></div><div class="h-1 w-4 bg-pink-500 rounded-sm animate-pulse delay-150"></div></div><p class="text-gray-400 flex items-center gap-1">🔒 <span>coding in progress</span> <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span></p><p class="text-gray-500 text-[10px] italic">AI生成</p></div>
-                                    <div class="text-center text-[10px] text-gray-400 mt-3 border-t border-indigo-500/20 pt-2">🔍 实时动态 · 键盘与灵感共振</div>
-                                </div>
-                            </div>
+                    <div class="p-6"><div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3"><div class="relative geoffrey-avatar float-slow"><div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow"><i class="fa-solid fa-user-ninja text-6xl text-white"></i></div><div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div></div><div><p class="font-mono text-cyan-300 text-sm">✨ 首席架构师 ✨</p><p class="text-2xl font-bold text-white">GeoffreyLei</p><p class="text-blue-300 text-sm">「键盘为剑，代码为盾」</p></div></div>
+                        <div class="md:w-2/3 space-y-4">
+                            <div class="bg-black/40 rounded-xl p-4 border border-gray-700"><div class="flex items-center gap-2 mb-3"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span></div><div class="font-mono text-sm space-y-1"><p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p><p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p><p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p><p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p><p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p><p class="text-cyan-400">};</p><p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p><p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"🔒 秘密基地已解锁 🔒"</span>);</p><p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p><p class="text-purple-400">}</p><div class="code-typing inline-block text-blue-400 text-xs mt-2">正在部署新功能...</div></div></div>
+                            <div class="bg-gradient-to-r from-indigo-950/40 to-purple-950/40 rounded-xl p-4 border border-indigo-400/30"><div class="flex items-center gap-2 border-b border-indigo-400/20 pb-2 mb-3"><i class="fa-solid fa-video text-pink-400"></i><span class="text-xs font-bold text-indigo-300">LIVE · 动态编码室</span><span class="typing-dot"></span></div><div class="space-y-2 text-xs font-mono"><p class="text-green-400"><span class="text-gray-300">$&gt;</span> 编译战争模块...</p><p class="text-cyan-300 animate-pulse">[INFO] 正在加载派系引擎</p><p class="text-yellow-300"><span class="text-gray-500">&gt;&gt;</span> 敲击键盘: <span class="inline-block keyboard-glow">████████░░ 78%</span></p><div class="flex gap-1 mt-1"><div class="h-1 w-6 bg-blue-500 rounded-sm animate-pulse"></div><div class="h-1 w-8 bg-purple-500 rounded-sm animate-pulse delay-75"></div><div class="h-1 w-4 bg-pink-500 rounded-sm animate-pulse delay-150"></div></div><p class="text-gray-400 flex items-center gap-1">🔒 <span>coding in progress</span> <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span></p><p class="text-gray-500 text-[10px] italic">AI生成</p></div><div class="text-center text-[10px] text-gray-400 mt-3 border-t border-indigo-500/20 pt-2">🔍 实时动态 · 键盘与灵感共振</div></div>
                         </div>
-                    </div>
+                    </div></div>
                 </div>
 
-                <!-- CloverMo 区域（橙色底板 + 金色七芒星 3D 旋转 + 绿色三叶草风吹飘动） -->
+                <!-- CloverMo 区域 -->
                 <div class="bg-darkCard/80 border border-pink-500/30 rounded-2xl backdrop-blur-md p-6 flex flex-col items-center shadow-2xl">
                     <div class="relative mb-4">
-                        <!-- 橙色圆形底板 -->
                         <div class="w-48 h-48 rounded-full clover-orange-bg flex items-center justify-center shadow-xl clover-avatar-container" style="box-shadow: 0 0 20px rgba(251,146,60,0.6);">
-                            <!-- 七芒星 SVG (金色) 3D 旋转 -->
-                            <div class="heptagram-layer heptagram-3d">
-                                <svg class="heptagram-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <polygon points="50,5 61,35 93,35 68,53 79,83 50,65 21,83 32,53 7,35 39,35" fill="#facc15" stroke="#eab308" stroke-width="2" />
-                                    <circle cx="50" cy="45" r="4" fill="#fef08a" />
-                                </svg>
-                            </div>
-                            <!-- 三叶草（绿色，位于前面，风吹动画） -->
-                            <div class="clover-layer">
-                                <i class="fa-solid fa-leaf text-4xl clover-wind" style="color: #4ade80; filter: drop-shadow(0 0 4px #22c55e);"></i>
-                            </div>
+                            <div class="heptagram-layer heptagram-3d"><svg class="heptagram-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="50,5 61,35 93,35 68,53 79,83 50,65 21,83 32,53 7,35 39,35" fill="#facc15" stroke="#eab308" stroke-width="2" /><circle cx="50" cy="45" r="4" fill="#fef08a" /></svg></div>
+                            <div class="clover-layer"><i class="fa-solid fa-leaf text-4xl clover-wind" style="color: #4ade80; filter: drop-shadow(0 0 4px #22c55e);"></i></div>
                         </div>
                     </div>
-                    <div class="text-center space-y-2">
-                        <p class="font-mono text-pink-300 text-sm">👑 首席执行官 👑</p>
-                        <p c
+                    <div class="text-center space-y-2"><p class="font-mono text-pink-300 text-sm">👑 首席执行官 👑</p><p class="text-2xl font-bold text-white">CloverMo</p><p class="text-amber-300 text-sm">Harma工作室™️ CEO</p><div class="mt-3 px-4 py-2 bg-amber-500/10 rounded-full inline-block border border-amber-500/30"><p class="text-amber-300 text-xs italic">「执码领团，破界拓新」</p></div></div>
+                </div>
+                <div class="text-center text-[10px] text-gray-500 pt-2"><i class="fa-solid fa-dragon"></i> 彩蛋·致敬每一位创作者 | Harma工作室</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务详情与追踪模态框 -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div id="modal-header-accent" class="h-2 w-full bg-blue-500"></div><div class="p-6 space-y-4"><div class="flex justify-between items-start"><div><span id="modal-category" class="text-xs font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-400">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100 font-semibold leading-relaxed">要求详情</p></div><div class="flex space-x-2 pt-2"><button id="modal-track-btn" onclick="toggleTrackCurrent()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-sm transition">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-xl text-sm transition">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 font-medium opacity-0 transition-opacity duration-200"></p></div></div></div>
+    <div id="tracker-modal" class="fixed inset-
