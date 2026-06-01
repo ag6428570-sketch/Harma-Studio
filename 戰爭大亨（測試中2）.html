@@ -22,13 +22,16 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ========== 全局样式 ========== */
+        /* 全局通用 */
         .gradient-text {
             background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
+        /* 官方社群卡片样式 */
         .social-link-card {
             background-color: #131926;
             border: 1px solid #1f2937;
@@ -42,6 +45,7 @@
             margin-bottom: 12px;
         }
         .social-link-card:hover { border-color: #3b82f6; background-color: #1a2234; }
+        /* 派系历史滚动条（同时成就列表也使用相同样式） */
         .history-scroll::-webkit-scrollbar,
         .achievement-scroll::-webkit-scrollbar {
             width: 4px;
@@ -70,6 +74,7 @@
             transform: scale(1);
             opacity: 1;
         }
+        /* 成就条目样式 */
         .achievement-item {
             background: #0f1420;
             border-radius: 10px;
@@ -80,13 +85,103 @@
             gap: 12px;
             transition: all 0.2s;
         }
-        .achievement-item:hover { background: #1a2234; }
-        .achievement-item i { font-size: 20px; width: 32px; text-align: center; }
-        .achievement-info { flex: 1; }
-        .achievement-name { font-weight: bold; font-size: 14px; }
-        .achievement-desc { font-size: 11px; color: #94a3b8; }
-        .achievement-date { font-size: 10px; color: #5b6e8c; }
-        /* 成就Toast */
+        .achievement-item:hover {
+            background: #1a2234;
+        }
+        .achievement-item i {
+            font-size: 20px;
+            width: 32px;
+            text-align: center;
+        }
+        .achievement-info {
+            flex: 1;
+        }
+        .achievement-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .achievement-desc {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        .achievement-date {
+            font-size: 10px;
+            color: #5b6e8c;
+        }
+        /* 彩蛋页面原有动画（保持） */
+        .code-typing {
+            border-right: 2px solid #3b82f6;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #3b82f6; }
+        }
+        .easter-egg-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(59,130,246,0.15) 0%, #090d16 90%);
+        }
+        .keyboard-glow {
+            animation: keyFlash 0.8s infinite ease-in-out;
+        }
+        @keyframes keyFlash {
+            0%, 100% { text-shadow: 0 0 2px #3b82f6; opacity: 0.7; }
+            50% { text-shadow: 0 0 12px #a855f7, 0 0 5px #3b82f6; opacity: 1; }
+        }
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .clover-sway {
+            animation: sway 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes sway {
+            0% { transform: translateX(0px) rotate(0deg); }
+            50% { transform: translateX(6px) rotate(5deg); }
+            100% { transform: translateX(0px) rotate(0deg); }
+        }
+        .heptagram-rotate {
+            animation: spin-slow 8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .geoffrey-avatar {
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 8px rgba(59,130,246,0.5));
+        }
+        .geoffrey-avatar:hover {
+            transform: scale(1.02) translateY(-4px);
+            filter: drop-shadow(0 0 18px rgba(59,130,246,0.8));
+        }
+        .avatar-glow {
+            animation: gentleGlow 3s infinite alternate;
+        }
+        @keyframes gentleGlow {
+            0% { box-shadow: 0 0 5px rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.5);}
+            100% { box-shadow: 0 0 20px rgba(59,130,246,0.8); border-color: #3b82f6;}
+        }
+        .float-slow {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+        /* 成就弹出Toast */
         .achievement-toast {
             position: fixed;
             top: 80px;
@@ -106,62 +201,20 @@
             background-color: rgba(30,41,59,0.95);
             border: 1px solid #fbbf24;
         }
-        .achievement-toast.show { transform: translateX(0); }
-        .achievement-toast i { font-size: 28px; color: #fbbf24; }
-        .achievement-toast .text { font-size: 14px; }
-        .achievement-toast .title { font-weight: bold; color: #fbbf24; }
-        /* 彩蛋页面通用动画 */
-        .code-typing {
-            border-right: 2px solid #3b82f6;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: blink-caret 0.75s step-end infinite;
+        .achievement-toast.show {
+            transform: translateX(0);
         }
-        @keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: #3b82f6; } }
-        .easter-egg-bg { background: radial-gradient(circle at 20% 30%, rgba(59,130,246,0.15) 0%, #090d16 90%); }
-        .keyboard-glow { animation: keyFlash 0.8s infinite ease-in-out; }
-        @keyframes keyFlash { 0%,100% { text-shadow: 0 0 2px #3b82f6; opacity: 0.7; } 50% { text-shadow: 0 0 12px #a855f7,0 0 5px #3b82f6; opacity: 1; } }
-        .typing-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #3b82f6;
-            border-radius: 50%;
-            animation: pulse 1.2s infinite;
+        .achievement-toast i {
+            font-size: 28px;
+            color: #fbbf24;
         }
-        @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
-        /* Geoffrey 头像动画 */
-        .geoffrey-avatar { transition: all 0.3s ease; filter: drop-shadow(0 0 8px rgba(59,130,246,0.5)); }
-        .geoffrey-avatar:hover { transform: scale(1.02) translateY(-4px); filter: drop-shadow(0 0 18px rgba(59,130,246,0.8)); }
-        .avatar-glow { animation: gentleGlow 3s infinite alternate; }
-        @keyframes gentleGlow { 0% { box-shadow: 0 0 5px rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.5);} 100% { box-shadow: 0 0 20px rgba(59,130,246,0.8); border-color: #3b82f6;} }
-        .float-slow { animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
-
-        /* ========== CloverMo 专用动画 ========== */
-        .heptagram-3d {
-            display: inline-block;
-            transform-style: preserve-3d;
-            animation: spinY 6s infinite linear;
+        .achievement-toast .text {
+            font-size: 14px;
         }
-        @keyframes spinY { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
-        .clover-wind {
-            display: inline-block;
-            animation: swayWind 2.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 3px #22c55e);
+        .achievement-toast .title {
+            font-weight: bold;
+            color: #fbbf24;
         }
-        @keyframes swayWind {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            25% { transform: translateX(8px) translateY(-3px) rotate(10deg); }
-            50% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            75% { transform: translateX(-8px) translateY(3px) rotate(-10deg); }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-        .clover-orange-bg { background: linear-gradient(135deg, #f97316, #ea580c); }
-        .clover-avatar-container { position: relative; display: flex; align-items: center; justify-content: center; }
-        .heptagram-layer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; }
-        .clover-layer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; pointer-events: none; }
-        .heptagram-svg { width: 80px; height: 80px; display: block; }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 font-sans min-h-screen pb-24">
@@ -188,7 +241,9 @@
 
         <header class="relative pt-10 pb-6 px-4 text-center">
             <div class="max-w-3xl mx-auto space-y-3">
-                <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">⚔ <span class="gradient-text">Roblox 战争大亨</span></h1>
+                <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+                    ⚔ <span class="gradient-text">Roblox 战争大亨</span>
+                </h1>
                 <p class="text-xs md:text-sm text-gray-400 max-w-lg mx-auto">现代化任务网站 | 坦克 | 飞机 | 直升机 | 船舰</p>
             </div>
             <div class="max-w-md mx-auto mt-6 px-2">
@@ -254,44 +309,57 @@
         </main>
     </div>
 
-    <!-- 成就模态框 -->
+    <!-- ========== 成就模态框（带流畅动画，滚动条与派系一致） ========== -->
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-200 achievement-modal-content">
             <div class="p-5">
-                <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3><button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button></div>
-                <div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto pr-1"></div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3>
+                    <button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button>
+                </div>
+                <!-- 成就列表容器，使用 achievement-scroll 类获得与派系相同的滚动条 -->
+                <div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto pr-1">
+                    <div class="text-center text-xs text-gray-500 py-4">暂无成就，快去探索吧！</div>
+                </div>
                 <div class="mt-3 text-right text-[10px] text-gray-500">成就将自动保存</div>
             </div>
         </div>
     </div>
 
-    <!-- ========== 彩蛋页面 ========== -->
+    <!-- 彩蛋页面（保持原样） -->
     <div id="easteregg-page" class="fixed inset-0 z-50 bg-darkBg easter-egg-bg hidden overflow-y-auto">
         <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
             <div class="max-w-5xl w-full space-y-10">
-                <!-- GeoffreyLei 区域 -->
                 <div class="bg-darkCard/80 border border-blue-500/30 rounded-2xl backdrop-blur-md shadow-2xl overflow-hidden">
                     <div class="bg-gradient-to-r from-slate-800 to-gray-900 px-4 py-2 border-b border-indigo-500/30 flex items-center justify-between">
-                        <div class="flex items-center gap-3"><button onclick="hideEasterEggPage()" class="flex items-center gap-1 text-gray-300 hover:text-white transition text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-md px-2 py-1"><i class="fa-solid fa-arrow-left text-[10px]"></i><span>返回主页</span></button><div class="flex items-center gap-2"><i class="fa-solid fa-terminal text-cyan-400 text-sm"></i><span class="font-mono text-cyan-300 text-xs font-bold">~/developer_den</span></div></div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="hideEasterEggPage()" class="flex items-center gap-1 text-gray-300 hover:text-white transition text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-md px-2 py-1"><i class="fa-solid fa-arrow-left text-[10px]"></i><span>返回主页</span></button>
+                            <div class="flex items-center gap-2"><i class="fa-solid fa-terminal text-cyan-400 text-sm"></i><span class="font-mono text-cyan-300 text-xs font-bold">~/developer_den</span></div>
+                        </div>
                         <div class="text-[10px] text-gray-400"><span>© 彩蛋模式·致敬创作者</span></div>
                     </div>
-                    <div class="p-6"><div class="flex flex-col md:flex-row gap-6">
-                        <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3"><div class="relative geoffrey-avatar float-slow"><div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow"><i class="fa-solid fa-user-ninja text-6xl text-white"></i></div><div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div></div><div><p class="font-mono text-cyan-300 text-sm">✨ 首席架构师 ✨</p><p class="text-2xl font-bold text-white">GeoffreyLei</p><p class="text-blue-300 text-sm">「键盘为剑，代码为盾」</p></div></div>
-                        <div class="md:w-2/3 space-y-4">
-                            <div class="bg-black/40 rounded-xl p-4 border border-gray-700"><div class="flex items-center gap-2 mb-3"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span></div><div class="font-mono text-sm space-y-1"><p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p><p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p><p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p><p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p><p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p><p class="text-cyan-400">};</p><p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p><p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"🔒 秘密基地已解锁 🔒"</span>);</p><p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p><p class="text-purple-400">}</p><div class="code-typing inline-block text-blue-400 text-xs mt-2">正在部署新功能...</div></div></div>
-                            <div class="bg-gradient-to-r from-indigo-950/40 to-purple-950/40 rounded-xl p-4 border border-indigo-400/30"><div class="flex items-center gap-2 border-b border-indigo-400/20 pb-2 mb-3"><i class="fa-solid fa-video text-pink-400"></i><span class="text-xs font-bold text-indigo-300">LIVE · 动态编码室</span><span class="typing-dot"></span></div><div class="space-y-2 text-xs font-mono"><p class="text-green-400"><span class="text-gray-300">$&gt;</span> 编译战争模块...</p><p class="text-cyan-300 animate-pulse">[INFO] 正在加载派系引擎</p><p class="text-yellow-300"><span class="text-gray-500">&gt;&gt;</span> 敲击键盘: <span class="inline-block keyboard-glow">████████░░ 78%</span></p><div class="flex gap-1 mt-1"><div class="h-1 w-6 bg-blue-500 rounded-sm animate-pulse"></div><div class="h-1 w-8 bg-purple-500 rounded-sm animate-pulse delay-75"></div><div class="h-1 w-4 bg-pink-500 rounded-sm animate-pulse delay-150"></div></div><p class="text-gray-400 flex items-center gap-1">🔒 <span>coding in progress</span> <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span></p><p class="text-gray-500 text-[10px] italic">AI生成</p></div><div class="text-center text-[10px] text-gray-400 mt-3 border-t border-indigo-500/20 pt-2">🔍 实时动态 · 键盘与灵感共振</div></div>
-                        </div>
-                    </div></div>
-                </div>
-
-                <!-- CloverMo 区域 -->
-                <div class="bg-darkCard/80 border border-pink-500/30 rounded-2xl backdrop-blur-md p-6 flex flex-col items-center shadow-2xl">
-                    <div class="relative mb-4">
-                        <div class="w-48 h-48 rounded-full clover-orange-bg flex items-center justify-center shadow-xl clover-avatar-container" style="box-shadow: 0 0 20px rgba(251,146,60,0.6);">
-                            <div class="heptagram-layer heptagram-3d"><svg class="heptagram-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="50,5 61,35 93,35 68,53 79,83 50,65 21,83 32,53 7,35 39,35" fill="#facc15" stroke="#eab308" stroke-width="2" /><circle cx="50" cy="45" r="4" fill="#fef08a" /></svg></div>
-                            <div class="clover-layer"><i class="fa-solid fa-leaf text-4xl clover-wind" style="color: #4ade80; filter: drop-shadow(0 0 4px #22c55e);"></i></div>
+                    <div class="p-6">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3">
+                                <div class="relative geoffrey-avatar float-slow"><div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow"><i class="fa-solid fa-user-ninja text-6xl text-white"></i></div><div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div></div>
+                                <div><p class="font-mono text-cyan-300 text-sm">✨ 首席架构师 ✨</p><p class="text-2xl font-bold text-white">GeoffreyLei</p><p class="text-blue-300 text-sm">「键盘为剑，代码为盾」</p></div>
+                            </div>
+                            <div class="md:w-2/3 space-y-4">
+                                <div class="bg-black/40 rounded-xl p-4 border border-gray-700">
+                                    <div class="flex items-center gap-2 mb-3"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span></div>
+                                    <div class="font-mono text-sm space-y-1"><p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p><p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p><p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p><p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p><p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p><p class="text-cyan-400">};</p><p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p><p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"🔒 秘密基地已解锁 🔒"</span>);</p><p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p><p class="text-purple-400">}</p><div class="code-typing inline-block text-blue-400 text-xs mt-2">正在部署新功能...</div></div>
+                                </div>
+                                <div class="bg-gradient-to-r from-indigo-950/40 to-purple-950/40 rounded-xl p-4 border border-indigo-400/30">
+                                    <div class="flex items-center gap-2 border-b border-indigo-400/20 pb-2 mb-3"><i class="fa-solid fa-video text-pink-400"></i><span class="text-xs font-bold text-indigo-300">LIVE · 动态编码室</span><span class="typing-dot"></span></div>
+                                    <div class="space-y-2 text-xs font-mono"><p class="text-green-400"><span class="text-gray-300">$&gt;</span> 编译战争模块...</p><p class="text-cyan-300 animate-pulse">[INFO] 正在加载派系引擎</p><p class="text-yellow-300"><span class="text-gray-500">&gt;&gt;</span> 敲击键盘: <span class="inline-block keyboard-glow">████████░░ 78%</span></p><div class="flex gap-1 mt-1"><div class="h-1 w-6 bg-blue-500 rounded-sm animate-pulse"></div><div class="h-1 w-8 bg-purple-500 rounded-sm animate-pulse delay-75"></div><div class="h-1 w-4 bg-pink-500 rounded-sm animate-pulse delay-150"></div></div><p class="text-gray-400 flex items-center gap-1">🔒 <span>coding in progress</span> <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span></p><p class="text-gray-500 text-[10px] italic">AI生成</p></div>
+                                    <div class="text-center text-[10px] text-gray-400 mt-3 border-t border-indigo-500/20 pt-2">🔍 实时动态 · 键盘与灵感共振</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="bg-darkCard/80 border border-pink-500/30 rounded-2xl backdrop-blur-md p-6 flex flex-col items-center shadow-2xl">
+                    <div class="relative mb-4"><div class="w-48 h-48 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-xl"><i class="fa-solid fa-crown text-6xl text-yellow-300 heptagram-rotate"></i></div><div class="absolute -bottom-3 right-2 bg-green-500/40 rounded-full p-2 backdrop-blur-sm"><i class="fa-solid fa-leaf text-green-300 text-xl clover-sway"></i></div></div>
                     <div class="text-center space-y-2"><p class="font-mono text-pink-300 text-sm">👑 首席执行官 👑</p><p class="text-2xl font-bold text-white">CloverMo</p><p class="text-amber-300 text-sm">Harma工作室™️ CEO</p><div class="mt-3 px-4 py-2 bg-amber-500/10 rounded-full inline-block border border-amber-500/30"><p class="text-amber-300 text-xs italic">「执码领团，破界拓新」</p></div></div>
                 </div>
                 <div class="text-center text-[10px] text-gray-500 pt-2"><i class="fa-solid fa-dragon"></i> 彩蛋·致敬每一位创作者 | Harma工作室</div>
@@ -299,6 +367,146 @@
         </div>
     </div>
 
-    <!-- 任务详情与追踪模态框 -->
+    <!-- 任务详情与追踪模态框（保留） -->
     <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div id="modal-header-accent" class="h-2 w-full bg-blue-500"></div><div class="p-6 space-y-4"><div class="flex justify-between items-start"><div><span id="modal-category" class="text-xs font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-400">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100 font-semibold leading-relaxed">要求详情</p></div><div class="flex space-x-2 pt-2"><button id="modal-track-btn" onclick="toggleTrackCurrent()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-sm transition">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-xl text-sm transition">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 font-medium opacity-0 transition-opacity duration-200"></p></div></div></div>
-    <div id="tracker-modal" class="fixed inset-
+    <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div class="p-6 space-y-4"><div class="flex justify-between items-center"><h3 class="text-lg font-bold text-white">我的资料追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div><div class="border-t border-gray-800 pt-4 flex justify-between items-center"><span class="text-xs text-gray-500">提示：资料已储存于浏览器缓存中。</span><button onclick="clearAllTracked()" class="text-xs text-red-400 hover:text-red-300">全部清除</button></div></div></div></div>
+
+    <script>
+        // 成就数据库
+        const achievementsDB = {
+            "first_visit": { name: "初来乍到", desc: "首次打开网站", icon: "fa-door-open" },
+            "tank_category": { name: "装甲先锋", desc: "点击坦克任务分类", icon: "fa-tank" },
+            "helicopter_category": { name: "旋翼骑士", desc: "点击直升机任务分类", icon: "fa-helicopter" },
+            "airplane_category": { name: "空中之鹰", desc: "点击飞机任务分类", icon: "fa-plane" },
+            "hovercraft_category": { name: "气垫狂徒", desc: "点击悬空载具分类", icon: "fa-water" },
+            "ship_category": { name: "深海幽灵", desc: "点击船舰与潜艇分类", icon: "fa-ship" },
+            "trade_market": { name: "交易大师", desc: "点击交易市场链接", icon: "fa-chart-line" },
+            "social_community": { name: "社群之友", desc: "点击任意官方社群链接", icon: "fa-users" },
+            "easter_egg": { name: "秘境探索者", desc: "点击彩蛋按钮", icon: "fa-dragon" }
+        };
+        let userAchievements = JSON.parse(localStorage.getItem('war_tycoon_achievements')) || [];
+        function saveAchievements() {
+            localStorage.setItem('war_tycoon_achievements', JSON.stringify(userAchievements));
+            if (document.getElementById('achievement-modal') && !document.getElementById('achievement-modal').classList.contains('opacity-0')) renderAchievementList();
+        }
+        function showAchievementToast(achievementId) {
+            const ach = achievementsDB[achievementId];
+            if (!ach) return;
+            const existingToast = document.querySelector('.achievement-toast');
+            if (existingToast) existingToast.remove();
+            const toast = document.createElement('div');
+            toast.className = 'achievement-toast';
+            toast.innerHTML = `<i class="fa-solid ${ach.icon}"></i><div class="text"><div class="title">🏆 成就解锁！</div><div>${ach.name} - ${ach.desc}</div></div>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+        function unlockAchievement(achievementId) {
+            if (!achievementsDB[achievementId]) return;
+            if (!userAchievements.find(a => a.id === achievementId)) {
+                userAchievements.push({ id: achievementId, unlockedAt: new Date().toLocaleString() });
+                saveAchievements();
+                showAchievementToast(achievementId);
+            }
+        }
+        function renderAchievementList() {
+            const container = document.getElementById('achievement-list');
+            if (!container) return;
+            if (userAchievements.length === 0) {
+                container.innerHTML = '<div class="text-center text-xs text-gray-500 py-4">暂无成就，快去探索吧！</div>';
+                return;
+            }
+            const sorted = [...userAchievements].reverse();
+            container.innerHTML = sorted.map(ach => {
+                const meta = achievementsDB[ach.id];
+                if (!meta) return '';
+                return `<div class="achievement-item"><i class="fa-solid ${meta.icon} text-yellow-500"></i><div class="achievement-info"><div class="achievement-name">${meta.name}</div><div class="achievement-desc">${meta.desc}</div></div><div class="achievement-date">${ach.unlockedAt}</div></div>`;
+            }).join('');
+        }
+        function openAchievementModal() {
+            const modal = document.getElementById('achievement-modal');
+            const content = modal.querySelector('.achievement-modal-content');
+            renderAchievementList();
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.add('show');
+        }
+        function closeAchievementModal() {
+            const modal = document.getElementById('achievement-modal');
+            const content = modal.querySelector('.achievement-modal-content');
+            content.classList.remove('show');
+            setTimeout(() => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+            }, 150);
+        }
+        function initAchievements() {
+            if (!userAchievements.find(a => a.id === 'first_visit')) unlockAchievement('first_visit');
+            else renderAchievementList();
+        }
+
+        // 任务数据与原有逻辑（保持不变）
+        const taskData = {
+            "tank": { title: "坦克任务", tasks: [{ name: "M3布拉德利", requirement: "花费 40 个坦克零件" },{ name: "威斯尔1MK20", requirement: "使用 15 次空投呼召" },{ name: "威斯尔1拖车Ⅱ型", requirement: "使用 1MK20 摧毁 20 辆地面载具" },{ name: "T72", requirement: "使用坦克击杀 30 人" },{ name: "ADATS", requirement: "摧毁 60 架飞行器" },{ name: "维塞尔1防空", requirement: "使用 1MK20 摧毁 20 辆地面载具" },{ name: "M1艾布拉姆斯", requirement: "使用坦克摧毁 30 辆坦克 & 偷取 10 个零件箱" },{ name: "K9雷霆SPG", requirement: "摧毁 60 辆地面载具 & 300 米外击杀 40 人" },{ name: "豹子2A7", requirement: "摧毁 35 辆坦克 & 驾驶 600 秒坦克" },{ name: "失败任务", requirement: "占领捕捉点 1800 秒 & 使用坦克 200 米外击杀 20 人" },{ name: "T90", requirement: "使用坦克摧毁 45 辆坦克 & 花费 100 个坦克零件" },{ name: "PL_01", requirement: "使用坦克摧毁 40 辆地面载具 & 驾驶 1500 秒坦克" },{ name: "MAUS", requirement: "坦克受到 10 万伤害 & 找到 4 个隐藏车辆部件" },{ name: "T14", requirement: "收集 10 桶石油 & 使用坦克 200 米外击杀 40 人 & 使用坦克击杀 75 人" },{ name: "挑战者Ⅱ黑色夜晚", requirement: "坦克受到 12 万伤害 & 收集 10 架坠毁的无人机 & 使用 50 次主动保护系统" },{ name: "KF_51豹子", requirement: "花费 200 个坦克零件 & 占领捕捉点 3000 秒 & 使用坦克击杀 100 人" }] },
+            "helicopter": { title: "直升机任务", tasks: [{ name: "UH60_黑鹰", requirement: "救起 10 个玩家" },{ name: "欧洲直升机老虎", requirement: "摧毁 40 辆车辆" },{ name: "无敌", requirement: "使用直升机摧毁 45 架直升机 & 驾驶直升机通过圆环获取 45 积分" },{ name: "AH_64阿帕奇", requirement: "使用直升机击杀 25 人 & 占领捕捉点 1500 秒" },{ name: "KA_52鳄鱼", requirement: "摧毁 30 架直升机 & 使用直升机 200 米外击杀 20 人" },{ name: "直10", requirement: "花费 100 个船舰零件 & 使用直升机对任何载具造成 5 万伤害" },{ name: "超级种马", requirement: "使用直升机摧毁 20 辆船舰 & 收集 5 桶石油" },{ name: "AH_1Z毒蛇", requirement: "使用直升机摧毁 50 辆地面载具 & 占领捕捉点 1200 秒" },{ name: "咆哮者X", requirement: "使用直升机摧毁 20 架飞机 & 使用直升机摧毁 20 辆车库车辆 & 驾驶直升机通过圆环获取 200 积分" },{ name: "A129芒果", requirement: "花费 200 个直升机零件 & 使用直升机摧毁 40 架飞机 & 使用直升机击杀 12 人" }] },
+            "airplane": { title: "飞机任务", tasks: [{ name: "B_29", requirement: "占领捕捉点 1800 秒" },{ name: "F_14", requirement: "使用飞机摧毁 30 架直升机" },{ name: "Ju57斯图卡", requirement: "使用飞机摧毁 15 辆坦克" },{ name: "F_4", requirement: "使用飞机击杀 30 人" },{ name: "米格_29", requirement: "使用飞机摧毁 25 架飞机" },{ name: "A_10", requirement: "使用飞机摧毁 50 辆地面载具 & 飞机受到 4 万伤害" },{ name: "JAS_39", requirement: "占领捕捉点 1800 秒 & 使用飞机击杀 50 人" },{ name: "F_15E", requirement: "使用飞机摧毁 60 辆地面载具 & 使用飞机 200 米外击杀 40 人" },{ name: "F_18", requirement: "使用飞机摧毁 40 辆船舰 & 花费 100 个飞机零件" },{ name: "苏57", requirement: "花费 100 个飞机零件 & 使用飞机摧毁 30 架飞机" },{ name: "欧洲战斗机台风", requirement: "使用飞机摧毁车辆 & 偷取 5 个零件箱" },{ name: "阵风", requirement: "使用飞机摧毁 20 辆船舰 & 使用飞机摧毁 60 架飞行器" },{ name: "F_16", requirement: "摧毁 30 架飞机 & 花费 60 个飞机零件" },{ name: "F_22", requirement: "驾驶飞机通过圆环收集 400 积分 & 占领捕捉点 1800 秒 & 使用飞机击杀 100 人" },{ name: "夜鹰", requirement: "使用飞机炸弹击杀 25 人 & 占领捕捉点 1800 秒 & 偷取 10 个零件箱" },{ name: "黑暗之星", requirement: "花费 10 个升级点数 & 偷取 10 个零件箱 & 收集 10 架坠毁的无人机" },{ name: "歼36", requirement: "收集 10 架坠毁的无人机 & 使用飞机摧毁 20 辆船舰 & 花费 100 个飞机零件" }] },
+            "hovercraft": { title: "悬空载具", tasks: [{ name: "PACV_78突击", requirement: "使用气垫船摧毁 40 辆地面载具" },{ name: "PACV_77风镰", requirement: "使用气垫船摧毁 30 架飞行器" },{ name: "QBZ_95", requirement: "使用自动武器 50 米外击杀 30 人" },{ name: "C4", requirement: "使用手榴弹击杀 15 人 & 摧毁 10 辆地面车辆" },{ name: "QBJ_LMG", requirement: "偷取 10 个零件箱 & 使用自动武器击杀 20 人" },{ name: "AVH猎人", requirement: "使用气垫船摧毁 60 辆地面载具 & 使用气垫船撞倒 300 物品 & 驾驶气垫船 1800 秒" }] },
+            "ship": { title: "船舰与潜艇", tasks: [{ name: "PG02", requirement: "使用船舰击杀 25 人" },{ name: "法尔米尔", requirement: "收集 10 桶海洋沉船石油" },{ name: "KSG_12", requirement: "使用夹弹枪击杀 20 人 & 收集 4 桶石油" },{ name: "道格拉斯号", requirement: "使用船舰摧毁 40 辆载具 & 占领捕捉点 1800 秒" },{ name: "PP_19Bizon", requirement: "使用自动武器击杀 25 人 & 偷取 2 个零件箱" },{ name: "Pr.206", requirement: "使用船舰摧毁 20 辆敌方船舰" },{ name: "USS独立号", requirement: "使用船舰摧毁 125 辆载具或者船舰 & 占领捕捉点 1500 秒 & 收集 10 桶石油" }] }
+        };
+        let trackedTasks = JSON.parse(localStorage.getItem('wtt_tracked')) || [];
+        let activeModalTask = null;
+
+        function renderTaskSections(filterText = "") {
+            const container = document.getElementById('tasks-container');
+            const categorySelector = document.getElementById('category-selector');
+            const sectionDivider = document.getElementById('section-divider');
+            container.innerHTML = '';
+            const filter = filterText.trim().toLowerCase();
+            if (filter === "") {
+                categorySelector.classList.remove('hidden');
+                if(sectionDivider) sectionDivider.classList.remove('hidden');
+                Object.keys(taskData).forEach(key => {
+                    const category = taskData[key];
+                    const section = document.createElement('section');
+                    section.id = `${key}-section`;
+                    section.className = "space-y-4 scroll-mt-20";
+                    section.innerHTML = `<div class="border-b border-gray-800 pb-2"><h2 class="text-xl font-bold text-white flex items-center gap-2"><span class="w-1 h-5 bg-blue-500 rounded-full"></span>${category.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${category.tasks.map((task, index) => { const isTracked = trackedTasks.some(t => t.name === task.name); return `<div onclick="openTaskDetail('${key}', ${index})" class="p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-36 bg-darkCard border-gray-800 hover:border-blue-500/50"><div class="flex justify-between items-start"><span class="text-xs text-blue-400 font-medium bg-blue-500/10 px-1.5 py-0.5 rounded">载具/装备</span></div><h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4><div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60"><span>点击查看 →</span>${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">追踪中</span>' : ''}</div></div>`; }).join('')}</div>`;
+                    container.appendChild(section);
+                });
+            } else {
+                categorySelector.classList.add('hidden');
+                if(sectionDivider) sectionDivider.classList.add('hidden');
+                let totalMatches = 0;
+                Object.keys(taskData).forEach(key => {
+                    const category = taskData[key];
+                    const filteredTasks = category.tasks.map((t, idx) => ({...t, originalIndex: idx})).filter(t => t.name.toLowerCase().includes(filter));
+                    if(filteredTasks.length > 0){
+                        totalMatches += filteredTasks.length;
+                        const section = document.createElement('section');
+                        section.className = "space-y-4";
+                        section.innerHTML = `<div class="border-b border-gray-800 pb-2"><h2 class="text-lg font-bold text-white">${category.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${filteredTasks.map(task => { const isTracked = trackedTasks.some(t => t.name === task.name); return `<div onclick="openTaskDetail('${key}', ${task.originalIndex})" class="p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-36 bg-darkCard border-gray-800 hover:border-blue-500/50"><div class="flex justify-between items-start"><span class="text-xs text-blue-400 font-medium bg-blue-500/10 px-1.5 py-0.5 rounded">载具/装备</span></div><h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4><div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60"><span>点击查看 →</span>${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">追踪中</span>' : ''}</div></div>`; }).join('')}</div>`;
+                        container.appendChild(section);
+                    }
+                });
+                document.getElementById('search-results-info').classList.remove('hidden');
+                document.getElementById('search-results-info').innerText = `找到 ${totalMatches} 个名称相符项目`;
+            }
+        }
+        function openTaskDetail(categoryKey, index) { const category = taskData[categoryKey]; const task = category.tasks[index]; activeModalTask = { ...task, categoryTitle: category.title }; document.getElementById('modal-category').innerText = category.title; document.getElementById('modal-title').innerText = task.name; document.getElementById('modal-requirement').innerText = task.requirement; const isTracked = trackedTasks.some(t => t.name === task.name); updateModalTrackButtonState(isTracked); document.getElementById('modal-toast').classList.add('opacity-0'); const modal = document.getElementById('detail-modal'); modal.classList.remove('opacity-0', 'pointer-events-none'); modal.querySelector('div').classList.remove('scale-95'); }
+        function closeModal() { const modal = document.getElementById('detail-modal'); modal.classList.add('opacity-0', 'pointer-events-none'); modal.querySelector('div').classList.add('scale-95'); activeModalTask = null; }
+        function copyCurrentRequirement() { if (!activeModalTask) return; const text = `【${activeModalTask.name}】解锁条件：${activeModalTask.requirement}`; const dummy = document.createElement("textarea"); document.body.appendChild(dummy); dummy.value = text; dummy.select(); document.execCommand("copy"); document.body.removeChild(dummy); showToast("已成功复制！"); }
+        function showToast(msg) { const toast = document.getElementById('modal-toast'); toast.innerText = msg; toast.classList.remove('opacity-0'); setTimeout(() => toast.classList.add('opacity-0'), 2000); }
+        function toggleTrackCurrent() { if (!activeModalTask) return; toggleTrackDirectly(activeModalTask.name, activeModalTask.categoryTitle, activeModalTask.requirement); const isTracked = trackedTasks.some(t => t.name === activeModalTask.name); updateModalTrackButtonState(isTracked); showToast(isTracked ? "已追踪" : "取消追踪"); }
+        function updateModalTrackButtonState(isTracked) { const btn = document.getElementById('modal-track-btn'); if (isTracked) { btn.className = "flex-1 bg-red-600/20 text-red-400 border border-red-500/20 font-bold py-2 px-4 rounded-xl text-sm transition"; btn.innerText = "取消追踪"; } else { btn.className = "flex-1 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl text-sm transition"; btn.innerText = "加入追踪"; } }
+        function toggleTrackDirectly(name, category, requirement) { const index = trackedTasks.findIndex(t => t.name === name); if (index > -1) trackedTasks.splice(index,1); else trackedTasks.push({ name, category, requirement }); localStorage.setItem('wtt_tracked', JSON.stringify(trackedTasks)); updateTrackerBadge(); const input = document.getElementById('search-input'); renderTaskSections(input.value); }
+        function openTrackerModal() { const modal = document.getElementById('tracker-modal'); renderTrackerList(); modal.classList.remove('opacity-0', 'pointer-events-none'); }
+        function closeTrackerModal() { document.getElementById('tracker-modal').classList.add('opacity-0', 'pointer-events-none'); }
+        function renderTrackerList() { const content = document.getElementById('tracker-list-content'); if (trackedTasks.length === 0) { content.innerHTML = `<p class="text-center py-6 text-xs text-gray-500">暂无追踪项目</p>`; return; } content.innerHTML = trackedTasks.map(t => `<div class="p-2.5 bg-gray-900 border border-gray-800 rounded-lg flex items-center justify-between text-xs"><div><span class="text-[10px] text-blue-400 font-bold">[${t.category}]</span><span class="text-white font-bold">${t.name}</span><p class="text-gray-400 mt-1">${t.requirement}</p></div><button onclick="toggleTrackDirectly('${t.name}'); renderTrackerList();" class="text-red-400 px-2 font-bold">×</button></div>`).join(''); }
+        function clearAllTracked() { trackedTasks = []; localStorage.setItem('wtt_tracked', JSON.stringify([])); updateTrackerBadge(); renderTrackerList(); const input = document.getElementById('search-input'); renderTaskSections(input.value); }
+        function updateTrackerBadge() { const badge = document.getElementById('tracker-badge'); if (trackedTasks.length > 0) { badge.innerText = trackedTasks.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } }
+        function searchTasks() { const input = document.getElementById('search-input'); const infoText = document.getElementById('search-results-info'); const social = document.getElementById('social-section'); const divider = document.getElementById('section-divider'); const factionHr = document.getElementById('faction-hr'); const factionSec = document.getElementById('faction-section'); const aboutHr = document.getElementById('about-hr'); const aboutSec = document.getElementById('aboutus-section'); const val = input.value.trim(); const isFiltering = val !== ""; const extra = [factionHr, factionSec, aboutHr, aboutSec]; if (isFiltering) { if(social) social.style.display = 'none'; if(divider) divider.style.display = 'none'; extra.forEach(el => { if(el) el.style.display = 'none'; }); infoText.classList.remove('hidden'); } else { if(social) social.style.display = 'block'; if(divider) divider.style.display = 'block'; extra.forEach(el => { if(el) el.style.display = 'block'; }); infoText.classList.add('hidden'); } renderTaskSections(input.value); }
+        function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+        function showEasterEggPage() { document.getElementById('main-app').style.display = 'none'; document.getElementById('easteregg-page').classList.remove('hidden'); }
+        function hideEasterEggPage() { document.getElementById('main-app').style.display = 'block'; document.getElementById('easteregg-page').classList.add('hidden'); }
+        window.addEventListener('DOMContentLoaded', () => { renderTaskSections(); updateTrackerBadge(); initAchievements(); });
+    </script>
+</body>
+</html>
