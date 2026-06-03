@@ -22,7 +22,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ========== 主界面样式（保持不变） ========== */
+        /* ========== 全局样式（主界面恢复原样） ========== */
         .gradient-text {
             background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
             -webkit-background-clip: text;
@@ -38,7 +38,7 @@
             margin: 0;
             position: relative;
         }
-        /* 主界面玻璃卡片样式 */
+        /* 主界面玻璃卡片样式（无模糊，原样） */
         .glass-card {
             background: rgba(18, 25, 45, 0.65);
             backdrop-filter: blur(12px);
@@ -236,17 +236,15 @@
             background: rgba(18, 25, 45, 0.85);
             transform: translateY(-2px);
         }
-        /* ========== 登录模态框深色风格（右侧无文字，使用用户名） ========== */
+        /* ========== 登录模态框深色风格（无右侧文字） ========== */
         .auth-modal-new {
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(20px);
+            background: #0a0e14;
             border-radius: 32px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
-            font-family: 'Inter', system-ui, sans-serif;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .auth-left {
             padding: 2.5rem;
@@ -268,7 +266,7 @@
         }
         .auth-input-new {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid #374151;
             border-radius: 14px;
             padding: 12px 16px;
@@ -309,7 +307,7 @@
             height: 16px;
             accent-color: #3b82f6;
         }
-        /* 动态背景层（白色像素雨） */
+        /* ========== 动态背景层（白色像素雨，仅登录界面显示） ========== */
         .dynamic-bg-layer {
             position: fixed;
             top: 0;
@@ -327,46 +325,143 @@
             height: 100%;
             opacity: 0.4;
         }
-        .grid-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: gridMove 20s linear infinite;
-        }
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, 40px); }
-        }
-        .pixel-noise {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 2px);
-            pointer-events: none;
-        }
         .dynamic-hidden {
             display: none !important;
+        }
+        /* ========== 像素风装饰图片（仅登录时显示，锐利无模糊） ========== */
+        .pixel-decoration {
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+        .pixel-cloud {
+            width: 96px;
+            height: 64px;
+            background: #e0e0e0;
+            position: relative;
+            box-shadow: 
+                24px 16px 0 #e0e0e0,
+                48px 16px 0 #e0e0e0,
+                72px 16px 0 #e0e0e0,
+                12px 32px 0 #e0e0e0,
+                36px 32px 0 #e0e0e0,
+                60px 32px 0 #e0e0e0,
+                84px 32px 0 #e0e0e0;
+        }
+        .pixel-star {
+            width: 0;
+            height: 0;
+            position: relative;
+            background: #facc15;
+            box-shadow: 
+                8px 0 0 #facc15,
+                16px 0 0 #facc15,
+                4px 8px 0 #facc15,
+                12px 8px 0 #facc15,
+                20px 8px 0 #facc15,
+                8px 16px 0 #facc15,
+                16px 16px 0 #facc15;
+        }
+        .pixel-cactus {
+            width: 16px;
+            height: 48px;
+            background: #2ecc71;
+            position: relative;
+            box-shadow: 
+                8px 0 0 #2ecc71,
+                16px 0 0 #2ecc71,
+                4px -16px 0 #2ecc71,
+                12px -16px 0 #2ecc71,
+                20px -16px 0 #2ecc71,
+                0px -32px 0 #2ecc71,
+                8px -32px 0 #2ecc71,
+                16px -32px 0 #2ecc71,
+                24px -32px 0 #2ecc71;
+        }
+        .pixel-heart {
+            width: 8px;
+            height: 8px;
+            background: #e74c3c;
+            position: relative;
+            box-shadow: 
+                8px 0 0 #e74c3c,
+                16px 0 0 #e74c3c,
+                4px 8px 0 #e74c3c,
+                12px 8px 0 #e74c3c,
+                20px 8px 0 #e74c3c,
+                0px 16px 0 #e74c3c,
+                8px 16px 0 #e74c3c,
+                16px 16px 0 #e74c3c,
+                24px 16px 0 #e74c3c,
+                4px 24px 0 #e74c3c,
+                12px 24px 0 #e74c3c,
+                20px 24px 0 #e74c3c,
+                8px 32px 0 #e74c3c,
+                16px 32px 0 #e74c3c;
+        }
+        .float-animation {
+            animation: floatPixel 4s ease-in-out infinite;
+        }
+        @keyframes floatPixel {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .spin-slow {
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* 登录时的装饰容器，仅当登录模态框显示时这些装饰才可见 */
+        .login-decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        .login-decorations.visible {
+            visibility: visible;
         }
     </style>
 </head>
 <body>
-    <!-- 动态像素背景（白色） -->
+    <!-- 动态白色像素雨背景 -->
     <div id="dynamicBg" class="dynamic-bg-layer">
         <canvas id="pixel-canvas"></canvas>
-        <div class="grid-overlay"></div>
-        <div class="pixel-noise"></div>
     </div>
 
-    <!-- 深色登录/注册模态框（使用用户名） -->
-    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <!-- 登录界面专用的像素装饰（默认不可见，登录时显示） -->
+    <div id="loginDecorations" class="login-decorations">
+        <div class="pixel-decoration" style="top: 10%; left: 5%;">
+            <div class="pixel-cloud float-animation"></div>
+        </div>
+        <div class="pixel-decoration" style="top: 15%; right: 5%;">
+            <div class="pixel-star spin-slow" style="width: 24px; height: 24px;"></div>
+        </div>
+        <div class="pixel-decoration" style="bottom: 15%; left: 8%;">
+            <div class="pixel-cactus float-animation"></div>
+        </div>
+        <div class="pixel-decoration" style="bottom: 20%; right: 8%;">
+            <div class="pixel-heart float-animation"></div>
+        </div>
+        <div class="pixel-decoration" style="top: 30%; left: 85%;">
+            <div class="pixel-cloud" style="transform: scale(0.8);"></div>
+        </div>
+        <div class="pixel-decoration" style="bottom: 40%; left: 92%;">
+            <div class="pixel-star" style="width: 16px; height: 16px;"></div>
+        </div>
+    </div>
+
+    <!-- 深色登录/注册模态框（使用名字登录） -->
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
         <div class="auth-modal-new">
             <div class="auth-left">
                 <div class="mb-6">
@@ -376,7 +471,7 @@
                 <!-- 登录表单 -->
                 <div id="login-form-new" class="space-y-4">
                     <div>
-                        <input type="text" id="login-username" class="auth-input-new" placeholder="用户名">
+                        <input type="text" id="login-name" class="auth-input-new" placeholder="名字">
                     </div>
                     <div>
                         <input type="password" id="login-password" class="auth-input-new" placeholder="密码">
@@ -391,7 +486,7 @@
                 <!-- 注册表单 -->
                 <div id="register-form-new" class="space-y-4 hidden">
                     <div>
-                        <input type="text" id="reg-username" class="auth-input-new" placeholder="用户名">
+                        <input type="text" id="reg-name" class="auth-input-new" placeholder="名字">
                     </div>
                     <div>
                         <input type="password" id="reg-password" class="auth-input-new" placeholder="密码">
@@ -405,7 +500,7 @@
         </div>
     </div>
 
-    <!-- ========== 主页面内容（完全恢复原样） ========== -->
+    <!-- ========== 主页面内容（完全恢复原样，无像素装饰） ========== -->
     <div id="main-app" style="display: none;">
         <nav class="sticky top-0 z-40 glass-nav px-4 py-3">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -545,7 +640,7 @@
     <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div class="p-6 space-y-4"><div class="flex justify-between items-center"><h3 class="text-lg font-bold text-white">我的资料追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div><div class="border-t border-gray-800 pt-4 flex justify-between items-center"><span class="text-xs text-gray-500">提示：资料已储存于浏览器缓存中。</span><button onclick="clearAllTracked()" class="text-xs text-red-400 hover:text-red-300">全部清除</button></div></div></div></div>
 
     <script>
-        // ==================== 像素风格动态背景（白色方块雨） ====================
+        // ==================== 白色像素雨动态背景 ====================
         const canvas = document.getElementById('pixel-canvas');
         let ctx, width, height, columns, drops, pixelSize = 10;
         
@@ -587,7 +682,7 @@
         
         window.addEventListener('resize', resizePixelCanvas);
         
-        // ==================== 登录注册逻辑（使用用户名） ====================
+        // ==================== 登录注册逻辑（基于名字） ====================
         let users = JSON.parse(localStorage.getItem('war_tycoon_users')) || [];
         let isLoggedIn = localStorage.getItem('war_tycoon_logged_in') === 'true';
         
@@ -606,15 +701,27 @@
             }
         }
         
+        function setLoginDecorations(visible) {
+            const decorations = document.getElementById('loginDecorations');
+            if (decorations) {
+                if (visible) {
+                    decorations.classList.add('visible');
+                } else {
+                    decorations.classList.remove('visible');
+                }
+            }
+        }
+        
         function checkAuth() {
             if (!isLoggedIn) {
                 document.getElementById('auth-modal').style.display = 'flex';
                 document.getElementById('main-app').style.display = 'none';
                 setDynamicBg(true);
-                const savedUsername = localStorage.getItem('remembered_username');
+                setLoginDecorations(true);
+                const savedName = localStorage.getItem('remembered_name');
                 const savedPwd = localStorage.getItem('remembered_password');
-                if (savedUsername) {
-                    document.getElementById('login-username').value = savedUsername;
+                if (savedName) {
+                    document.getElementById('login-name').value = savedName;
                     document.getElementById('remember-me').checked = true;
                 }
                 if (savedPwd) document.getElementById('login-password').value = savedPwd;
@@ -622,56 +729,55 @@
                 document.getElementById('auth-modal').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
                 setDynamicBg(false);
+                setLoginDecorations(false);
                 initAchievements();
                 renderTaskSections();
                 updateTrackerBadge();
             }
         }
         
-        // 登录按钮
+        // 登录处理
         document.getElementById('login-btn-new').addEventListener('click', () => {
-            const username = document.getElementById('login-username').value.trim();
+            const name = document.getElementById('login-name').value.trim();
             const pwd = document.getElementById('login-password').value.trim();
             const remember = document.getElementById('remember-me').checked;
-            if (!username) { alert('请输入用户名'); return; }
+            if (!name) { alert('请输入名字'); return; }
             if (!pwd) { alert('请输入密码'); return; }
-            const user = users.find(u => u.username === username);
-            if (!user) { alert('用户名不存在，请先注册'); return; }
+            const user = users.find(u => u.name === name);
+            if (!user) { alert('该名字未注册，请先注册'); return; }
             if (user.password !== pwd) { alert('密码错误'); return; }
             localStorage.setItem('war_tycoon_logged_in', 'true');
-            localStorage.setItem('war_tycoon_user', username);
-            localStorage.setItem('war_tycoon_name', user.name || username);
+            localStorage.setItem('war_tycoon_user', name);
+            localStorage.setItem('war_tycoon_name', name);
             if (remember) {
-                localStorage.setItem('remembered_username', username);
+                localStorage.setItem('remembered_name', name);
                 localStorage.setItem('remembered_password', pwd);
             } else {
-                localStorage.removeItem('remembered_username');
+                localStorage.removeItem('remembered_name');
                 localStorage.removeItem('remembered_password');
             }
-            alert(`欢迎回来，${username}！`);
+            alert(`欢迎回来，${name}！`);
             isLoggedIn = true;
             checkAuth();
         });
         
-        // 注册按钮
+        // 注册处理
         document.getElementById('register-btn-new').addEventListener('click', () => {
-            const username = document.getElementById('reg-username').value.trim();
+            const name = document.getElementById('reg-name').value.trim();
             const pwd = document.getElementById('reg-password').value.trim();
             const confirm = document.getElementById('reg-confirm').value.trim();
-            if (!username) { alert('请输入用户名'); return; }
+            if (!name) { alert('请输入名字'); return; }
             if (!pwd) { alert('密码不能为空'); return; }
-            if (pwd !== confirm) { alert('两次输入的密码不一致'); return; }
-            if (users.find(u => u.username === username)) { alert('用户名已存在，请直接登录'); return; }
-            users.push({ username, name: username, password: pwd });
+            if (pwd !== confirm) { alert('两次密码不一致'); return; }
+            if (users.find(u => u.name === name)) { alert('该名字已注册，请直接登录'); return; }
+            users.push({ name, password: pwd });
             saveUsers();
-            alert(`注册成功！请使用用户名“${username}”登录。`);
-            // 清空注册表单
-            document.getElementById('reg-username').value = '';
+            alert(`注册成功！欢迎 ${name}，请登录。`);
+            document.getElementById('reg-name').value = '';
             document.getElementById('reg-password').value = '';
             document.getElementById('reg-confirm').value = '';
-            // 切换到登录选项卡
             document.getElementById('login-tab-new').click();
-            document.getElementById('login-username').value = username;
+            document.getElementById('login-name').value = name;
             document.getElementById('login-password').value = '';
         });
         
@@ -786,8 +892,8 @@
         function updateTrackerBadge() { const badge = document.getElementById('tracker-badge'); if (trackedTasks.length > 0) { badge.innerText = trackedTasks.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } }
         function searchTasks() { const input = document.getElementById('search-input'); const infoText = document.getElementById('search-results-info'); const social = document.getElementById('social-section'); const divider = document.getElementById('section-divider'); const factionHr = document.getElementById('faction-hr'); const factionSec = document.getElementById('faction-section'); const aboutHr = document.getElementById('about-hr'); const aboutSec = document.getElementById('aboutus-section'); const val = input.value.trim(); const isFiltering = val !== ""; const extra = [factionHr, factionSec, aboutHr, aboutSec]; if (isFiltering) { if(social) social.style.display = 'none'; if(divider) divider.style.display = 'none'; extra.forEach(el => { if(el) el.style.display = 'none'; }); infoText.classList.remove('hidden'); } else { if(social) social.style.display = 'block'; if(divider) divider.style.display = 'block'; extra.forEach(el => { if(el) el.style.display = 'block'; }); infoText.classList.add('hidden'); } renderTaskSections(input.value); }
         function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
-        function showEasterEggPage() { document.getElementById('main-app').style.display = 'none'; document.getElementById('easteregg-page').classList.remove('hidden'); setDynamicBg(false); }
-        function hideEasterEggPage() { document.getElementById('main-app').style.display = 'block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); }
+        function showEasterEggPage() { document.getElementById('main-app').style.display = 'none'; document.getElementById('easteregg-page').classList.remove('hidden'); setDynamicBg(false); setLoginDecorations(false); }
+        function hideEasterEggPage() { document.getElementById('main-app').style.display = 'block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); }
         
         initPixelCanvas();
         drawPixelRain();
