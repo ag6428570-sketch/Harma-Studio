@@ -592,7 +592,7 @@
         <canvas id="pixel-canvas"></canvas>
     </div>
 
-    <!-- 全新登录界面（科技风，红色改蓝色，无飘动图案） -->
+    <!-- 登录界面（科技风） -->
     <div id="loginModal" class="login-wrap">
         <div class="login-card">
             <div class="topbar">
@@ -654,7 +654,7 @@
         </div>
     </div>
 
-    <!-- ========== 主页面内容（登录后显示，无飘动图案） ========== -->
+    <!-- ========== 主页面内容 ========== -->
     <div id="main-app" style="display: none;">
         <nav class="sticky top-0 z-40 glass-nav px-4 py-3">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -679,4 +679,5 @@
             <hr class="border-gray-800 my-6" />
             <section id="faction-section" class="glass-card p-5 md:p-6 space-y-5"><div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700 pb-3"><h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2"><i class="fa-solid fa-landmark text-blue-400"></i> 派系 · 大兴王朝历史<span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">2023-至今</span></h2></div><div class="flex flex-wrap gap-3 text-sm"><span class="era-badge px-3 py-1 rounded-full text-blue-300">🏛️ 古代史 2023-2024</span><span class="era-badge px-3 py-1 rounded-full text-purple-300">📜 近代史 2025-2026</span><span class="era-badge px-3 py-1 rounded-full text-pink-300">⚡ 现代史 2026-至今</span></div><div class="history-scroll max-h-[480px] overflow-y-auto pr-2"><div class="space-y-2 text-sm leading-relaxed text-gray-300"><p class="text-cyan-400 font-bold">❀ BNS 风云纪事</p><div class="pl-3 border-l-2 border-blue-500/40"><p>2023.01.29 墨墨创建BNS派系；2025.08.21 创建交流群开启鼎盛时期；2026.02.11 墨墨恢复统治，新时代降临。</p><p class="text-yellow-300 text-xs mt-2">✨ 完整编年史含上百事件，询问ZentAi获得深度解答 ✨</p></div></div></div></section>
             <hr class="border-gray-800 my-6" />
-            <section id="aboutus-section" class="glass-card p-5 md:p-6"><div class="flex items-center gap-2 border-b border-indigo-500/30 pb-3 mb-4"><i class="fa-regular fa-star-of-life text-indigo-400 text-xl"></i><h2 class="text-xl md:text-2xl font-black text-white">关于我们 · 重生之翼</h2></div><div class="space-y-4 text-gray-300"><p>✿ 2026.05.26 管理员濠制作网页2.0，加入ZentAi战术助手。<br>贡献请联系 Harma工作室™️。</p><div class="pt-2 text-sm"><p><strong>Harma工作室™️</strong> ‖ 版权归 Harma™️ 所有</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 bg-black/20 p-3 rounded-xl"><div><i class="fa-regular fa-envelope text-blue-400"></i> ag6428570@gmail.com <span class="text-blue-300 text-xs">—— GeoffreyLei</span></div><div><i class="fa-regular fa-envelope text-pink-400"></i> 1710278186@qq.com <span class="text-pink-300 text-xs">—— 𝑴𝒐𝒎𝒐 (CEO)</span></div></div></div></div><
+            <section id="aboutus-section" class="glass-card p-5 md:p-6"><div class="flex items-center gap-2 border-b border-indigo-500/30 pb-3 mb-4"><i class="fa-regular fa-star-of-life text-indigo-400 text-xl"></i><h2 class="text-xl md:text-2xl font-black text-white">关于我们 · 重生之翼</h2></div><div class="space-y-4 text-gray-300"><p>✿ 2026.05.26 管理员濠制作网页2.0，加入ZentAi战术助手。<br>贡献请联系 Harma工作室™️。</p><div class="pt-2 text-sm"><p><strong>Harma工作室™️</strong> ‖ 版权归 Harma™️ 所有</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 bg-black/20 p-3 rounded-xl"><div><i class="fa-regular fa-envelope text-blue-400"></i> ag6428570@gmail.com <span class="text-blue-300 text-xs">—— GeoffreyLei</span></div><div><i class="fa-regular fa-envelope text-pink-400"></i> 1710278186@qq.com <span class="text-pink-300 text-xs">—— 𝑴𝒐𝒎𝒐 (CEO)</span></div></div></div></div></section>
+            <div 
