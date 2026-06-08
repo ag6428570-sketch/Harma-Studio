@@ -839,32 +839,98 @@
         function showEasterEggPage(){ document.getElementById('main-app').style.display='none'; document.getElementById('easteregg-page').classList.remove('hidden'); const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='none'; }
         function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
         
-        // AI 逻辑
-        const aiBtn = document.getElementById('aiFloatingBtn'), aiWindow = document.getElementById('aiChatWindow'), closeAi = document.getElementById('closeAiWindow');
-        const aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSendBtn'), aiMsgArea = document.getElementById('aiMessageArea');
-        let convHistory = [];
-        function toggleAiWindow(open){ if(open) aiWindow.classList.remove('hidden-ai'); else aiWindow.classList.add('hidden-ai'); }
-        aiBtn?.addEventListener('click',()=>toggleAiWindow(true));
-        closeAi?.addEventListener('click',()=>toggleAiWindow(false));
-        function addMsg(text,isUser){ let bubble=document.createElement('div'); bubble.className=`ai-bubble ${isUser?'ai-user-bubble':'ai-bot-bubble'}`; bubble.innerText=text; aiMsgArea.appendChild(bubble); aiMsgArea.scrollTop=aiMsgArea.scrollHeight; convHistory.push({role:isUser?'user':'assistant',content:text}); if(convHistory.length>20) convHistory.shift(); }
-        function showTyping(){ let div=document.createElement('div'); div.className='ai-typing'; div.id='aiTyping'; for(let i=0;i<3;i++){ let span=document.createElement('span'); div.appendChild(span); } aiMsgArea.appendChild(div); aiMsgArea.scrollTop=aiMsgArea.scrollHeight; }
-        function removeTyping(){ let el=document.getElementById('aiTyping'); if(el) el.remove(); }
-        function getAllTasksText(){ let out=''; for(let cat in taskData){ out+=`\n【${taskData[cat].title}】\n`; taskData[cat].tasks.forEach(t=>{ out+=`• ${t.name} —— ${t.requirement}\n`; }); } return out; }
-        function getFactionHistoryText(){ return `🏯 大兴王朝（BNS）完整编年史：\n━━━━━━━━━━━━━━━━━━━━\n❀ 古代史 (2023.01-2024.07)\n• 2023.01.29 墨墨创建BNS\n• 2024.03.31 墨墨回归重建\n• 2024.07.14 BNS闭关锁国\n❀ 近代史鼎盛 (2025.06-2026.01)\n• 2025.08.21 创建交流群，鼎盛时期\n• 2025.12.29 大型团建\n❀ 现代史 (2026.02-至今)\n• 2026.02.11 墨墨恢复统治\n• 2026.04.19 改组TVO综合营\n• 现今传奇派系，持续活跃。`; }
-        async function getAIResponse(msg,userName){
-            const lower=msg.toLowerCase();
-            if(lower.includes('查询所有载具')||lower.includes('所有任务')||lower.includes('全部载具')) return `📋 以下是所有任务分类及解锁条件：${getAllTasksText()}\n你可以使用「追踪」功能记录需要完成的任务。`;
-            if(lower.includes('派系历史')||lower.includes('bns历史')||lower.includes('大兴王朝')) return getFactionHistoryText();
-            for(let cat in taskData) for(let task of taskData[cat].tasks) if(lower.includes(task.name.toLowerCase())||(lower.includes('解锁')&&lower.includes(task.name.split(' ')[0].toLowerCase()))) return `🎯 【${task.name}】解锁条件：${task.requirement}\n💡 小贴士：点击任务卡片“加入追踪”可记录进度。`;
-            if(lower.includes('成就')||lower.includes('奖杯')){ let unowned=Object.keys(achievementsDB).filter(id=>!userAchievements.some(a=>a.id===id)); if(unowned.length===0) return "🏆 恭喜！你已经解锁了全部成就！"; let hint=unowned.map(id=>`• ${achievementsDB[id].name}：${achievementsDB[id].desc}`).join('\n'); return `✨ 未解锁成就：\n${hint}`; }
-            if(lower.includes('追踪清单')||lower.includes('我的追踪')){ if(trackedTasks.length===0) return "📭 追踪清单为空，在任务卡片上点击「加入追踪」即可添加。"; let list=trackedTasks.map((t,i)=>`${i+1}. ${t.name} —— ${t.requirement.substring(0,60)}`).join('\n'); return `📋 你的专属追踪清单：\n${list}`; }
-            if(lower.includes('速刷')||lower.includes('快速完成')) return `⚡ 速刷建议：\n• 坦克任务：优先占领高收益据点，组队偷零件箱。\n• 飞机任务：利用空对地导弹刷地面载具。\n• 直升机任务：低空机动快速摧毁目标。`;
-            if(lower.includes('你好')||lower.includes('嗨')) return `👋 你好${userName?', '+userName:'指挥官'}！我是 ZentAi。我可以帮你查询所有载具、讲述派系历史、查看成就攻略或追踪任务进度。`;
-            return `我可以帮你查询所有载具、讲述派系历史、追踪任务清单或成就攻略。请具体提问。`;
+        // ========== 新的简化版 AI 逻辑（基于用户要求） ==========
+        const vehicleDB = {
+            tanks: [
+                "M1 Abrams",
+                "T-14 Armata",
+                "KF51 Panther",
+                "Challenger 2"
+            ],
+            aircraft: [
+                "F-22 Raptor",
+                "Su-57",
+                "Darkstar",
+                "J-36"
+            ],
+            helicopters: [
+                "AH-64 Apache",
+                "Ka-52",
+                "Mi-28"
+            ]
+        };
+
+        function zentAI(message) {
+            const q = message.toLowerCase();
+            if(q.includes("飞机") || q.includes("战机")){
+                return `✈️ 战机列表：\n\n${vehicleDB.aircraft.join("\n")}`;
+            }
+            if(q.includes("坦克")){
+                return `🛡️ 坦克列表：\n\n${vehicleDB.tanks.join("\n")}`;
+            }
+            if(q.includes("直升机")){
+                return `🚁 直升机列表：\n\n${vehicleDB.helicopters.join("\n")}`;
+            }
+            if(q.includes("推荐")){
+                return `⭐ ZentAI 推荐：\n\n1. F-22 Raptor\n2. KF51 Panther\n3. AH-64 Apache\n\n适合新手与进阶玩家。`;
+            }
+            if(q.includes("新手")){
+                return `🎯 新手推荐：\n\n1. Abrams\n2. Apache\n3. F-16\n\n先解锁地面载具再发展空军。`;
+            }
+            return `🤖 ZentAI Ultra\n\n我能帮你：\n\n• 查询载具\n• 查询任务\n• 推荐解锁顺序\n• 飞机资料\n• 坦克资料\n• 直升机资料\n\n请直接输入问题。`;
         }
-        async function handleAsk(){ let msg=aiInput.value.trim(); if(!msg) return; addMsg(msg,true); aiInput.value=''; showTyping(); let userName=localStorage.getItem('war_tycoon_name')||'指挥官'; let reply=await getAIResponse(msg,userName); setTimeout(()=>{ removeTyping(); addMsg(reply,false); },400); }
-        aiSend?.addEventListener('click',handleAsk);
-        aiInput?.addEventListener('keypress',(e)=>{ if(e.key==='Enter') handleAsk(); });
+        
+        // AI 界面交互
+        const aiBtn = document.getElementById('aiFloatingBtn');
+        const aiWindow = document.getElementById('aiChatWindow');
+        const closeAi = document.getElementById('closeAiWindow');
+        const aiInput = document.getElementById('aiInput');
+        const aiSend = document.getElementById('aiSendBtn');
+        const aiMsgArea = document.getElementById('aiMessageArea');
+        
+        function toggleAiWindow(open) {
+            if(open) aiWindow.classList.remove('hidden-ai');
+            else aiWindow.classList.add('hidden-ai');
+        }
+        aiBtn?.addEventListener('click', () => toggleAiWindow(true));
+        closeAi?.addEventListener('click', () => toggleAiWindow(false));
+        
+        function addAiMessage(text, isUser) {
+            const bubble = document.createElement('div');
+            bubble.className = `ai-bubble ${isUser ? 'ai-user-bubble' : 'ai-bot-bubble'}`;
+            bubble.innerText = text;
+            aiMsgArea.appendChild(bubble);
+            aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
+        }
+        
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-typing';
+            typingDiv.id = 'aiTyping';
+            for(let i=0;i<3;i++) { const span = document.createElement('span'); typingDiv.appendChild(span); }
+            aiMsgArea.appendChild(typingDiv);
+            aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
+        }
+        function removeTyping() {
+            const el = document.getElementById('aiTyping');
+            if(el) el.remove();
+        }
+        
+        async function handleAiAsk() {
+            const msg = aiInput.value.trim();
+            if(!msg) return;
+            addAiMessage(msg, true);
+            aiInput.value = '';
+            showTyping();
+            const reply = zentAI(msg);
+            setTimeout(() => {
+                removeTyping();
+                addAiMessage(reply, false);
+            }, 300);
+        }
+        
+        aiSend?.addEventListener('click', handleAiAsk);
+        aiInput?.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleAiAsk(); });
         
         initPixelCanvas();
         drawPixelRain();
