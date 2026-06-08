@@ -34,7 +34,6 @@
             min-height: 100vh;
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
-            overflow-x: hidden;
         }
         .glass-card {
             background: rgba(18, 25, 45, 0.65);
@@ -247,7 +246,7 @@
         }
         .dynamic-hidden { display: none !important; }
 
-        /* AI 助手样式 - 独立滚动 */
+        /* AI 助手样式 */
         .ai-floating-btn {
             position: fixed;
             bottom: 24px;
@@ -290,7 +289,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0;
         }
         .ai-message-area {
             flex: 1;
@@ -345,7 +343,6 @@
             background: rgba(0,0,0,0.3);
             display: flex;
             gap: 10px;
-            flex-shrink: 0;
         }
         .ai-input-area input {
             flex: 1;
@@ -665,4 +662,4 @@
 
     <!-- 成就 / 追踪 / 详情模态框 -->
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl"><div class="p-5"><div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold text-white"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3><button onclick="closeAchievementModal()" class="text-gray-400">×</button></div><div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto"></div></div></div></div>
-    <div id
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 back
