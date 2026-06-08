@@ -34,6 +34,7 @@
             min-height: 100vh;
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
+            overflow-x: hidden;
         }
         .glass-card {
             background: rgba(18, 25, 45, 0.65);
@@ -246,7 +247,7 @@
         }
         .dynamic-hidden { display: none !important; }
 
-        /* AI 助手样式 */
+        /* AI 助手样式 - 独立滚动 */
         .ai-floating-btn {
             position: fixed;
             bottom: 24px;
@@ -289,6 +290,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
         .ai-message-area {
             flex: 1;
@@ -343,6 +345,7 @@
             background: rgba(0,0,0,0.3);
             display: flex;
             gap: 10px;
+            flex-shrink: 0;
         }
         .ai-input-area input {
             flex: 1;
@@ -662,214 +665,4 @@
 
     <!-- 成就 / 追踪 / 详情模态框 -->
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl"><div class="p-5"><div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold text-white"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3><button onclick="closeAchievementModal()" class="text-gray-400">×</button></div><div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto"></div></div></div></div>
-    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl"><div class="p-6"><div class="flex justify-between"><div><span id="modal-category" class="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400">×</button></div><div class="bg-gray-900/80 rounded-xl p-4 mt-3"><p class="text-xs text-gray-500">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100"></p></div><div class="flex space-x-2 pt-4"><button id="modal-track-btn" class="flex-1 bg-blue-600 text-white font-bold py-2 rounded-xl">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 text-gray-200 font-bold py-2 rounded-xl">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 opacity-0 transition-opacity mt-2"></p></div></div></div>
-    <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl"><div class="p-6"><div class="flex justify-between"><h3 class="text-lg font-bold text-white">我的追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto mt-3"></div><div class="border-t border-gray-800 pt-4 flex justify-between"><span class="text-xs text-gray-500">浏览器储存</span><button onclick="clearAllTracked()" class="text-xs text-red-400">全部清除</button></div></div></div></div>
-
-    <!-- 彩蛋页面（完整内容） -->
-    <div id="easteregg-page" class="fixed inset-0 z-50 bg-darkBg easter-egg-bg hidden overflow-y-auto">
-        <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
-            <div class="max-w-5xl w-full space-y-10">
-                <div class="glass-card p-6 shadow-2xl">
-                    <div class="bg-gradient-to-r from-slate-800 to-gray-900 px-4 py-2 border-b border-indigo-500/30 flex items-center justify-between rounded-t-2xl">
-                        <div class="flex items-center gap-3"><button onclick="hideEasterEggPage()" class="flex items-center gap-1 text-gray-300 hover:text-white transition text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-md px-2 py-1"><i class="fa-solid fa-arrow-left text-[10px]"></i><span>返回主页</span></button><div class="flex items-center gap-2"><i class="fa-solid fa-terminal text-cyan-400 text-sm"></i><span class="font-mono text-cyan-300 text-xs font-bold">~/developer_den</span></div></div>
-                        <div class="text-[10px] text-gray-400"><span>© 彩蛋模式·致敬创作者</span></div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex flex-col md:flex-row gap-6">
-                            <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3">
-                                <div class="relative geoffrey-avatar float-slow"><div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow"><i class="fa-solid fa-user-ninja text-6xl text-white"></i></div><div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div></div>
-                                <div><p class="font-mono text-cyan-300 text-sm">✨ 首席架构师 ✨</p><p class="text-2xl font-bold text-white">GeoffreyLei</p><p class="text-blue-300 text-sm">「键盘为剑，代码为盾」</p></div>
-                            </div>
-                            <div class="md:w-2/3 space-y-4">
-                                <div class="bg-black/40 rounded-xl p-4 border border-gray-700"><div class="flex items-center gap-2 mb-3"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="text-xs text-gray-400 ml-2">~/war-tycoon/secret_script.js</span></div><div class="font-mono text-sm space-y-1"><p class="text-cyan-400"><span class="text-pink-400">const</span> <span class="text-yellow-300">coder</span> = {</p><p class="text-gray-300 pl-4">name: <span class="text-green-300">"GeoffreyLei"</span>,</p><p class="text-gray-300 pl-4">passion: <span class="text-green-300">"Open Source & Game Dev"</span>,</p><p class="text-gray-300 pl-4">working: <span class="text-green-300">true</span>,</p><p class="text-gray-300 pl-4">skill: [<span class="text-blue-300">"HTML"</span>, <span class="text-blue-300">"CSS"</span>, <span class="text-blue-300">"JS"</span>, <span class="text-blue-300">"Tailwind"</span>]</p><p class="text-cyan-400">};</p><p class="text-gray-400 mt-2"><span class="text-purple-400">function</span> <span class="text-yellow-300">buildEasterEgg</span>() {</p><p class="text-gray-400 pl-4"><span class="text-green-300">console</span>.<span class="text-yellow-300">log</span>(<span class="text-orange-300">"🔒 秘密基地已解锁 🔒"</span>);</p><p class="text-gray-400 pl-4"><span class="text-blue-300">return</span> <span class="text-green-300">"在电脑桌前编写下一段传奇"</span>;</p><p class="text-purple-400">}</p><div class="code-typing inline-block text-blue-400 text-xs mt-2">正在部署新功能...</div></div></div>
-                                <div class="bg-gradient-to-r from-indigo-950/40 to-purple-950/40 rounded-xl p-4 border border-indigo-400/30"><div class="flex items-center gap-2 border-b border-indigo-400/20 pb-2 mb-3"><i class="fa-solid fa-video text-pink-400"></i><span class="text-xs font-bold text-indigo-300">LIVE · 动态编码室</span><span class="typing-dot"></span></div><div class="space-y-2 text-xs font-mono"><p class="text-green-400"><span class="text-gray-300">$&gt;</span> 编译战争模块...</p><p class="text-cyan-300 animate-pulse">[INFO] 正在加载派系引擎</p><p class="text-yellow-300"><span class="text-gray-500">&gt;&gt;</span> 敲击键盘: <span class="inline-block keyboard-glow">████████░░ 78%</span></p><div class="flex gap-1 mt-1"><div class="h-1 w-6 bg-blue-500 rounded-sm animate-pulse"></div><div class="h-1 w-8 bg-purple-500 rounded-sm animate-pulse delay-75"></div><div class="h-1 w-4 bg-pink-500 rounded-sm animate-pulse delay-150"></div></div><p class="text-gray-400 flex items-center gap-1">🔒 <span>coding in progress</span> <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span></p><p class="text-gray-500 text-[10px] italic">AI生成</p></div><div class="text-center text-[10px] text-gray-400 mt-3 border-t border-indigo-500/20 pt-2">🔍 实时动态 · 键盘与灵感共振</div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-6 flex flex-col items-center border border-pink-500/30">
-                    <div class="relative mb-4"><div class="w-48 h-48 rounded-full clover-orange-bg flex items-center justify-center shadow-xl" style="box-shadow: 0 0 20px rgba(251,146,60,0.6);"><div class="heptagram-2d"><svg width="180" height="180" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><g stroke="#666666" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="200,40 337.5,107.5 326.4,262.5 142.5,357.5 57.5,197.5 142.5,42.5 326.4,137.5 57.5,262.5 142.5,107.5 337.5,262.5 57.5,137.5 326.4,42.5 142.5,262.5 200,40"/></g></svg></div></div></div>
-                    <div class="text-center space-y-2"><p class="font-mono text-pink-300 text-sm">👑 首席执行官 👑</p><p class="text-2xl font-bold text-white">CloverMo</p><p class="text-amber-300 text-sm">Harma工作室™️ CEO</p><div class="mt-3 px-4 py-2 bg-amber-500/20 rounded-full inline-block border border-amber-500/30"><p class="text-amber-300 text-xs italic">「执码领团，破界拓新」</p></div></div>
-                </div>
-                <div class="text-center text-[10px] text-gray-500 pt-2"><i class="fa-solid fa-dragon"></i> 彩蛋·致敬每一位创作者 | Harma工作室</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI 助手 -->
-    <div id="aiAssistantContainer">
-        <div id="aiFloatingBtn" class="ai-floating-btn"><i class="fa-regular fa-message text-white text-2xl"></i></div>
-        <div id="aiChatWindow" class="ai-chat-window hidden-ai"><div class="ai-header"><div class="flex items-center gap-2"><i class="fa-solid fa-brain text-blue-400"></i><span class="font-bold text-white">ZentAi</span></div><button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div><div id="aiMessageArea" class="ai-message-area"><div class="ai-bubble ai-bot-bubble">你好</div></div><div class="ai-input-area"><input type="text" id="aiInput" placeholder="输入问题" autocomplete="off"><div id="aiSendBtn" class="ai-send-btn"><i class="fa-regular fa-paper-plane text-white"></i></div></div></div>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('pixel-canvas');
-        let ctx, width, height, columns, drops, pixelSize=10;
-        function initPixelCanvas(){ canvas=document.getElementById('pixel-canvas'); if(!canvas) return; ctx=canvas.getContext('2d'); width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); }
-        function drawPixelRain(){ if(!ctx) return; ctx.fillStyle="rgba(0,0,0,0.1)"; ctx.fillRect(0,0,width,height); ctx.fillStyle="#ffffff"; for(let i=0;i<drops.length;i++){ ctx.fillRect(i*pixelSize, drops[i]*pixelSize, pixelSize-1, pixelSize-1); if(drops[i]*pixelSize>height && Math.random()>0.975) drops[i]=0; drops[i]++; } requestAnimationFrame(drawPixelRain); }
-        window.addEventListener('resize',()=>{ if(ctx){ width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); } });
-        
-        let users = JSON.parse(localStorage.getItem('war_tycoon_users')) || [];
-        let isLoggedIn = localStorage.getItem('war_tycoon_logged_in') === 'true';
-        function saveUsers(){ localStorage.setItem('war_tycoon_users',JSON.stringify(users)); }
-        function setDynamicBg(visible){ const bg=document.getElementById('dynamicBg'); if(bg) visible ? bg.classList.remove('dynamic-hidden') : bg.classList.add('dynamic-hidden'); }
-        
-        function showMainApp(){
-            document.getElementById('loginModal').classList.add('hidden');
-            document.getElementById('main-app').style.display = 'block';
-            setDynamicBg(false);
-            const ai=document.getElementById('aiAssistantContainer');
-            if(ai) ai.style.display = 'block';
-            initAchievements();
-            renderTaskSections();
-            updateTrackerBadge();
-        }
-        function showLogin(){
-            document.getElementById('loginModal').classList.remove('hidden');
-            document.getElementById('main-app').style.display = 'none';
-            setDynamicBg(true);
-            const ai=document.getElementById('aiAssistantContainer');
-            if(ai) ai.style.display = 'none';
-        }
-        
-        // 登录
-        document.getElementById('loginFormNew').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('loginNameNew').value.trim();
-            const pwd = document.getElementById('loginPwdNew').value.trim();
-            const remember = document.getElementById('rememberMeNew').checked;
-            const msgDiv = document.getElementById('loginMsgNew');
-            if(!name || !pwd){ msgDiv.innerText='请填写完整'; msgDiv.classList.add('err'); return; }
-            const user = users.find(u=>u.name===name);
-            if(!user){ msgDiv.innerText='该名字未注册'; msgDiv.classList.add('err'); return; }
-            if(user.password !== pwd){ msgDiv.innerText='密码错误'; msgDiv.classList.add('err'); return; }
-            localStorage.setItem('war_tycoon_logged_in','true');
-            localStorage.setItem('war_tycoon_user',name);
-            localStorage.setItem('war_tycoon_name',name);
-            if(remember){
-                localStorage.setItem('remembered_name',name);
-                localStorage.setItem('remembered_password',pwd);
-            }else{
-                localStorage.removeItem('remembered_name');
-                localStorage.removeItem('remembered_password');
-            }
-            msgDiv.innerText='登录成功！';
-            msgDiv.classList.add('ok');
-            isLoggedIn=true;
-            showMainApp();
-        });
-        // 注册
-        document.getElementById('registerFormNew').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('regNameNew').value.trim();
-            const pwd = document.getElementById('regPwdNew').value.trim();
-            const confirm = document.getElementById('regConfirmNew').value.trim();
-            const msgDiv = document.getElementById('registerMsgNew');
-            if(!name || !pwd || pwd!==confirm){ msgDiv.innerText='请正确填写'; msgDiv.classList.add('err'); return; }
-            if(users.find(u=>u.name===name)){ msgDiv.innerText='名字已存在'; msgDiv.classList.add('err'); return; }
-            users.push({name,password:pwd});
-            saveUsers();
-            msgDiv.innerText='注册成功！请登录';
-            msgDiv.classList.add('ok');
-            document.getElementById('loginTabBtn').click();
-            document.getElementById('loginNameNew').value = name;
-        });
-        
-        // 选项卡切换（修复无法跳转）
-        const loginTabBtn = document.getElementById('loginTabBtn');
-        const registerTabBtn = document.getElementById('registerTabBtn');
-        const loginFormWrap = document.getElementById('loginFormWrap');
-        const registerFormWrap = document.getElementById('registerFormWrap');
-        function switchToLogin() {
-            loginTabBtn.classList.add('active');
-            registerTabBtn.classList.remove('active');
-            loginFormWrap.classList.add('active');
-            registerFormWrap.classList.remove('active');
-        }
-        function switchToRegister() {
-            registerTabBtn.classList.add('active');
-            loginTabBtn.classList.remove('active');
-            registerFormWrap.classList.add('active');
-            loginFormWrap.classList.remove('active');
-        }
-        loginTabBtn.addEventListener('click', switchToLogin);
-        registerTabBtn.addEventListener('click', switchToRegister);
-        
-        document.getElementById('logoutBtn').addEventListener('click',()=>{
-            localStorage.removeItem('war_tycoon_logged_in');
-            localStorage.removeItem('war_tycoon_user');
-            isLoggedIn=false;
-            showLogin();
-        });
-        
-        // 成就系统
-        const achievementsDB={"first_visit":{name:"初来乍到",desc:"首次打开网站",icon:"fa-door-open"},"tank_category":{name:"装甲先锋",desc:"点击坦克分类",icon:"fa-tank"},"helicopter_category":{name:"旋翼骑士",desc:"点击直升机",icon:"fa-helicopter"},"airplane_category":{name:"空中之鹰",desc:"点击飞机",icon:"fa-plane"},"hovercraft_category":{name:"气垫狂徒",desc:"点击悬空载具",icon:"fa-water"},"ship_category":{name:"深海幽灵",desc:"点击船舰",icon:"fa-ship"},"easter_egg":{name:"秘境探索者",desc:"点击彩蛋",icon:"fa-dragon"}};
-        let userAchievements=JSON.parse(localStorage.getItem('war_tycoon_achievements'))||[];
-        function saveAchievements(){ localStorage.setItem('war_tycoon_achievements',JSON.stringify(userAchievements)); renderAchievementList(); }
-        function unlockAchievement(id){ if(!isLoggedIn||!achievementsDB[id]) return; if(!userAchievements.find(a=>a.id===id)){ userAchievements.push({id,unlockedAt:new Date().toLocaleString()}); saveAchievements(); showAchievementToast(id); } }
-        function showAchievementToast(id){ const ach=achievementsDB[id]; if(!ach) return; const toast=document.createElement('div'); toast.className='achievement-toast'; toast.innerHTML=`<i class="fa-solid ${ach.icon}"></i><div><div>🏆 成就解锁！</div><div>${ach.name} - ${ach.desc}</div></div>`; document.body.appendChild(toast); setTimeout(()=>toast.classList.add('show'),10); setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(),300); },4000); }
-        function renderAchievementList(){ const container=document.getElementById('achievement-list'); if(!container) return; container.innerHTML=userAchievements.map(ach=>{ const m=achievementsDB[ach.id]; return m?`<div class="achievement-item"><i class="fa-solid ${m.icon}"></i><div><div class="achievement-name">${m.name}</div><div class="achievement-desc">${m.desc}</div></div><div class="achievement-date">${ach.unlockedAt}</div></div>`:''; }).join('')||'<div class="text-center text-gray-500">暂无成就</div>'; }
-        function openAchievementModal(){ const modal=document.getElementById('achievement-modal'); renderAchievementList(); modal.classList.remove('opacity-0','pointer-events-none'); }
-        function closeAchievementModal(){ document.getElementById('achievement-modal').classList.add('opacity-0','pointer-events-none'); }
-        function initAchievements(){ if(!userAchievements.find(a=>a.id==='first_visit')) unlockAchievement('first_visit'); else renderAchievementList(); }
-        
-        // 任务数据（完整）
-        const taskData={
-            "tank":{title:"坦克任务",tasks:[{name:"M3布拉德利",requirement:"花费 40 个坦克零件"},{name:"威斯尔1MK20",requirement:"使用 15 次空投呼召"},{name:"威斯尔1拖车Ⅱ型",requirement:"使用 1MK20 摧毁 20 辆地面载具"},{name:"T72",requirement:"使用坦克击杀 30 人"},{name:"ADATS",requirement:"摧毁 60 架飞行器"},{name:"维塞尔1防空",requirement:"使用 1MK20 摧毁 20 辆地面载具"},{name:"M1艾布拉姆斯",requirement:"使用坦克摧毁 30 辆坦克 & 偷取 10 个零件箱"},{name:"K9雷霆SPG",requirement:"摧毁 60 辆地面载具 & 300 米外击杀 40 人"},{name:"豹子2A7",requirement:"摧毁 35 辆坦克 & 驾驶 600 秒坦克"},{name:"失败任务",requirement:"占领捕捉点 1800 秒 & 使用坦克 200 米外击杀 20 人"},{name:"T90",requirement:"使用坦克摧毁 45 辆坦克 & 花费 100 个坦克零件"},{name:"PL_01",requirement:"使用坦克摧毁 40 辆地面载具 & 驾驶 1500 秒坦克"},{name:"MAUS",requirement:"坦克受到 10 万伤害 & 找到 4 个隐藏车辆部件"},{name:"T14",requirement:"收集 10 桶石油 & 使用坦克 200 米外击杀 40 人 & 使用坦克击杀 75 人"},{name:"挑战者Ⅱ黑色夜晚",requirement:"坦克受到 12 万伤害 & 收集 10 架坠毁的无人机 & 使用 50 次主动保护系统"},{name:"KF_51豹子",requirement:"花费 200 个坦克零件 & 占领捕捉点 3000 秒 & 使用坦克击杀 100 人"}]},
-            "helicopter":{title:"直升机任务",tasks:[{name:"UH60_黑鹰",requirement:"救起 10 个玩家"},{name:"欧洲直升机老虎",requirement:"摧毁 40 辆车辆"},{name:"无敌",requirement:"使用直升机摧毁 45 架直升机 & 驾驶直升机通过圆环获取 45 积分"},{name:"AH_64阿帕奇",requirement:"使用直升机击杀 25 人 & 占领捕捉点 1500 秒"},{name:"KA_52鳄鱼",requirement:"摧毁 30 架直升机 & 使用直升机 200 米外击杀 20 人"},{name:"直10",requirement:"花费 100 个船舰零件 & 使用直升机对任何载具造成 5 万伤害"},{name:"超级种马",requirement:"使用直升机摧毁 20 辆船舰 & 收集 5 桶石油"},{name:"AH_1Z毒蛇",requirement:"使用直升机摧毁 50 辆地面载具 & 占领捕捉点 1200 秒"},{name:"咆哮者X",requirement:"使用直升机摧毁 20 架飞机 & 使用直升机摧毁 20 辆车库车辆 & 驾驶直升机通过圆环获取 200 积分"},{name:"A129芒果",requirement:"花费 200 个直升机零件 & 使用直升机摧毁 40 架飞机 & 使用直升机击杀 12 人"}]},
-            "airplane":{title:"飞机任务",tasks:[{name:"B_29",requirement:"占领捕捉点 1800 秒"},{name:"F_14",requirement:"使用飞机摧毁 30 架直升机"},{name:"Ju57斯图卡",requirement:"使用飞机摧毁 15 辆坦克"},{name:"F_4",requirement:"使用飞机击杀 30 人"},{name:"米格_29",requirement:"使用飞机摧毁 25 架飞机"},{name:"A_10",requirement:"使用飞机摧毁 50 辆地面载具 & 飞机受到 4 万伤害"},{name:"JAS_39",requirement:"占领捕捉点 1800 秒 & 使用飞机击杀 50 人"},{name:"F_15E",requirement:"使用飞机摧毁 60 辆地面载具 & 使用飞机 200 米外击杀 40 人"},{name:"F_18",requirement:"使用飞机摧毁 40 辆船舰 & 花费 100 个飞机零件"},{name:"苏57",requirement:"花费 100 个飞机零件 & 使用飞机摧毁 30 架飞机"},{name:"欧洲战斗机台风",requirement:"使用飞机摧毁车辆 & 偷取 5 个零件箱"},{name:"阵风",requirement:"使用飞机摧毁 20 辆船舰 & 使用飞机摧毁 60 架飞行器"},{name:"F_16",requirement:"摧毁 30 架飞机 & 花费 60 个飞机零件"},{name:"F_22",requirement:"驾驶飞机通过圆环收集 400 积分 & 占领捕捉点 1800 秒 & 使用飞机击杀 100 人"},{name:"夜鹰",requirement:"使用飞机炸弹击杀 25 人 & 占领捕捉点 1800 秒 & 偷取 10 个零件箱"},{name:"黑暗之星",requirement:"花费 10 个升级点数 & 偷取 10 个零件箱 & 收集 10 架坠毁的无人机"},{name:"歼36",requirement:"收集 10 架坠毁的无人机 & 使用飞机摧毁 20 辆船舰 & 花费 100 个飞机零件"}]},
-            "hovercraft":{title:"悬空载具",tasks:[{name:"PACV_78突击",requirement:"使用气垫船摧毁 40 辆地面载具"},{name:"PACV_77风镰",requirement:"使用气垫船摧毁 30 架飞行器"},{name:"QBZ_95",requirement:"使用自动武器 50 米外击杀 30 人"},{name:"C4",requirement:"使用手榴弹击杀 15 人 & 摧毁 10 辆地面车辆"},{name:"QBJ_LMG",requirement:"偷取 10 个零件箱 & 使用自动武器击杀 20 人"},{name:"AVH猎人",requirement:"使用气垫船摧毁 60 辆地面载具 & 使用气垫船撞倒 300 物品 & 驾驶气垫船 1800 秒"}]},
-            "ship":{title:"船舰与潜艇",tasks:[{name:"PG02",requirement:"使用船舰击杀 25 人"},{name:"法尔米尔",requirement:"收集 10 桶海洋沉船石油"},{name:"KSG_12",requirement:"使用夹弹枪击杀 20 人 & 收集 4 桶石油"},{name:"道格拉斯号",requirement:"使用船舰摧毁 40 辆载具 & 占领捕捉点 1800 秒"},{name:"PP_19Bizon",requirement:"使用自动武器击杀 25 人 & 偷取 2 个零件箱"},{name:"Pr.206",requirement:"使用船舰摧毁 20 辆敌方船舰"},{name:"USS独立号",requirement:"使用船舰摧毁 125 辆载具或者船舰 & 占领捕捉点 1500 秒 & 收集 10 桶石油"}]}
-        };
-        let trackedTasks=JSON.parse(localStorage.getItem('wtt_tracked'))||[];
-        let activeModalTask=null;
-        function renderTaskSections(filter=""){ const container=document.getElementById('tasks-container'); if(!container)return; container.innerHTML=''; Object.keys(taskData).forEach(key=>{ let cat=taskData[key]; let tasks=cat.tasks; if(filter && !tasks.some(t=>t.name.toLowerCase().includes(filter))) return; let section=document.createElement('section'); section.className="space-y-4 scroll-mt-20"; section.innerHTML=`<div class="border-b border-gray-800 pb-2"><h2 class="text-xl font-bold text-white">${cat.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">${tasks.map((task,idx)=>`<div onclick="openTaskDetail('${key}',${idx})" class="task-card p-4 cursor-pointer"><div class="text-xs text-blue-400">载具</div><h4 class="text-sm font-bold text-white">${task.name}</h4>${trackedTasks.some(t=>t.name===task.name)?'<span class="text-green-400 text-[10px]">追踪中</span>':''}</div>`).join('')}</div>`; container.appendChild(section);});}
-        function openTaskDetail(cat,idx){ let task=taskData[cat].tasks[idx]; activeModalTask={...task,categoryTitle:taskData[cat].title}; document.getElementById('modal-category').innerText=taskData[cat].title; document.getElementById('modal-title').innerText=task.name; document.getElementById('modal-requirement').innerText=task.requirement; let isTracked=trackedTasks.some(t=>t.name===task.name); updateModalTrackButtonState(isTracked); document.getElementById('detail-modal').classList.remove('opacity-0','pointer-events-none'); }
-        function updateModalTrackButtonState(isTracked){ let btn=document.getElementById('modal-track-btn'); if(isTracked){ btn.innerText='取消追踪'; btn.className='flex-1 bg-red-600/20 text-red-400 border border-red-500/20 font-bold py-2 rounded-xl'; }else{ btn.innerText='加入追踪'; btn.className='flex-1 bg-blue-600 text-white font-bold py-2 rounded-xl'; } }
-        window.toggleTrackCurrent=function(){ if(activeModalTask){ let name=activeModalTask.name; let idx=trackedTasks.findIndex(t=>t.name===name); if(idx>-1) trackedTasks.splice(idx,1); else trackedTasks.push({name,category:activeModalTask.categoryTitle,requirement:activeModalTask.requirement}); localStorage.setItem('wtt_tracked',JSON.stringify(trackedTasks)); updateTrackerBadge(); renderTaskSections(document.getElementById('search-input')?.value||''); updateModalTrackButtonState(trackedTasks.some(t=>t.name===name)); let toast=document.getElementById('modal-toast'); if(toast){ toast.innerText=idx>-1?'已取消追踪':'已追踪'; toast.classList.remove('opacity-0'); setTimeout(()=>toast.classList.add('opacity-0'),1500);} } };
-        function updateTrackerBadge(){ let badge=document.getElementById('tracker-badge'); if(trackedTasks.length>0){ badge.innerText=trackedTasks.length; badge.classList.remove('hidden'); }else badge.classList.add('hidden'); }
-        function closeModal(){ document.getElementById('detail-modal').classList.add('opacity-0','pointer-events-none'); }
-        function copyCurrentRequirement(){ if(activeModalTask){ navigator.clipboard.writeText(`${activeModalTask.name} : ${activeModalTask.requirement}`); let toast=document.getElementById('modal-toast'); if(toast){ toast.innerText="已复制"; toast.classList.remove('opacity-0'); setTimeout(()=>toast.classList.add('opacity-0'),1500);} } }
-        function openTrackerModal(){ let modal=document.getElementById('tracker-modal'); document.getElementById('tracker-list-content').innerHTML=trackedTasks.map(t=>`<div class="p-2 bg-gray-900 rounded flex justify-between"><div><span class="text-blue-400">[${t.category}]</span><span>${t.name}</span></div><button onclick="toggleTrackDirectly('${t.name}')" class="text-red-400">×</button></div>`).join('')||'<p class="text-center text-gray-500">暂无追踪</p>'; modal.classList.remove('opacity-0','pointer-events-none'); }
-        function toggleTrackDirectly(name){ trackedTasks=trackedTasks.filter(t=>t.name!==name); localStorage.setItem('wtt_tracked',JSON.stringify(trackedTasks)); updateTrackerBadge(); renderTaskSections(document.getElementById('search-input')?.value||''); if(document.getElementById('tracker-modal')&&!document.getElementById('tracker-modal').classList.contains('opacity-0')) openTrackerModal(); }
-        function closeTrackerModal(){ document.getElementById('tracker-modal').classList.add('opacity-0','pointer-events-none'); }
-        function clearAllTracked(){ trackedTasks=[]; localStorage.setItem('wtt_tracked','[]'); updateTrackerBadge(); renderTaskSections(document.getElementById('search-input')?.value||''); openTrackerModal(); }
-        function searchTasks(){ let val=document.getElementById('search-input').value; renderTaskSections(val); }
-        function scrollToSection(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
-        function showEasterEggPage(){ document.getElementById('main-app').style.display='none'; document.getElementById('easteregg-page').classList.remove('hidden'); const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='none'; }
-        function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
-        
-        // AI 逻辑
-        const aiBtn = document.getElementById('aiFloatingBtn'), aiWindow = document.getElementById('aiChatWindow'), closeAi = document.getElementById('closeAiWindow');
-        const aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSendBtn'), aiMsgArea = document.getElementById('aiMessageArea');
-        let convHistory = [];
-        function toggleAiWindow(open){ if(open) aiWindow.classList.remove('hidden-ai'); else aiWindow.classList.add('hidden-ai'); }
-        aiBtn?.addEventListener('click',()=>toggleAiWindow(true));
-        closeAi?.addEventListener('click',()=>toggleAiWindow(false));
-        function addMsg(text,isUser){ let bubble=document.createElement('div'); bubble.className=`ai-bubble ${isUser?'ai-user-bubble':'ai-bot-bubble'}`; bubble.innerText=text; aiMsgArea.appendChild(bubble); aiMsgArea.scrollTop=aiMsgArea.scrollHeight; convHistory.push({role:isUser?'user':'assistant',content:text}); if(convHistory.length>20) convHistory.shift(); }
-        function showTyping(){ let div=document.createElement('div'); div.className='ai-typing'; div.id='aiTyping'; for(let i=0;i<3;i++){ let span=document.createElement('span'); div.appendChild(span); } aiMsgArea.appendChild(div); aiMsgArea.scrollTop=aiMsgArea.scrollHeight; }
-        function removeTyping(){ let el=document.getElementById('aiTyping'); if(el) el.remove(); }
-        function getAllTasksText(){ let out=''; for(let cat in taskData){ out+=`\n【${taskData[cat].title}】\n`; taskData[cat].tasks.forEach(t=>{ out+=`• ${t.name} —— ${t.requirement}\n`; }); } return out; }
-        function getFactionHistoryText(){ return `🏯 大兴王朝（BNS）完整编年史：\n━━━━━━━━━━━━━━━━━━━━\n❀ 古代史 (2023.01-2024.07)\n• 2023.01.29 墨墨创建BNS\n• 2024.03.31 墨墨回归重建\n• 2024.07.14 BNS闭关锁国\n❀ 近代史鼎盛 (2025.06-2026.01)\n• 2025.08.21 创建交流群，鼎盛时期\n• 2025.12.29 大型团建\n❀ 现代史 (2026.02-至今)\n• 2026.02.11 墨墨恢复统治\n• 2026.04.19 改组TVO综合营\n• 现今传奇派系，持续活跃。`; }
-        async function getAIResponse(msg,userName){
-            const lower=msg.toLowerCase();
-            if(lower.includes('查询所有载具')||lower.includes('所有任务')||lower.includes('全部载具')) return `📋 以下是所有任务分类及解锁条件：${getAllTasksText()}\n你可以使用「追踪」功能记录需要完成的任务。`;
-            if(lower.includes('派系历史')||lower.includes('bns历史')||lower.includes('大兴王朝')) return getFactionHistoryText();
-            for(let cat in taskData) for(let task of taskData[cat].tasks) if(lower.includes(task.name.toLowerCase())||(lower.includes('解锁')&&lower.includes(task.name.split(' ')[0].toLowerCase()))) return `🎯 【${task.name}】解锁条件：${task.requirement}\n💡 小贴士：点击任务卡片“加入追踪”可记录进度。`;
-            if(lower.includes('成就')||lower.includes('奖杯')){ let unowned=Object.keys(achievementsDB).filter(id=>!userAchievements.some(a=>a.id===id)); if(unowned.length===0) return "🏆 恭喜！你已经解锁了全部成就！"; let hint=unowned.map(id=>`• ${achievementsDB[id].name}：${achievementsDB[id].desc}`).join('\n'); return `✨ 未解锁成就：\n${hint}`; }
-            if(lower.includes('追踪清单')||lower.includes('我的追踪')){ if(trackedTasks.length===0) return "📭 追踪清单为空，在任务卡片上点击「加入追踪」即可添加。"; let list=trackedTasks.map((t,i)=>`${i+1}. ${t.name} —— ${t.requirement.substring(0,60)}`).join('\n'); return `📋 你的专属追踪清单：\n${list}`; }
-            if(lower.includes('速刷')||lower.includes('快速完成')) return `⚡ 速刷建议：\n• 坦克任务：优先占领高收益据点，组队偷零件箱。\n• 飞机任务：利用空对地导弹刷地面载具。\n• 直升机任务：低空机动快速摧毁目标。`;
-            if(lower.includes('你好')||lower.includes('嗨')) return `👋 你好${userName?', '+userName:'指挥官'}！我是 ZentAi。我可以帮你查询所有载具、讲述派系历史、查看成就攻略或追踪任务进度。`;
-            return `我可以帮你查询所有载具、讲述派系历史、追踪任务清单或成就攻略。请具体提问。`;
-        }
-        async function handleAsk(){ let msg=aiInput.value.trim(); if(!msg) return; addMsg(msg,true); aiInput.value=''; showTyping(); let userName=localStorage.getItem('war_tycoon_name')||'指挥官'; let reply=await getAIResponse(msg,userName); setTimeout(()=>{ removeTyping(); addMsg(reply,false); },400); }
-        aiSend?.addEventListener('click',handleAsk);
-        aiInput?.addEventListener('keypress',(e)=>{ if(e.key==='Enter') handleAsk(); });
-        
-        initPixelCanvas();
-        drawPixelRain();
-        if(isLoggedIn) showMainApp();
-        else showLogin();
-    </script>
-</body>
-</html>
+    <div id
