@@ -71,16 +71,19 @@
             transform: translateX(6px);
         }
         .history-scroll::-webkit-scrollbar,
-        .achievement-scroll::-webkit-scrollbar {
+        .achievement-scroll::-webkit-scrollbar,
+        .ai-message-area::-webkit-scrollbar {
             width: 4px;
         }
         .history-scroll::-webkit-scrollbar-track,
-        .achievement-scroll::-webkit-scrollbar-track {
+        .achievement-scroll::-webkit-scrollbar-track,
+        .ai-message-area::-webkit-scrollbar-track {
             background: #1e293b;
             border-radius: 10px;
         }
         .history-scroll::-webkit-scrollbar-thumb,
-        .achievement-scroll::-webkit-scrollbar-thumb {
+        .achievement-scroll::-webkit-scrollbar-thumb,
+        .ai-message-area::-webkit-scrollbar-thumb {
             background: #3b82f6;
             border-radius: 10px;
         }
@@ -346,7 +349,7 @@
         }
         /* 表单切换滑动效果（原有 .formWrap 已有动画，保持不变） */
 
-        /* AI 助手样式（原样保留） */
+        /* AI 助手样式（原样保留，并增加 overscroll-behavior 防止滚动传播） */
         .ai-floating-btn {
             position: fixed;
             bottom: 24px;
@@ -397,6 +400,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            overscroll-behavior: contain;  /* 防止滚动传播到主页 */
         }
         .ai-bubble {
             max-width: 85%;
@@ -405,6 +409,7 @@
             font-size: 13px;
             line-height: 1.4;
             word-break: break-word;
+            white-space: pre-wrap;  /* 保留换行符 */
         }
         .ai-user-bubble {
             align-self: flex-end;
@@ -968,10 +973,16 @@
     <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div id="modal-header-accent" class="h-2 w-full bg-blue-500"></div><div class="p-6 space-y-4"><div class="flex justify-between items-start"><div><span id="modal-category" class="text-xs font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-400">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100 font-semibold leading-relaxed">要求详情</p></div><div class="flex space-x-2 pt-2"><button id="modal-track-btn" onclick="toggleTrackCurrent()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-sm transition">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-xl text-sm transition">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 font-medium opacity-0 transition-opacity duration-200"></p></div></div></div>
     <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div class="p-6 space-y-4"><div class="flex justify-between items-center"><h3 class="text-lg font-bold text-white">我的资料追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div><div class="border-t border-gray-800 pt-4 flex justify-between items-center"><span class="text-xs text-gray-500">提示：资料已储存于浏览器缓存中。</span><button onclick="clearAllTracked()" class="text-xs text-red-400 hover:text-red-300">全部清除</button></div></div></div></div>
 
-    <!-- AI 助手 -->
+    <!-- AI 助手（ZentAI，滚动时主页不会跟随） -->
     <div id="aiAssistantContainer">
         <div id="aiFloatingBtn" class="ai-floating-btn"><i class="fa-regular fa-message text-white text-2xl"></i></div>
-        <div id="aiChatWindow" class="ai-chat-window hidden-ai"><div class="ai-header"><div class="flex items-center gap-2"><i class="fa-solid fa-brain text-blue-400"></i><span class="font-bold text-white">ZentAi</span></div><button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div><div id="aiMessageArea" class="ai-message-area"><div class="ai-bubble ai-bot-bubble">你好</div></div><div class="ai-input-area"><input type="text" id="aiInput" placeholder="输入问题" autocomplete="off"><div id="aiSendBtn" class="ai-send-btn"><i class="fa-regular fa-paper-plane text-white"></i></div></div></div>
+        <div id="aiChatWindow" class="ai-chat-window hidden-ai">
+            <div class="ai-header"><div class="flex items-center gap-2"><i class="fa-solid fa-brain text-blue-400"></i><span class="font-bold text-white">ZentAI</span></div><button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
+            <div id="aiMessageArea" class="ai-message-area">
+                <div class="ai-bubble ai-bot-bubble">你好</div>
+            </div>
+            <div class="ai-input-area"><input type="text" id="aiInput" placeholder="输入问题" autocomplete="off"><div id="aiSendBtn" class="ai-send-btn"><i class="fa-regular fa-paper-plane text-white"></i></div></div>
+        </div>
     </div>
 
     <script>
@@ -1032,7 +1043,6 @@
             initAchievements();
             renderTaskSections();
             updateTrackerBadge();
-            // 滚动观察已通过 MutationObserver 或直接监听，在下方定义
             observeElements();
         }
         function showLogin(){
@@ -1168,7 +1178,6 @@
                 const infoText=document.getElementById('search-results-info');
                 if(infoText){ infoText.classList.remove('hidden'); infoText.innerText=`找到 ${totalMatches} 个名称相符项目`; }
             }
-            // 观察新生成的任务卡片
             setTimeout(()=>{
                 document.querySelectorAll('.task-card-item').forEach(el => observer.observe(el));
             },50);
