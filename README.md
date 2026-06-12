@@ -40,7 +40,6 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(59, 130, 246, 0.25);
             border-radius: 24px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             transition: all 0.2s ease;
         }
         .glass-card:hover {
@@ -227,7 +226,6 @@
         .achievement-toast.show {
             transform: translateX(0);
         }
-        /* 原有任务卡片样式增强（仅增加悬停效果，不改变布局） */
         .task-card {
             background: rgba(18, 25, 45, 0.7);
             backdrop-filter: blur(8px);
@@ -259,7 +257,6 @@
         .dynamic-hidden { display: none !important; }
 
         /* ========== 新增动画效果（不改变原有布局与功能） ========== */
-        /* 加载界面 */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -298,7 +295,6 @@
             70% { width: 75%; }
             100% { width: 100%; }
         }
-        /* 导航栏滑入 */
         .nav-slide {
             animation: slideDown 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
         }
@@ -306,7 +302,6 @@
             from { opacity: 0; transform: translateY(-60px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* 标题缩放淡入 */
         .title-scale {
             animation: scaleFadeIn 0.8s ease-out forwards;
         }
@@ -314,7 +309,6 @@
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-        /* 搜索栏延迟浮现 */
         .search-delay {
             animation: fadeInUp 0.6s ease-out 0.2s forwards;
             opacity: 0;
@@ -323,7 +317,6 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* 滚动触发动画（元素初始透明/位移，进入视口后显示） */
         .category-card, .task-card-item, .social-slide, .history-content, .about-item {
             opacity: 0;
             transform: translateY(30px);
@@ -333,13 +326,11 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* 分类卡片错开延迟 */
         .category-card:nth-child(1) { transition-delay: 0s; }
         .category-card:nth-child(2) { transition-delay: 0.05s; }
         .category-card:nth-child(3) { transition-delay: 0.1s; }
         .category-card:nth-child(4) { transition-delay: 0.15s; }
         .category-card:nth-child(5) { transition-delay: 0.2s; }
-        /* 登录卡片弹入动画增强 */
         .login-card-animate {
             animation: cardPop 0.5s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
         }
@@ -347,9 +338,7 @@
             from { opacity: 0; transform: scale(0.95); backdrop-filter: blur(0px); }
             to { opacity: 1; transform: scale(1); backdrop-filter: blur(10px); }
         }
-        /* 表单切换滑动效果（原有 .formWrap 已有动画，保持不变） */
-
-        /* AI 助手样式（原样保留，并增加 overscroll-behavior 防止滚动传播） */
+        /* AI 助手样式（完全保留原有位置与样式） */
         .ai-floating-btn {
             position: fixed;
             bottom: 24px;
@@ -400,7 +389,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            overscroll-behavior: contain;  /* 防止滚动传播到主页 */
+            overscroll-behavior: contain;
         }
         .ai-bubble {
             max-width: 85%;
@@ -409,7 +398,7 @@
             font-size: 13px;
             line-height: 1.4;
             word-break: break-word;
-            white-space: pre-wrap;  /* 保留换行符 */
+            white-space: pre-wrap;
         }
         .ai-user-bubble {
             align-self: flex-end;
@@ -669,7 +658,7 @@
     </style>
 </head>
 <body>
-    <!-- 新增加载界面（不影响原有内容） -->
+    <!-- 加载界面（原有） -->
     <div id="loadingScreen" class="loading-screen">
         <div style="width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #3b82f6, #a855f7); animation: pulse 1.2s infinite;"></div>
         <div style="margin-top: 20px; font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #fff, #a5b4fc); -webkit-background-clip: text; background-clip: text; color: transparent;">AVARUS</div>
@@ -678,12 +667,11 @@
         <canvas id="particleCanvas" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none;"></canvas>
     </div>
 
-    <!-- 动态白色像素雨背景（原有） -->
     <div id="dynamicBg" class="dynamic-bg-layer dynamic-hidden">
         <canvas id="pixel-canvas"></canvas>
     </div>
 
-    <!-- 登录界面（原有，添加动画类） -->
+    <!-- 登录界面（原有） -->
     <div id="loginModal" class="login-wrap">
         <div class="login-card login-card-animate">
             <div class="topbar">
@@ -745,7 +733,7 @@
         </div>
     </div>
 
-    <!-- 主页面内容（完全原有，仅添加动画类名） -->
+    <!-- 主页面内容（完全原有） -->
     <div id="main-app" style="display: none;">
         <nav class="sticky top-0 z-40 glass-nav px-4 py-3 nav-slide">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -774,7 +762,7 @@
             </div>
         </header>
         <main class="max-w-6xl mx-auto px-4 mt-2 space-y-10">
-            <!-- 任务分类快速跳转（原有结构，添加 category-card 类） -->
+            <!-- 任务分类快速跳转 -->
             <section id="category-selector" class="space-y-4">
                 <h2 class="text-base font-bold text-gray-400">选择任务分类</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -787,7 +775,7 @@
                 <div class="mt-4"><a href="https://wttd.trade/" target="_blank" class="rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 p-4 block max-w-xs text-center text-white"><h3 class="text-lg font-black">⚔ 交易市场 (wttd.trade)</h3></a></div>
             </section>
 
-            <!-- 官方社群区块（原有，添加 social-slide 类） -->
+            <!-- 官方社群区块 -->
             <section id="social-section" class="max-w-xl space-y-4">
                 <h2 class="text-lg font-bold text-gray-300">官方社群</h2>
                 <div class="space-y-3">
@@ -799,7 +787,7 @@
                 </div>
             </section>
 
-            <!-- 派系历史完整版（原有，添加 history-content 类） -->
+            <!-- 派系历史完整版 -->
             <hr class="border-gray-800 my-6" />
             <section id="faction-section" class="glass-card p-5 md:p-6 space-y-5">
                 <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700 pb-3"><h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2"><i class="fa-solid fa-landmark text-blue-400"></i> 派系 · 大兴王朝历史<span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">2023-至今</span></h2></div>
@@ -906,7 +894,7 @@
                 <div class="text-right text-[11px] text-gray-500 border-t border-gray-700 pt-3 mt-1"><i class="fa-regular fa-clock"></i> 派系纪实 · 源于BNS / 大兴王朝编年史</div>
             </section>
 
-            <!-- 关于我们完整版（原有，添加 about-item 类） -->
+            <!-- 关于我们完整版 -->
             <hr class="border-gray-800 my-6" />
             <section id="aboutus-section" class="glass-card p-5 md:p-6">
                 <div class="flex items-center gap-2 border-b border-indigo-500/30 pb-3 mb-4"><i class="fa-regular fa-star-of-life text-indigo-400 text-xl"></i><h2 class="text-xl md:text-2xl font-black text-white tracking-tight">关于我们 · 重生之翼</h2></div>
@@ -925,7 +913,7 @@
         </main>
     </div>
 
-    <!-- 成就模态框（原有） -->
+    <!-- 成就模态框 -->
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-200 achievement-modal-content backdrop-blur-xl">
             <div class="p-5">
@@ -936,7 +924,7 @@
         </div>
     </div>
 
-    <!-- 彩蛋页面（原有） -->
+    <!-- 彩蛋页面 -->
     <div id="easteregg-page" class="fixed inset-0 z-50 bg-darkBg easter-egg-bg hidden overflow-y-auto">
         <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
             <div class="max-w-5xl w-full space-y-10">
@@ -969,17 +957,17 @@
         </div>
     </div>
 
-    <!-- 任务详情与追踪模态框（原有） -->
+    <!-- 任务详情与追踪模态框 -->
     <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div id="modal-header-accent" class="h-2 w-full bg-blue-500"></div><div class="p-6 space-y-4"><div class="flex justify-between items-start"><div><span id="modal-category" class="text-xs font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-400">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100 font-semibold leading-relaxed">要求详情</p></div><div class="flex space-x-2 pt-2"><button id="modal-track-btn" onclick="toggleTrackCurrent()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-sm transition">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-xl text-sm transition">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 font-medium opacity-0 transition-opacity duration-200"></p></div></div></div>
     <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div class="p-6 space-y-4"><div class="flex justify-between items-center"><h3 class="text-lg font-bold text-white">我的资料追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div><div class="border-t border-gray-800 pt-4 flex justify-between items-center"><span class="text-xs text-gray-500">提示：资料已储存于浏览器缓存中。</span><button onclick="clearAllTracked()" class="text-xs text-red-400 hover:text-red-300">全部清除</button></div></div></div></div>
 
-    <!-- AI 助手（ZentAI，滚动时主页不会跟随） -->
+    <!-- AI 助手容器 -->
     <div id="aiAssistantContainer">
         <div id="aiFloatingBtn" class="ai-floating-btn"><i class="fa-regular fa-message text-white text-2xl"></i></div>
         <div id="aiChatWindow" class="ai-chat-window hidden-ai">
             <div class="ai-header"><div class="flex items-center gap-2"><i class="fa-solid fa-brain text-blue-400"></i><span class="font-bold text-white">ZentAI</span></div><button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
             <div id="aiMessageArea" class="ai-message-area">
-                <div class="ai-bubble ai-bot-bubble">你好</div>
+                <div class="ai-bubble ai-bot-bubble">你好，有什么可以帮助你的？</div>
             </div>
             <div class="ai-input-area"><input type="text" id="aiInput" placeholder="输入问题" autocomplete="off"><div id="aiSendBtn" class="ai-send-btn"><i class="fa-regular fa-paper-plane text-white"></i></div></div>
         </div>
@@ -1022,7 +1010,7 @@
             setTimeout(() => { if(loading) loading.style.display = 'none'; }, 700);
         }, 1800);
 
-        // ==================== 原有全部脚本（保持不变） ====================
+        // ==================== 原有全部脚本（保持不变，仅AI部分被替换） ====================
         const canvas = document.getElementById('pixel-canvas');
         let ctx, width, height, columns, drops, pixelSize=10;
         function initPixelCanvas(){ canvas=document.getElementById('pixel-canvas'); if(!canvas) return; ctx=canvas.getContext('2d'); width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); }
@@ -1201,32 +1189,124 @@
         function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
         
-        // AI 逻辑（原有）
-        const vehicleDB = { tanks: ["M1 Abrams","T-14 Armata","KF51 Panther","Challenger 2"], aircraft: ["F-22 Raptor","Su-57","Darkstar","J-36"], helicopters: ["AH-64 Apache","Ka-52","Mi-28"] };
-        function zentAI(message) {
-            const q = message.toLowerCase();
-            if(q.includes("飞机") || q.includes("战机")) return `✈️ 战机列表：\n\n${vehicleDB.aircraft.join("\n")}`;
-            if(q.includes("坦克")) return `🛡️ 坦克列表：\n\n${vehicleDB.tanks.join("\n")}`;
-            if(q.includes("直升机")) return `🚁 直升机列表：\n\n${vehicleDB.helicopters.join("\n")}`;
-            if(q.includes("推荐")) return `⭐ ZentAI 推荐：\n\n1. F-22 Raptor\n2. KF51 Panther\n3. AH-64 Apache\n\n适合新手与进阶玩家。`;
-            if(q.includes("新手")) return `🎯 新手推荐：\n\n1. Abrams\n2. Apache\n3. F-16\n\n先解锁地面载具再发展空军。`;
-            return `🤖 ZentAI Ultra\n\n我能帮你：\n\n• 查询载具\n• 查询任务\n• 推荐解锁顺序\n• 飞机资料\n• 坦克资料\n• 直升机资料\n\n请直接输入问题。`;
+        // ========== 【新AI逻辑】多源搜索 + 中文翻译 + 不显示来源 + 统一错误消息 ==========
+        async function translateToChinese(text) {
+            if (!text || text.length < 5) return text;
+            try {
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh`;
+                const resp = await fetch(url);
+                if (!resp.ok) return text;
+                const data = await resp.json();
+                return data.responseData.translatedText || text;
+            } catch (e) { return text; }
         }
         
+        async function searchWikipediaZH(query) {
+            if (!query.trim()) return null;
+            try {
+                const searchUrl = `https://zh.wikipedia.org/w/rest.php/v1/search/page?q=${encodeURIComponent(query)}&limit=1`;
+                const resp = await fetch(searchUrl, { headers: { 'Api-User-Agent': 'ZentAI/1.0' } });
+                if (!resp.ok) return null;
+                const data = await resp.json();
+                if (!data.pages || data.pages.length === 0) return null;
+                const title = data.pages[0].title;
+                const summaryUrl = `https://zh.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+                const sumResp = await fetch(summaryUrl);
+                if (!sumResp.ok) return null;
+                const sumData = await sumResp.json();
+                return { text: sumData.extract || "" };
+            } catch (e) { return null; }
+        }
+        
+        async function searchDuckDuckGo(query) {
+            try {
+                const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+                const resp = await fetch(url);
+                if (!resp.ok) return null;
+                const data = await resp.json();
+                let text = data.AbstractText;
+                if (!text && data.RelatedTopics && data.RelatedTopics.length) {
+                    for (let topic of data.RelatedTopics) {
+                        if (topic.Text) { text = topic.Text; break; }
+                    }
+                }
+                if (text) {
+                    const translated = await translateToChinese(text);
+                    return { text: translated };
+                }
+                return null;
+            } catch (e) { return null; }
+        }
+        
+        async function generateAnswer(question) {
+            let searchTerm = question;
+            searchTerm = searchTerm.replace(/^(什么|谁|哪里|哪|哪个|如何|怎么|为什么|介绍一下|告诉我|解释|定义|搜索|查找)/, '');
+            if (searchTerm.length < 2) searchTerm = question;
+            if (searchTerm.length > 60) searchTerm = searchTerm.substring(0, 60);
+            
+            const [wikiResult, ddgResult] = await Promise.all([
+                searchWikipediaZH(searchTerm),
+                searchDuckDuckGo(searchTerm)
+            ]);
+            
+            let combined = "";
+            if (wikiResult && wikiResult.text) combined += wikiResult.text + "\n\n";
+            if (ddgResult && ddgResult.text) combined += ddgResult.text;
+            
+            if (!combined.trim()) {
+                return "抱歉无法找到相关信息";
+            }
+            if (combined.length > 1800) combined = combined.substring(0, 1800) + "…";
+            return combined;
+        }
+        
+        // AI 消息处理（异步）
         const aiBtn = document.getElementById('aiFloatingBtn'), aiWindow = document.getElementById('aiChatWindow'), closeAi = document.getElementById('closeAiWindow');
         const aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSendBtn'), aiMsgArea = document.getElementById('aiMessageArea');
         let convHistory = [];
         function toggleAiWindow(open){ if(open) aiWindow.classList.remove('hidden-ai'); else aiWindow.classList.add('hidden-ai'); }
         aiBtn?.addEventListener('click',()=>toggleAiWindow(true));
         closeAi?.addEventListener('click',()=>toggleAiWindow(false));
-        function addMsg(text,isUser){ let bubble=document.createElement('div'); bubble.className=`ai-bubble ${isUser?'ai-user-bubble':'ai-bot-bubble'}`; bubble.innerText=text; aiMsgArea.appendChild(bubble); aiMsgArea.scrollTop=aiMsgArea.scrollHeight; convHistory.push({role:isUser?'user':'assistant',content:text}); if(convHistory.length>20) convHistory.shift(); }
-        function showTyping(){ let div=document.createElement('div'); div.className='ai-typing'; div.id='aiTyping'; for(let i=0;i<3;i++){ let span=document.createElement('span'); div.appendChild(span); } aiMsgArea.appendChild(div); aiMsgArea.scrollTop=aiMsgArea.scrollHeight; }
+        
+        function addMsg(text,isUser){ 
+            let bubble=document.createElement('div'); 
+            bubble.className=`ai-bubble ${isUser?'ai-user-bubble':'ai-bot-bubble'}`; 
+            bubble.innerText=text; 
+            aiMsgArea.appendChild(bubble); 
+            aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
+            convHistory.push({role:isUser?'user':'assistant',content:text}); 
+            if(convHistory.length>20) convHistory.shift(); 
+        }
+        function showTyping(){ 
+            let div=document.createElement('div'); 
+            div.className='ai-typing'; 
+            div.id='aiTyping'; 
+            for(let i=0;i<3;i++){ let span=document.createElement('span'); div.appendChild(span); } 
+            aiMsgArea.appendChild(div); 
+            aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
+        }
         function removeTyping(){ let el=document.getElementById('aiTyping'); if(el) el.remove(); }
-        async function handleAsk(){ let msg=aiInput.value.trim(); if(!msg) return; addMsg(msg,true); aiInput.value=''; showTyping(); let reply=zentAI(msg); setTimeout(()=>{ removeTyping(); addMsg(reply,false); },300); }
+        
+        async function handleAsk(){ 
+            let msg=aiInput.value.trim(); 
+            if(!msg) return; 
+            addMsg(msg,true); 
+            aiInput.value=''; 
+            showTyping(); 
+            try {
+                const reply = await generateAnswer(msg);
+                removeTyping();
+                addMsg(reply,false);
+            } catch(err) {
+                removeTyping();
+                addMsg("抱歉无法找到相关信息", false);
+                console.error(err);
+            }
+        }
         aiSend?.addEventListener('click',handleAsk);
         aiInput?.addEventListener('keypress',(e)=>{ if(e.key==='Enter') handleAsk(); });
         
-        // ========== 滚动观察器（新增） ==========
+        // ========== 滚动观察器（原有） ==========
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
