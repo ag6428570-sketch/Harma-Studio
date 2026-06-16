@@ -464,7 +464,7 @@
             .ai-floating-btn { bottom: 16px; right: 16px; }
         }
 
-        /* ===== 新增：模式切换按钮（输入框上方） ===== */
+        /* ===== 模式切换按钮（输入框上方） ===== */
         .ai-mode-selector {
             display: flex;
             gap: 6px;
@@ -1018,7 +1018,6 @@
             <div class="ai-mode-selector">
                 <button id="modeProfessional" class="active" data-mode="professional">📘 专业模式 <span class="quick-tag">推荐</span></button>
                 <button id="modeNormal" data-mode="normal">💬 普通模式</button>
-                <button id="modeMomo" data-mode="momo">👤 MoMo模式</button>
             </div>
             <div class="ai-input-area">
                 <input type="text" id="aiInput" placeholder="输入问题" autocomplete="off">
@@ -1243,13 +1242,12 @@
         function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
         
-        // ========== 【三模式 AI 逻辑（专业 / 普通 / MoMo）】 ==========
-        let currentMode = 'professional'; // 'professional', 'normal', 'momo'
-        let convHistory = []; // 仅普通模式使用
+        // ========== 【双模式 AI 逻辑（专业 / 普通-混合）】 ==========
+        let currentMode = 'professional'; // 'professional' 或 'normal'
+        let convHistory = []; // 仅普通模式使用（记录对话历史）
 
         const modeProBtn = document.getElementById('modeProfessional');
         const modeNormalBtn = document.getElementById('modeNormal');
-        const modeMomoBtn = document.getElementById('modeMomo');
         const aiMsgArea = document.getElementById('aiMessageArea');
 
         function resetChat() {
@@ -1266,13 +1264,11 @@
             currentMode = mode;
             modeProBtn.classList.toggle('active', mode === 'professional');
             modeNormalBtn.classList.toggle('active', mode === 'normal');
-            modeMomoBtn.classList.toggle('active', mode === 'momo');
             resetChat();
         }
 
         modeProBtn.addEventListener('click', () => setMode('professional'));
         modeNormalBtn.addEventListener('click', () => setMode('normal'));
-        modeMomoBtn.addEventListener('click', () => setMode('momo'));
 
         // ----- 专业模式：仅中文维基百科（完整显示） -----
         async function searchWikipediaZH(query) {
@@ -1307,8 +1303,58 @@
             return combined;
         }
 
-        // ----- 普通模式：Pollinations 对话（带历史，强制简体中文） -----
-        async function generateNormalAnswer(question) {
+        // ----- 普通模式：混合检索（本地知识库 + Pollinations API 对话） -----
+        // 本地检索函数
+        function searchLocalKnowledge(question) {
+            const lowerQ = question.toLowerCase();
+            let results = [];
+            // 1. 搜索任务数据
+            for (const [categoryKey, category] of Object.entries(taskData)) {
+                const tasks = category.tasks;
+                for (const task of tasks) {
+                    if (task.name.toLowerCase().includes(lowerQ) || task.requirement.toLowerCase().includes(lowerQ)) {
+                        results.push(`【${category.title}】${task.name}：${task.requirement}`);
+                    }
+                }
+            }
+            // 2. 搜索派系历史
+            if (results.length < 3) {
+                const historyEl = document.querySelector('#faction-section .history-content');
+                let historyText = '';
+                if (historyEl) {
+                    historyText = historyEl.innerText || historyEl.textContent || '';
+                }
+                if (historyText) {
+                    const lines = historyText.split('\n');
+                    for (const line of lines) {
+                        if (line.trim() && line.toLowerCase().includes(lowerQ)) {
+                            results.push(line.trim());
+                            if (results.length >= 5) break;
+                        }
+                    }
+                }
+            }
+            // 3. 搜索关于我们
+            if (results.length === 0) {
+                const aboutEl = document.querySelector('#aboutus-section');
+                if (aboutEl) {
+                    const aboutText = aboutEl.innerText || aboutEl.textContent || '';
+                    if (aboutText.toLowerCase().includes(lowerQ)) {
+                        const sentences = aboutText.split(/[。，；\n]/);
+                        for (const sent of sentences) {
+                            if (sent.trim() && sent.toLowerCase().includes(lowerQ)) {
+                                results.push(sent.trim());
+                                if (results.length >= 3) break;
+                            }
+                        }
+                    }
+                }
+            }
+            return results;
+        }
+
+        // Pollinations API 调用（带历史上下文，强制简体中文）
+        async function callPollinationsAPI(question) {
             let context = "";
             if (convHistory.length > 0) {
                 const recent = convHistory.slice(-10);
@@ -1318,15 +1364,13 @@
                 }).join('\n');
                 context += '\n';
             }
-            // 强制中文回复
             const fullPrompt = `请用简体中文回答用户的问题。\n${context}User: ${question}\nAssistant:`;
-            
             const url = `https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?model=openai`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
                     if (response.status === 429) {
-                        return "⚠️ 当前 AI 服务繁忙（限流），请稍后再试，或切换到其他模式。";
+                        return "⚠️ 当前 AI 服务繁忙（限流），请稍后再试。";
                     }
                     throw new Error(`Pollinations 返回错误 (${response.status})`);
                 }
@@ -1337,23 +1381,28 @@
                 return text;
             } catch (error) {
                 console.error('Pollinations 调用失败:', error);
-                return "⚠️ AI 服务暂时不可用，请稍后重试或切换到其他模式。";
+                return "⚠️ AI 服务暂时不可用，请稍后重试。";
             }
         }
 
-        // ----- MoMo模式：固定回复“不知道” -----
-        async function generateMomoAnswer(question) {
-            return "不知道";
+        async function generateNormalAnswer(question) {
+            // 1. 先尝试本地检索
+            const localResults = searchLocalKnowledge(question);
+            if (localResults.length > 0) {
+                // 如果有匹配，直接返回本地结果（不调用API）
+                let reply = "📋 找到以下相关信息：\n\n" + localResults.slice(0, 6).join('\n\n');
+                return reply;
+            }
+            // 2. 没有本地匹配，调用 API 进行对话
+            return await callPollinationsAPI(question);
         }
 
         // ----- 统一回答生成函数 -----
         async function generateAnswer(question) {
             if (currentMode === 'professional') {
                 return await generateProfessionalAnswer(question);
-            } else if (currentMode === 'normal') {
+            } else {
                 return await generateNormalAnswer(question);
-            } else { // momo
-                return await generateMomoAnswer(question);
             }
         }
 
@@ -1370,7 +1419,8 @@
             bubble.innerText=text; 
             aiMsgArea.appendChild(bubble); 
             aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
-            // 仅普通模式记录历史
+            // 仅普通模式且不是本地检索结果（即API回复）时才记录历史
+            // 但我们简单记录所有消息（包括本地检索回复），以便上下文连贯
             if (currentMode === 'normal') {
                 convHistory.push({role:isUser?'user':'assistant', content:text});
                 if(convHistory.length>20) convHistory.shift();
