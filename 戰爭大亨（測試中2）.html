@@ -464,6 +464,44 @@
             .ai-floating-btn { bottom: 16px; right: 16px; }
         }
 
+        /* ===== 新增：模式切换按钮（输入框上方） ===== */
+        .ai-mode-selector {
+            display: flex;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid #334155;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .ai-mode-selector button {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #94a3b8;
+            padding: 4px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .ai-mode-selector button:hover {
+            color: #e2e8f0;
+            border-color: #3b82f640;
+        }
+        .ai-mode-selector button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .ai-mode-selector .quick-tag {
+            background: rgba(250, 204, 21, 0.2);
+            color: #fbbf24;
+            font-size: 9px;
+            padding: 0 4px;
+            border-radius: 10px;
+            margin-left: 2px;
+        }
+
         /* 登录界面科技风（原有，无修改） */
         :root{
             --bg:#05060a;
@@ -753,6 +791,7 @@
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">⚔ <span class="gradient-text">Roblox 战争大亨</span></h1>
                 <p class="text-xs md:text-sm text-gray-400">现代化任务网站 | 坦克 | 飞机 | 直升机 | 船舰</p>
             </div>
+            <!-- 搜索框（模式切换已移至AI窗口内） -->
             <div class="max-w-md mx-auto mt-6 px-2 search-delay">
                 <div class="flex items-center gap-2">
                     <input type="text" id="search-input" oninput="searchTasks()" placeholder="输入「任务/载具名称」进行精确搜索..." class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white">
@@ -965,11 +1004,26 @@
     <div id="aiAssistantContainer">
         <div id="aiFloatingBtn" class="ai-floating-btn"><i class="fa-regular fa-message text-white text-2xl"></i></div>
         <div id="aiChatWindow" class="ai-chat-window hidden-ai">
-            <div class="ai-header"><div class="flex items-center gap-2"><i class="fa-solid fa-brain text-blue-400"></i><span class="font-bold text-white">ZentAI</span></div><button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
-            <div id="aiMessageArea" class="ai-message-area">
-                <div class="ai-bubble ai-bot-bubble">你好，有什么可以帮助你的？</div>
+            <div class="ai-header">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-blue-400"></i>
+                    <span class="font-bold text-white">ZentAI</span>
+                </div>
+                <button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="ai-input-area"><input type="text" id="aiInput" placeholder="输入问题" autocomplete="off"><div id="aiSendBtn" class="ai-send-btn"><i class="fa-regular fa-paper-plane text-white"></i></div></div>
+            <div id="aiMessageArea" class="ai-message-area">
+                <!-- 初始消息将由JS添加 -->
+            </div>
+            <!-- 模式切换按钮（输入框上方） -->
+            <div class="ai-mode-selector">
+                <button id="modeProfessional" class="active" data-mode="professional">📘 专业模式 <span class="quick-tag">推荐</span></button>
+                <button id="modeNormal" data-mode="normal">💬 普通模式</button>
+                <button id="modeMomo" data-mode="momo">👤 MoMo模式</button>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" id="aiInput" placeholder="输入问题" autocomplete="off">
+                <div id="aiSendBtn" class="ai-send-btn"><i class="fa-regular fa-paper-plane text-white"></i></div>
+            </div>
         </div>
     </div>
 
@@ -1010,7 +1064,7 @@
             setTimeout(() => { if(loading) loading.style.display = 'none'; }, 700);
         }, 1800);
 
-        // ==================== 原有全部脚本（保持不变，仅AI部分被替换） ====================
+        // ==================== 原有全部脚本（保留，仅AI部分修改） ====================
         const canvas = document.getElementById('pixel-canvas');
         let ctx, width, height, columns, drops, pixelSize=10;
         function initPixelCanvas(){ canvas=document.getElementById('pixel-canvas'); if(!canvas) return; ctx=canvas.getContext('2d'); width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); }
@@ -1189,18 +1243,38 @@
         function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
         
-        // ========== 【新AI逻辑】多源搜索 + 中文翻译 + 不显示来源 + 统一错误消息 ==========
-        async function translateToChinese(text) {
-            if (!text || text.length < 5) return text;
-            try {
-                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh`;
-                const resp = await fetch(url);
-                if (!resp.ok) return text;
-                const data = await resp.json();
-                return data.responseData.translatedText || text;
-            } catch (e) { return text; }
+        // ========== 【三模式 AI 逻辑（专业 / 普通 / MoMo）】 ==========
+        let currentMode = 'professional'; // 'professional', 'normal', 'momo'
+        let convHistory = []; // 仅普通模式使用
+
+        const modeProBtn = document.getElementById('modeProfessional');
+        const modeNormalBtn = document.getElementById('modeNormal');
+        const modeMomoBtn = document.getElementById('modeMomo');
+        const aiMsgArea = document.getElementById('aiMessageArea');
+
+        function resetChat() {
+            aiMsgArea.innerHTML = '';
+            convHistory = [];
+            const bubble = document.createElement('div');
+            bubble.className = 'ai-bubble ai-bot-bubble';
+            bubble.innerText = '请问有什么可以帮助你的？';
+            aiMsgArea.appendChild(bubble);
+            aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
         }
-        
+
+        function setMode(mode) {
+            currentMode = mode;
+            modeProBtn.classList.toggle('active', mode === 'professional');
+            modeNormalBtn.classList.toggle('active', mode === 'normal');
+            modeMomoBtn.classList.toggle('active', mode === 'momo');
+            resetChat();
+        }
+
+        modeProBtn.addEventListener('click', () => setMode('professional'));
+        modeNormalBtn.addEventListener('click', () => setMode('normal'));
+        modeMomoBtn.addEventListener('click', () => setMode('momo'));
+
+        // ----- 专业模式：仅中文维基百科（完整显示） -----
         async function searchWikipediaZH(query) {
             if (!query.trim()) return null;
             try {
@@ -1218,52 +1292,74 @@
             } catch (e) { return null; }
         }
         
-        async function searchDuckDuckGo(query) {
-            try {
-                const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
-                const resp = await fetch(url);
-                if (!resp.ok) return null;
-                const data = await resp.json();
-                let text = data.AbstractText;
-                if (!text && data.RelatedTopics && data.RelatedTopics.length) {
-                    for (let topic of data.RelatedTopics) {
-                        if (topic.Text) { text = topic.Text; break; }
-                    }
-                }
-                if (text) {
-                    const translated = await translateToChinese(text);
-                    return { text: translated };
-                }
-                return null;
-            } catch (e) { return null; }
-        }
-        
-        async function generateAnswer(question) {
+        async function generateProfessionalAnswer(question) {
             let searchTerm = question;
             searchTerm = searchTerm.replace(/^(什么|谁|哪里|哪|哪个|如何|怎么|为什么|介绍一下|告诉我|解释|定义|搜索|查找)/, '');
             if (searchTerm.length < 2) searchTerm = question;
             if (searchTerm.length > 60) searchTerm = searchTerm.substring(0, 60);
             
-            const [wikiResult, ddgResult] = await Promise.all([
-                searchWikipediaZH(searchTerm),
-                searchDuckDuckGo(searchTerm)
-            ]);
-            
-            let combined = "";
-            if (wikiResult && wikiResult.text) combined += wikiResult.text + "\n\n";
-            if (ddgResult && ddgResult.text) combined += ddgResult.text;
+            const wikiResult = await searchWikipediaZH(searchTerm);
+            let combined = wikiResult ? wikiResult.text : "";
             
             if (!combined.trim()) {
-                return "抱歉无法找到相关信息";
+                return "抱歉，在维基百科中未找到相关信息。";
             }
-            if (combined.length > 1800) combined = combined.substring(0, 1800) + "…";
             return combined;
         }
-        
-        // AI 消息处理（异步）
+
+        // ----- 普通模式：Pollinations 对话（带历史，强制简体中文） -----
+        async function generateNormalAnswer(question) {
+            let context = "";
+            if (convHistory.length > 0) {
+                const recent = convHistory.slice(-10);
+                context = recent.map(msg => {
+                    const role = msg.role === 'user' ? 'User' : 'Assistant';
+                    return `${role}: ${msg.content}`;
+                }).join('\n');
+                context += '\n';
+            }
+            // 强制中文回复
+            const fullPrompt = `请用简体中文回答用户的问题。\n${context}User: ${question}\nAssistant:`;
+            
+            const url = `https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?model=openai`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    if (response.status === 429) {
+                        return "⚠️ 当前 AI 服务繁忙（限流），请稍后再试，或切换到其他模式。";
+                    }
+                    throw new Error(`Pollinations 返回错误 (${response.status})`);
+                }
+                const text = await response.text();
+                if (!text || text.length < 5) {
+                    return "⚠️ AI 未返回有效内容，请换个问题试试。";
+                }
+                return text;
+            } catch (error) {
+                console.error('Pollinations 调用失败:', error);
+                return "⚠️ AI 服务暂时不可用，请稍后重试或切换到其他模式。";
+            }
+        }
+
+        // ----- MoMo模式：固定回复“不知道” -----
+        async function generateMomoAnswer(question) {
+            return "不知道";
+        }
+
+        // ----- 统一回答生成函数 -----
+        async function generateAnswer(question) {
+            if (currentMode === 'professional') {
+                return await generateProfessionalAnswer(question);
+            } else if (currentMode === 'normal') {
+                return await generateNormalAnswer(question);
+            } else { // momo
+                return await generateMomoAnswer(question);
+            }
+        }
+
+        // AI 消息处理
         const aiBtn = document.getElementById('aiFloatingBtn'), aiWindow = document.getElementById('aiChatWindow'), closeAi = document.getElementById('closeAiWindow');
-        const aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSendBtn'), aiMsgArea = document.getElementById('aiMessageArea');
-        let convHistory = [];
+        const aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSendBtn');
         function toggleAiWindow(open){ if(open) aiWindow.classList.remove('hidden-ai'); else aiWindow.classList.add('hidden-ai'); }
         aiBtn?.addEventListener('click',()=>toggleAiWindow(true));
         closeAi?.addEventListener('click',()=>toggleAiWindow(false));
@@ -1274,8 +1370,11 @@
             bubble.innerText=text; 
             aiMsgArea.appendChild(bubble); 
             aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
-            convHistory.push({role:isUser?'user':'assistant',content:text}); 
-            if(convHistory.length>20) convHistory.shift(); 
+            // 仅普通模式记录历史
+            if (currentMode === 'normal') {
+                convHistory.push({role:isUser?'user':'assistant', content:text});
+                if(convHistory.length>20) convHistory.shift();
+            }
         }
         function showTyping(){ 
             let div=document.createElement('div'); 
@@ -1299,12 +1398,17 @@
                 addMsg(reply,false);
             } catch(err) {
                 removeTyping();
-                addMsg("抱歉无法找到相关信息", false);
+                addMsg("抱歉，处理请求时出错，请重试。", false);
                 console.error(err);
             }
         }
         aiSend?.addEventListener('click',handleAsk);
         aiInput?.addEventListener('keypress',(e)=>{ if(e.key==='Enter') handleAsk(); });
+        
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            resetChat();
+        });
         
         // ========== 滚动观察器（原有） ==========
         const observer = new IntersectionObserver((entries) => {
