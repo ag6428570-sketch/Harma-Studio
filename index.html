@@ -493,14 +493,6 @@
             color: white;
             border-color: #3b82f6;
         }
-        .ai-mode-selector .quick-tag {
-            background: rgba(250, 204, 21, 0.2);
-            color: #fbbf24;
-            font-size: 9px;
-            padding: 0 4px;
-            border-radius: 10px;
-            margin-left: 2px;
-        }
 
         /* 登录界面科技风（原有，无修改） */
         :root{
@@ -794,7 +786,7 @@
             <!-- 搜索框（模式切换已移至AI窗口内） -->
             <div class="max-w-md mx-auto mt-6 px-2 search-delay">
                 <div class="flex items-center gap-2">
-                    <input type="text" id="search-input" oninput="searchTasks()" placeholder="输入「任务/载具名称」进行精确搜索..." class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white">
+                    <input type="text" id="search-input" oninput="searchTasks()" placeholder="输入「任务名/解锁条件」进行搜索..." class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white">
                     <button onclick="showEasterEggPage(); unlockAchievement('easter_egg')" class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/50 rounded-xl py-3 px-4"><i class="fa-solid fa-dragon text-amber-400 text-xl"></i></button>
                 </div>
                 <div id="search-results-info" class="text-xs text-blue-400 mt-2 text-left hidden"></div>
@@ -1016,8 +1008,9 @@
             </div>
             <!-- 模式切换按钮（输入框上方） -->
             <div class="ai-mode-selector">
-                <button id="modeProfessional" class="active" data-mode="professional">📘 专业模式 <span class="quick-tag">推荐</span></button>
-                <button id="modeNormal" data-mode="normal">💬 普通模式</button>
+                <button id="modeProfessional" class="active" data-mode="professional">专业模式（网页解惑）</button>
+                <button id="modeNormal" data-mode="normal">普通模式</button>
+                <button id="modeMomo" data-mode="momo">Momo模式</button>
             </div>
             <div class="ai-input-area">
                 <input type="text" id="aiInput" placeholder="输入问题" autocomplete="off">
@@ -1184,6 +1177,7 @@
         let trackedTasks=JSON.parse(localStorage.getItem('wtt_tracked'))||[];
         let activeModalTask=null;
         
+        // ========== 搜索功能增强：同时匹配任务名称和解锁要求 ==========
         function renderTaskSections(filterText=""){
             const container=document.getElementById('tasks-container');
             const categorySelector=document.getElementById('category-selector');
@@ -1207,7 +1201,9 @@
                 let totalMatches=0;
                 Object.keys(taskData).forEach(key=>{
                     const category=taskData[key];
-                    const filteredTasks=category.tasks.map((t,idx)=>({...t,originalIndex:idx})).filter(t=>t.name.toLowerCase().includes(filter));
+                    // 修改过滤条件：同时匹配名称和解锁要求
+                    const filteredTasks=category.tasks.map((t,idx)=>({...t, originalIndex:idx}))
+                        .filter(t => t.name.toLowerCase().includes(filter) || t.requirement.toLowerCase().includes(filter));
                     if(filteredTasks.length>0){
                         totalMatches+=filteredTasks.length;
                         const section=document.createElement('section');
@@ -1217,7 +1213,10 @@
                     }
                 });
                 const infoText=document.getElementById('search-results-info');
-                if(infoText){ infoText.classList.remove('hidden'); infoText.innerText=`找到 ${totalMatches} 个名称相符项目`; }
+                if(infoText){ 
+                    infoText.classList.remove('hidden'); 
+                    infoText.innerText=`找到 ${totalMatches} 个匹配项目（名称/解锁条件）`; 
+                }
             }
             setTimeout(()=>{
                 document.querySelectorAll('.task-card-item').forEach(el => observer.observe(el));
@@ -1242,119 +1241,159 @@
         function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
         
-        // ========== 【双模式 AI 逻辑（专业 / 普通-混合）】 ==========
-        let currentMode = 'professional'; // 'professional' 或 'normal'
-        let convHistory = []; // 仅普通模式使用（记录对话历史）
+        // ========== 【三模式 AI 逻辑（专业 / 普通 / Momo）】 ==========
+        let currentMode = 'professional'; // 'professional' | 'normal' | 'momo'
+        let convHistory = []; // 仅普通模式和Momo模式使用（记录对话历史）
 
         const modeProBtn = document.getElementById('modeProfessional');
         const modeNormalBtn = document.getElementById('modeNormal');
+        const modeMomoBtn = document.getElementById('modeMomo');
         const aiMsgArea = document.getElementById('aiMessageArea');
+        const aiWindow = document.getElementById('aiChatWindow');
+        const aiBtn = document.getElementById('aiFloatingBtn');
+        const closeAi = document.getElementById('closeAiWindow');
 
+        // 点击浮动按钮：切换聊天窗口显示
+        aiBtn.addEventListener('click', () => {
+            aiWindow.classList.toggle('hidden-ai');
+            // 如果窗口刚打开且没有消息，显示当前模式的欢迎语
+            if (!aiWindow.classList.contains('hidden-ai') && aiMsgArea.children.length === 0) {
+                resetChat();
+            }
+        });
+
+        // 关闭按钮
+        closeAi.addEventListener('click', () => {
+            aiWindow.classList.add('hidden-ai');
+        });
+
+        // 重置聊天
         function resetChat() {
             aiMsgArea.innerHTML = '';
             convHistory = [];
             const bubble = document.createElement('div');
             bubble.className = 'ai-bubble ai-bot-bubble';
-            bubble.innerText = '请问有什么可以帮助你的？';
+            if (currentMode === 'professional') {
+                bubble.innerText = '请问有什么可以帮助你的？';
+            } else if (currentMode === 'normal') {
+                bubble.innerText = '请问有什么可以帮助你的？';
+            } else if (currentMode === 'momo') {
+                bubble.innerText = '我是Momo';
+            }
             aiMsgArea.appendChild(bubble);
             aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
         }
 
+        // 设置模式
         function setMode(mode) {
             currentMode = mode;
             modeProBtn.classList.toggle('active', mode === 'professional');
             modeNormalBtn.classList.toggle('active', mode === 'normal');
+            modeMomoBtn.classList.toggle('active', mode === 'momo');
             resetChat();
         }
 
+        // 模式切换按钮点击
         modeProBtn.addEventListener('click', () => setMode('professional'));
         modeNormalBtn.addEventListener('click', () => setMode('normal'));
+        modeMomoBtn.addEventListener('click', () => setMode('momo'));
 
-        // ----- 专业模式：仅中文维基百科（完整显示） -----
-        async function searchWikipediaZH(query) {
-            if (!query.trim()) return null;
-            try {
-                const searchUrl = `https://zh.wikipedia.org/w/rest.php/v1/search/page?q=${encodeURIComponent(query)}&limit=1`;
-                const resp = await fetch(searchUrl, { headers: { 'Api-User-Agent': 'ZentAI/1.0' } });
-                if (!resp.ok) return null;
-                const data = await resp.json();
-                if (!data.pages || data.pages.length === 0) return null;
-                const title = data.pages[0].title;
-                const summaryUrl = `https://zh.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
-                const sumResp = await fetch(summaryUrl);
-                if (!sumResp.ok) return null;
-                const sumData = await sumResp.json();
-                return { text: sumData.extract || "" };
-            } catch (e) { return null; }
-        }
-        
-        async function generateProfessionalAnswer(question) {
-            let searchTerm = question;
-            searchTerm = searchTerm.replace(/^(什么|谁|哪里|哪|哪个|如何|怎么|为什么|介绍一下|告诉我|解释|定义|搜索|查找)/, '');
-            if (searchTerm.length < 2) searchTerm = question;
-            if (searchTerm.length > 60) searchTerm = searchTerm.substring(0, 60);
-            
-            const wikiResult = await searchWikipediaZH(searchTerm);
-            let combined = wikiResult ? wikiResult.text : "";
-            
-            if (!combined.trim()) {
-                return "抱歉，在维基百科中未找到相关信息。";
+        // ----- 专业模式：全站本地检索 + 完整板块返回 -----
+        function getFullSectionContent(question) {
+            const lower = question.toLowerCase();
+            if (lower.includes('派系历史') || lower.includes('编年史') || lower.includes('王朝历史') || lower.includes('bns')) {
+                const el = document.querySelector('#faction-section');
+                if (el) {
+                    const title = el.querySelector('h2')?.innerText || '派系历史';
+                    const content = el.innerText || el.textContent || '';
+                    return '📜 ' + title + ' 完整内容：\n\n' + content.trim();
+                }
             }
-            return combined;
+            if (lower.includes('关于我们') || lower.includes('关于') || lower.includes('工作室') || lower.includes('harma')) {
+                const el = document.querySelector('#aboutus-section');
+                if (el) {
+                    const title = el.querySelector('h2')?.innerText || '关于我们';
+                    const content = el.innerText || el.textContent || '';
+                    return '📖 ' + title + ' 完整内容：\n\n' + content.trim();
+                }
+            }
+            if (lower.includes('官方社群') || lower.includes('社群') || lower.includes('discord') || lower.includes('tiktok') || lower.includes('youtube')) {
+                const el = document.querySelector('#social-section');
+                if (el) {
+                    const title = el.querySelector('h2')?.innerText || '官方社群';
+                    const content = el.innerText || el.textContent || '';
+                    return '🌐 ' + title + ' 完整内容：\n\n' + content.trim();
+                }
+            }
+            if (lower.includes('任务') || lower.includes('载具') || lower.includes('坦克') || lower.includes('直升机') || lower.includes('飞机') || lower.includes('船舰')) {
+                let allTasks = '📋 全部任务列表：\n\n';
+                for (const [key, category] of Object.entries(taskData)) {
+                    allTasks += `【${category.title}】\n`;
+                    category.tasks.forEach(task => {
+                        allTasks += `- ${task.name}：${task.requirement}\n`;
+                    });
+                    allTasks += '\n';
+                }
+                return allTasks;
+            }
+            return null;
         }
 
-        // ----- 普通模式：混合检索（本地知识库 + Pollinations API 对话） -----
-        // 本地检索函数
         function searchLocalKnowledge(question) {
             const lowerQ = question.toLowerCase();
-            let results = [];
-            // 1. 搜索任务数据
+            const results = [];
+            const seen = new Set();
+
+            function extractFromElement(selector) {
+                const el = document.querySelector(selector);
+                if (!el) return;
+                const text = el.innerText || el.textContent || '';
+                const sentences = text.split(/[。，；\n]/);
+                for (const sentence of sentences) {
+                    const trimmed = sentence.trim();
+                    if (trimmed && trimmed.toLowerCase().includes(lowerQ)) {
+                        if (!seen.has(trimmed)) {
+                            seen.add(trimmed);
+                            results.push(trimmed);
+                        }
+                    }
+                }
+            }
+
             for (const [categoryKey, category] of Object.entries(taskData)) {
-                const tasks = category.tasks;
-                for (const task of tasks) {
-                    if (task.name.toLowerCase().includes(lowerQ) || task.requirement.toLowerCase().includes(lowerQ)) {
-                        results.push(`【${category.title}】${task.name}：${task.requirement}`);
-                    }
-                }
-            }
-            // 2. 搜索派系历史
-            if (results.length < 3) {
-                const historyEl = document.querySelector('#faction-section .history-content');
-                let historyText = '';
-                if (historyEl) {
-                    historyText = historyEl.innerText || historyEl.textContent || '';
-                }
-                if (historyText) {
-                    const lines = historyText.split('\n');
-                    for (const line of lines) {
-                        if (line.trim() && line.toLowerCase().includes(lowerQ)) {
-                            results.push(line.trim());
-                            if (results.length >= 5) break;
+                for (const task of category.tasks) {
+                    const combined = `【${category.title}】${task.name}：${task.requirement}`;
+                    if (combined.toLowerCase().includes(lowerQ)) {
+                        if (!seen.has(combined)) {
+                            seen.add(combined);
+                            results.push(combined);
                         }
                     }
                 }
             }
-            // 3. 搜索关于我们
-            if (results.length === 0) {
-                const aboutEl = document.querySelector('#aboutus-section');
-                if (aboutEl) {
-                    const aboutText = aboutEl.innerText || aboutEl.textContent || '';
-                    if (aboutText.toLowerCase().includes(lowerQ)) {
-                        const sentences = aboutText.split(/[。，；\n]/);
-                        for (const sent of sentences) {
-                            if (sent.trim() && sent.toLowerCase().includes(lowerQ)) {
-                                results.push(sent.trim());
-                                if (results.length >= 3) break;
-                            }
-                        }
-                    }
-                }
-            }
-            return results;
+            extractFromElement('#faction-section');
+            extractFromElement('#aboutus-section');
+            extractFromElement('#social-section');
+            extractFromElement('#category-selector');
+
+            return results.slice(0, 10);
         }
 
-        // Pollinations API 调用（带历史上下文，强制简体中文）
-        async function callPollinationsAPI(question) {
+        async function generateProfessionalAnswer(question) {
+            const full = getFullSectionContent(question);
+            if (full) return full;
+            const localResults = searchLocalKnowledge(question);
+            if (localResults.length > 0) {
+                let reply = "📚 专业百科检索结果（覆盖任务、派系、社群、关于我们等）：\n\n";
+                reply += localResults.slice(0, 8).join('\n\n');
+                return reply;
+            } else {
+                return "抱歉，在当前本地知识库中未找到与您问题匹配的信息。\n您可以尝试切换到「普通模式」或「Momo模式」进行对话提问，或更换关键词重新搜索。";
+            }
+        }
+
+        // ----- 普通模式 & Momo模式：外部 AI 对话 -----
+        async function callPollinationsAPI(question, personality = 'normal') {
             let context = "";
             if (convHistory.length > 0) {
                 const recent = convHistory.slice(-10);
@@ -1364,7 +1403,15 @@
                 }).join('\n');
                 context += '\n';
             }
-            const fullPrompt = `请用简体中文回答用户的问题。\n${context}User: ${question}\nAssistant:`;
+
+            let personalityPrompt = '';
+            if (personality === 'momo') {
+                personalityPrompt = '你是一个狡猾、搞笑、有趣、像正常人类一样懂得思考的AI，名叫Momo。你的回答要充满幽默感，偶尔搞怪，但逻辑清晰，像一个真实的人在聊天。始终使用简体中文。';
+            } else {
+                personalityPrompt = '请用简体中文回答用户的问题。';
+            }
+
+            const fullPrompt = `${personalityPrompt}\n${context}User: ${question}\nAssistant:`;
             const url = `https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?model=openai`;
             try {
                 const response = await fetch(url);
@@ -1386,32 +1433,27 @@
         }
 
         async function generateNormalAnswer(question) {
-            // 1. 先尝试本地检索
-            const localResults = searchLocalKnowledge(question);
-            if (localResults.length > 0) {
-                // 如果有匹配，直接返回本地结果（不调用API）
-                let reply = "📋 找到以下相关信息：\n\n" + localResults.slice(0, 6).join('\n\n');
-                return reply;
-            }
-            // 2. 没有本地匹配，调用 API 进行对话
-            return await callPollinationsAPI(question);
+            return await callPollinationsAPI(question, 'normal');
+        }
+
+        async function generateMomoAnswer(question) {
+            return await callPollinationsAPI(question, 'momo');
         }
 
         // ----- 统一回答生成函数 -----
         async function generateAnswer(question) {
             if (currentMode === 'professional') {
                 return await generateProfessionalAnswer(question);
-            } else {
+            } else if (currentMode === 'normal') {
                 return await generateNormalAnswer(question);
+            } else if (currentMode === 'momo') {
+                return await generateMomoAnswer(question);
             }
         }
 
         // AI 消息处理
-        const aiBtn = document.getElementById('aiFloatingBtn'), aiWindow = document.getElementById('aiChatWindow'), closeAi = document.getElementById('closeAiWindow');
-        const aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSendBtn');
-        function toggleAiWindow(open){ if(open) aiWindow.classList.remove('hidden-ai'); else aiWindow.classList.add('hidden-ai'); }
-        aiBtn?.addEventListener('click',()=>toggleAiWindow(true));
-        closeAi?.addEventListener('click',()=>toggleAiWindow(false));
+        const aiInput = document.getElementById('aiInput');
+        const aiSend = document.getElementById('aiSendBtn');
         
         function addMsg(text,isUser){ 
             let bubble=document.createElement('div'); 
@@ -1419,9 +1461,8 @@
             bubble.innerText=text; 
             aiMsgArea.appendChild(bubble); 
             aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
-            // 仅普通模式且不是本地检索结果（即API回复）时才记录历史
-            // 但我们简单记录所有消息（包括本地检索回复），以便上下文连贯
-            if (currentMode === 'normal') {
+            // 记录对话历史（仅非专业模式）
+            if (currentMode !== 'professional') {
                 convHistory.push({role:isUser?'user':'assistant', content:text});
                 if(convHistory.length>20) convHistory.shift();
             }
@@ -1457,7 +1498,7 @@
         
         // 初始化
         window.addEventListener('DOMContentLoaded', () => {
-            resetChat();
+            setMode('professional');
         });
         
         // ========== 滚动观察器（原有） ==========
