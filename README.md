@@ -967,7 +967,13 @@
                     <div class="p-6">
                         <div class="flex flex-col md:flex-row gap-6">
                             <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3">
-                                <div class="relative geoffrey-avatar float-slow"><div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow"><i class="fa-solid fa-user-ninja text-6xl text-white"></i></div><div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div></div>
+                                <!-- ===== 恢复为忍者图标 ===== -->
+                                <div class="relative geoffrey-avatar float-slow">
+                                    <div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow">
+                                        <i class="fa-solid fa-user-ninja text-6xl text-white"></i>
+                                    </div>
+                                    <div class="absolute -bottom-1 -right-1 bg-blue-500/60 rounded-full p-1.5"><i class="fa-solid fa-microchip text-white text-sm"></i></div>
+                                </div>
                                 <div><p class="font-mono text-cyan-300 text-sm">✨ 首席架构师 ✨</p><p class="text-2xl font-bold text-white">GeoffreyLei</p><p class="text-blue-300 text-sm">「键盘为剑，代码为盾」</p></div>
                             </div>
                             <div class="md:w-2/3 space-y-4">
@@ -998,7 +1004,51 @@
         <div id="aiChatWindow" class="ai-chat-window hidden-ai">
             <div class="ai-header">
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-brain text-blue-400"></i>
+                    <!-- AI 芯片图标（SVG） -->
+                    <svg width="32" height="32" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                        <defs>
+                            <style>
+                                .blue { stroke:#2F5BFF; fill:#2F5BFF; }
+                                .line { stroke:#2F5BFF; stroke-width:14; stroke-linecap:round; stroke-linejoin:round; }
+                            </style>
+                        </defs>
+                        <rect x="168" y="168" width="176" height="176" rx="22" class="blue"/>
+                        <g class="line">
+                            <line x1="190" y1="150" x2="190" y2="120"/>
+                            <circle cx="190" cy="112" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="230" y1="150" x2="230" y2="110"/>
+                            <circle cx="230" cy="102" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="282" y1="150" x2="282" y2="110"/>
+                            <circle cx="282" cy="102" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="322" y1="150" x2="322" y2="120"/>
+                            <circle cx="322" cy="112" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="190" y1="362" x2="190" y2="392"/>
+                            <circle cx="190" cy="400" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="230" y1="362" x2="230" y2="402"/>
+                            <circle cx="230" cy="410" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="282" y1="362" x2="282" y2="402"/>
+                            <circle cx="282" cy="410" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="322" y1="362" x2="322" y2="392"/>
+                            <circle cx="322" cy="400" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="190" x2="120" y2="190"/>
+                            <circle cx="112" cy="190" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="230" x2="110" y2="230"/>
+                            <circle cx="102" cy="230" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="282" x2="110" y2="282"/>
+                            <circle cx="102" cy="282" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="322" x2="120" y2="322"/>
+                            <circle cx="112" cy="322" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="190" x2="392" y2="190"/>
+                            <circle cx="400" cy="190" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="230" x2="402" y2="230"/>
+                            <circle cx="410" cy="230" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="282" x2="402" y2="282"/>
+                            <circle cx="410" cy="282" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="322" x2="392" y2="322"/>
+                            <circle cx="400" cy="322" r="10" fill="#2F5BFF" stroke="none"/>
+                        </g>
+                        <text x="256" y="292" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="700" fill="#F2F2F2">AI</text>
+                    </svg>
                     <span class="font-bold text-white">ZentAI</span>
                 </div>
                 <button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
@@ -1256,7 +1306,6 @@
         // 点击浮动按钮：切换聊天窗口显示
         aiBtn.addEventListener('click', () => {
             aiWindow.classList.toggle('hidden-ai');
-            // 如果窗口刚打开且没有消息，显示当前模式的欢迎语
             if (!aiWindow.classList.contains('hidden-ai') && aiMsgArea.children.length === 0) {
                 resetChat();
             }
@@ -1406,6 +1455,7 @@
 
             let personalityPrompt = '';
             if (personality === 'momo') {
+                // ===== Momo 性格（狡猾、搞笑、有趣） =====
                 personalityPrompt = '你是一个狡猾、搞笑、有趣、像正常人类一样懂得思考的AI，名叫Momo。你的回答要充满幽默感，偶尔搞怪，但逻辑清晰，像一个真实的人在聊天。始终使用简体中文。';
             } else {
                 personalityPrompt = '请用简体中文回答用户的问题。';
@@ -1461,7 +1511,6 @@
             bubble.innerText=text; 
             aiMsgArea.appendChild(bubble); 
             aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
-            // 记录对话历史（仅非专业模式）
             if (currentMode !== 'professional') {
                 convHistory.push({role:isUser?'user':'assistant', content:text});
                 if(convHistory.length>20) convHistory.shift();
