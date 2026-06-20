@@ -71,18 +71,21 @@
         }
         .history-scroll::-webkit-scrollbar,
         .achievement-scroll::-webkit-scrollbar,
-        .ai-message-area::-webkit-scrollbar {
+        .ai-message-area::-webkit-scrollbar,
+        .search-history-dropdown::-webkit-scrollbar {
             width: 4px;
         }
         .history-scroll::-webkit-scrollbar-track,
         .achievement-scroll::-webkit-scrollbar-track,
-        .ai-message-area::-webkit-scrollbar-track {
+        .ai-message-area::-webkit-scrollbar-track,
+        .search-history-dropdown::-webkit-scrollbar-track {
             background: #1e293b;
             border-radius: 10px;
         }
         .history-scroll::-webkit-scrollbar-thumb,
         .achievement-scroll::-webkit-scrollbar-thumb,
-        .ai-message-area::-webkit-scrollbar-thumb {
+        .ai-message-area::-webkit-scrollbar-thumb,
+        .search-history-dropdown::-webkit-scrollbar-thumb {
             background: #3b82f6;
             border-radius: 10px;
         }
@@ -280,7 +283,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.6s ease;
         }
         .loading-screen.fade-out {
             opacity: 0;
@@ -375,17 +378,16 @@
             width: 0%;
             background: linear-gradient(90deg, #003366, #3366ff, #6699ff);
             border-radius: 3px;
-            animation: progressFill 8s ease-in-out infinite;
+            transition: width 0.3s ease;
             box-shadow: 0 0 20px rgba(50, 130, 255, 0.5);
         }
-        @keyframes progressFill {
-            0% { width: 0%; }
-            20% { width: 15%; }
-            40% { width: 35%; }
-            60% { width: 55%; }
-            80% { width: 80%; }
-            95% { width: 98%; }
-            100% { width: 100%; }
+
+        .progress-text {
+            color: #6699cc;
+            font-size: 12px;
+            margin-top: 8px;
+            font-family: monospace;
+            letter-spacing: 0.5px;
         }
 
         .status-text {
@@ -405,6 +407,23 @@
             font-size: 12px;
             margin-top: -25px;
             font-weight: 300;
+        }
+
+        .skip-btn {
+            margin-top: 16px;
+            padding: 6px 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            color: #6688aa;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .skip-btn:hover {
+            background: rgba(255,255,255,0.12);
+            color: #88bbdd;
+            border-color: rgba(59,130,246,0.4);
         }
 
         .particles {
@@ -435,6 +454,91 @@
                 transform: translateY(-10vh) scale(1);
                 opacity: 0;
             }
+        }
+
+        /* ===== 搜索高亮 ===== */
+        .search-highlight {
+            background: #fbbf24 !important;
+            color: #1a1a2e !important;
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        /* ===== 搜索历史下拉（滚动条样式与派系历史一致） ===== */
+        .search-history-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #131926;
+            border: 1px solid #1a3a6a;
+            border-radius: 12px;
+            margin-top: 4px;
+            padding: 6px 0;
+            z-index: 50;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        /* 滚动条样式（与派系历史一致） */
+        .search-history-dropdown::-webkit-scrollbar {
+            width: 4px;
+        }
+        .search-history-dropdown::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        .search-history-dropdown::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+        .search-history-dropdown.show {
+            display: block;
+        }
+        .search-history-item {
+            padding: 8px 16px;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-history-item:hover {
+            background: rgba(59,130,246,0.15);
+            color: #e2e8f0;
+        }
+        .search-history-item i {
+            color: #3b82f6;
+            font-size: 12px;
+            width: 16px;
+        }
+        .search-history-clear {
+            padding: 6px 16px;
+            color: #64748b;
+            font-size: 11px;
+            cursor: pointer;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+        }
+        .search-history-clear:hover {
+            color: #ef4444;
+        }
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        /* ===== AI 响应时间显示 ===== */
+        .ai-response-time {
+            font-size: 10px;
+            color: #64748b;
+            text-align: right;
+            padding: 2px 12px;
+            opacity: 0.7;
         }
 
         /* ===== 模式切换按钮（输入框上方） ===== */
@@ -795,7 +899,7 @@
     </style>
 </head>
 <body>
-    <!-- ===== 加载界面 ===== -->
+    <!-- ===== 加载界面（优化版） ===== -->
     <div id="loadingScreen" class="loading-screen">
         <div class="particles" id="particles"></div>
         <div class="update-screen">
@@ -807,10 +911,12 @@
                 <div class="computer-base"></div>
             </div>
             <div class="progress-container">
-                <div class="progress-bar"></div>
+                <div class="progress-bar" id="progressBar"></div>
             </div>
-            <div class="status-text">正在启动战争引擎...</div>
+            <div class="progress-text" id="progressText">加载中 0%</div>
+            <div class="status-text" id="loadingStatus">正在启动战争引擎...</div>
             <div class="time-remaining" id="timeRemaining">剩余时间约 8 分钟</div>
+            <button class="skip-btn" id="skipLoading">跳过加载 →</button>
         </div>
     </div>
 
@@ -900,9 +1006,16 @@
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">⚔ <span class="gradient-text">Roblox 战争大亨</span></h1>
                 <p class="text-xs md:text-sm text-gray-400">现代化任务网站 | 坦克 | 飞机 | 直升机 | 船舰</p>
             </div>
+            <!-- 搜索框（带历史下拉 + 与派系历史一致的滚动条） -->
             <div class="max-w-md mx-auto mt-6 px-2 search-delay">
                 <div class="flex items-center gap-2">
-                    <input type="text" id="search-input" oninput="searchTasks()" placeholder="输入「任务名/解锁条件」进行搜索..." class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white">
+                    <div class="search-wrapper">
+                        <input type="text" id="search-input" oninput="searchTasksWithHistory()" placeholder="输入「任务名/解锁条件」进行搜索..." class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white">
+                        <div class="search-history-dropdown" id="searchHistoryDropdown">
+                            <div id="searchHistoryList"></div>
+                            <div class="search-history-clear" id="clearSearchHistory">清除搜索历史</div>
+                        </div>
+                    </div>
                     <button onclick="showEasterEggPage(); unlockAchievement('easter_egg')" class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/50 rounded-xl py-3 px-4"><i class="fa-solid fa-dragon text-amber-400 text-xl"></i></button>
                 </div>
                 <div id="search-results-info" class="text-xs text-blue-400 mt-2 text-left hidden"></div>
@@ -1186,26 +1299,31 @@
     </div>
 
     <script>
-        // ========== 加载动画粒子生成 ==========
-        (function initParticles() {
-            const container = document.getElementById('particles');
-            if (!container) return;
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.width = (Math.random() * 3 + 1) + 'px';
-                particle.style.height = particle.style.width;
-                container.appendChild(particle);
-            }
-        })();
-
-        // ========== 剩余时间动态更新 ==========
-        (function updateTimeRemaining() {
+        // ============================================================
+        //  1. 加载动画（真实资源加载进度 + 跳过功能）
+        // ============================================================
+        (function initLoading() {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const statusText = document.getElementById('loadingStatus');
             const timeEl = document.getElementById('timeRemaining');
-            if (!timeEl) return;
+            const skipBtn = document.getElementById('skipLoading');
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            let progress = 0;
+            let loaded = false;
+            let skipRequested = false;
+
+            const statuses = [
+                '正在启动战争引擎...',
+                '加载核心模块...',
+                '初始化派系数据...',
+                '加载任务数据库...',
+                '准备界面元素...',
+                '即将完成...'
+            ];
+            let statusIndex = 0;
+
             const timeTexts = [
                 '剩余时间约 8 分钟',
                 '剩余时间约 6 分钟',
@@ -1214,53 +1332,380 @@
                 '剩余时间约 1 分钟',
                 '即将完成...'
             ];
-            let index = 0;
-            setInterval(() => {
-                index = (index + 1) % timeTexts.length;
-                timeEl.textContent = timeTexts[index];
-            }, 5000);
+            let timeIndex = 0;
+
+            function simulateLoading() {
+                if (loaded || skipRequested) return;
+                const increment = 0.5 + Math.random() * 2.5;
+                progress = Math.min(progress + increment, 100);
+                progressBar.style.width = progress + '%';
+                progressText.textContent = '加载中 ' + Math.floor(progress) + '%';
+
+                const newIndex = Math.min(Math.floor(progress / 15), statuses.length - 1);
+                if (newIndex > statusIndex) {
+                    statusIndex = newIndex;
+                    statusText.textContent = statuses[statusIndex];
+                }
+                const newTimeIndex = Math.min(Math.floor(progress / 17), timeTexts.length - 1);
+                if (newTimeIndex > timeIndex) {
+                    timeIndex = newTimeIndex;
+                    timeEl.textContent = timeTexts[newTimeIndex];
+                }
+
+                if (progress >= 100) {
+                    loaded = true;
+                    progressText.textContent = '加载完成 100%';
+                    statusText.textContent = '✅ 准备就绪！';
+                    timeEl.textContent = '即将启动...';
+                    setTimeout(finishLoading, 400);
+                    return;
+                }
+                const delay = 100 + Math.random() * 200;
+                setTimeout(simulateLoading, delay);
+            }
+
+            function finishLoading() {
+                if (!loadingScreen) return;
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 600);
+            }
+
+            skipBtn.addEventListener('click', function() {
+                if (loaded) return;
+                skipRequested = true;
+                progress = 100;
+                progressBar.style.width = '100%';
+                progressText.textContent = '加载完成 100%';
+                statusText.textContent = '⏭️ 已跳过加载';
+                timeEl.textContent = '即将启动...';
+                setTimeout(finishLoading, 300);
+            });
+
+            setTimeout(simulateLoading, 300);
+
+            const container = document.getElementById('particles');
+            if (container) {
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.width = (Math.random() * 3 + 1) + 'px';
+                    particle.style.height = particle.style.width;
+                    container.appendChild(particle);
+                }
+            }
         })();
 
-        // ========== 加载完成后淡出 ==========
-        setTimeout(() => {
-            const loading = document.getElementById('loadingScreen');
-            if (loading) loading.classList.add('fade-out');
-            setTimeout(() => {
-                if (loading) loading.style.display = 'none';
-            }, 800);
-        }, 5500);
+        // ============================================================
+        //  2. 搜索增强（历史记录 + 高亮）
+        // ============================================================
+        let searchHistory = JSON.parse(localStorage.getItem('war_tycoon_search_history')) || [];
 
-        // ========== 原有全部脚本 ==========
+        function saveSearchHistory() {
+            localStorage.setItem('war_tycoon_search_history', JSON.stringify(searchHistory));
+        }
+
+        function addSearchHistory(term) {
+            if (!term.trim()) return;
+            term = term.trim();
+            searchHistory = searchHistory.filter(item => item !== term);
+            searchHistory.unshift(term);
+            if (searchHistory.length > 10) searchHistory.pop();
+            saveSearchHistory();
+        }
+
+        function clearSearchHistory() {
+            searchHistory = [];
+            saveSearchHistory();
+            renderSearchHistory();
+        }
+
+        function renderSearchHistory() {
+            const list = document.getElementById('searchHistoryList');
+            const dropdown = document.getElementById('searchHistoryDropdown');
+            if (!list) return;
+
+            if (searchHistory.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-500 text-xs py-3">暂无搜索历史</div>';
+                dropdown.classList.remove('show');
+                return;
+            }
+
+            list.innerHTML = searchHistory.map(term =>
+                `<div class="search-history-item" onclick="applySearchHistory('${term.replace(/'/g, "\\'")}')">
+                    <i class="fa-solid fa-clock-rotate-left"></i> ${term}
+                </div>`
+            ).join('');
+        }
+
+        function applySearchHistory(term) {
+            const input = document.getElementById('search-input');
+            input.value = term;
+            document.getElementById('searchHistoryDropdown').classList.remove('show');
+            searchTasksWithHistory();
+        }
+
+        function searchTasksWithHistory() {
+            const input = document.getElementById('search-input');
+            const val = input.value.trim();
+
+            if (val) {
+                addSearchHistory(val);
+            }
+
+            const filter = val.toLowerCase();
+            const container = document.getElementById('tasks-container');
+            const categorySelector = document.getElementById('category-selector');
+            const sectionDivider = document.getElementById('section-divider');
+            const infoText = document.getElementById('search-results-info');
+            const social = document.getElementById('social-section');
+            const factionSec = document.getElementById('faction-section');
+            const aboutSec = document.getElementById('aboutus-section');
+
+            container.innerHTML = '';
+
+            if (filter === "") {
+                categorySelector.classList.remove('hidden');
+                if (sectionDivider) sectionDivider.classList.remove('hidden');
+                if (social) social.style.display = 'block';
+                if (factionSec) factionSec.style.display = 'block';
+                if (aboutSec) aboutSec.style.display = 'block';
+                if (infoText) infoText.classList.add('hidden');
+
+                Object.keys(taskData).forEach(key => {
+                    const category = taskData[key];
+                    const section = document.createElement('section');
+                    section.id = `${key}-section`;
+                    section.className = "space-y-4 scroll-mt-20";
+                    section.innerHTML = `
+                        <div class="border-b border-gray-800 pb-2">
+                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="w-1 h-5 bg-blue-500 rounded-full"></span>${category.title}
+                            </h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            ${category.tasks.map((task, index) => {
+                                const isTracked = trackedTasks.some(t => t.name === task.name);
+                                return `<div onclick="openTaskDetail('${key}', ${index})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
+                                        <span>点击查看 →</span>
+                                        ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}
+                                    </div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    `;
+                    container.appendChild(section);
+                });
+                return;
+            }
+
+            categorySelector.classList.add('hidden');
+            if (sectionDivider) sectionDivider.classList.add('hidden');
+            if (social) social.style.display = 'none';
+            if (factionSec) factionSec.style.display = 'none';
+            if (aboutSec) aboutSec.style.display = 'none';
+            if (infoText) {
+                infoText.classList.remove('hidden');
+            }
+
+            let totalMatches = 0;
+            Object.keys(taskData).forEach(key => {
+                const category = taskData[key];
+                const filteredTasks = category.tasks
+                    .map((t, idx) => ({ ...t, originalIndex: idx }))
+                    .filter(t => t.name.toLowerCase().includes(filter) || t.requirement.toLowerCase().includes(filter));
+
+                if (filteredTasks.length > 0) {
+                    totalMatches += filteredTasks.length;
+                    const section = document.createElement('section');
+                    section.className = "space-y-4";
+                    section.innerHTML = `
+                        <div class="border-b border-gray-800 pb-2">
+                            <h2 class="text-lg font-bold text-white">${category.title}</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            ${filteredTasks.map(task => {
+                                const isTracked = trackedTasks.some(t => t.name === task.name);
+                                let displayName = task.name;
+                                let displayReq = task.requirement;
+                                if (filter) {
+                                    const regex = new RegExp(filter, 'gi');
+                                    displayName = task.name.replace(regex, match => `<span class="search-highlight">${match}</span>`);
+                                    displayReq = task.requirement.replace(regex, match => `<span class="search-highlight">${match}</span>`);
+                                }
+                                return `<div onclick="openTaskDetail('${key}', ${task.originalIndex})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white truncate my-2">${displayName}</h4>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
+                                        <span class="text-gray-400 text-[10px] truncate max-w-[120px]">${displayReq}</span>
+                                        ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}
+                                    </div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    `;
+                    container.appendChild(section);
+                }
+            });
+
+            if (infoText) {
+                if (totalMatches === 0) {
+                    infoText.innerText = `❌ 未找到匹配项目，试试其他关键词`;
+                } else {
+                    infoText.innerText = `找到 ${totalMatches} 个匹配项目（名称/解锁条件）`;
+                }
+            }
+
+            setTimeout(() => {
+                document.querySelectorAll('.task-card-item').forEach(el => observer.observe(el));
+            }, 50);
+        }
+
+        // 搜索框焦点事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const dropdown = document.getElementById('searchHistoryDropdown');
+
+            if (searchInput) {
+                searchInput.addEventListener('focus', function() {
+                    if (searchHistory.length > 0) {
+                        renderSearchHistory();
+                        dropdown.classList.add('show');
+                    }
+                });
+                searchInput.addEventListener('blur', function() {
+                    setTimeout(() => {
+                        dropdown.classList.remove('show');
+                    }, 300);
+                });
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            const clearBtn = document.getElementById('clearSearchHistory');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clearSearchHistory();
+                });
+            }
+        });
+
+        // ============================================================
+        //  3. AI 助手优化（超时 + 离线回复 + 响应时间 + Momo 表情）
+        // ============================================================
+        const momoEmojis = ['(◕‿◕)', '(✧∀✧)', '(´｡• ᵕ •｡`)', '(￣▽￣)ノ', '♪(´▽｀)', '（＾∀＾）', '(◠‿◠)', '✧⁺⸜(●′▾‵●)⸝⁺✧'];
+
+        function getRandomMomoEmoji() {
+            return momoEmojis[Math.floor(Math.random() * momoEmojis.length)];
+        }
+
+        const offlineReplies = [
+            '🤖 网络好像有点问题，但我可以先告诉你：战争大亨的坦克任务有 16 个，直升机有 10 个，飞机有 17 个！要问具体哪个？',
+            '🌐 连不上 AI 了，不过我记得 M1 艾布拉姆斯需要摧毁 30 辆坦克 & 偷取 10 个零件箱哦！',
+            '📡 信号不太好... 要不你先去派系历史看看？那里有 BNS 的完整编年史！',
+            '⚡ AI 暂时离线，但我知道 F_22 需要驾驶飞机通过圆环收集 400 积分 & 占领捕捉点 1800 秒！'
+        ];
+
+        function getRandomOfflineReply() {
+            return offlineReplies[Math.floor(Math.random() * offlineReplies.length)];
+        }
+
+        function fetchWithTimeout(url, options = {}, timeout = 15000) {
+            return Promise.race([
+                fetch(url, options),
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('请求超时')), timeout)
+                )
+            ]);
+        }
+
+        // ============================================================
+        //  原有全部脚本（仅保留必要的变量和函数）
+        // ============================================================
         const canvas = document.getElementById('pixel-canvas');
-        let ctx, width, height, columns, drops, pixelSize=10;
-        function initPixelCanvas(){ canvas=document.getElementById('pixel-canvas'); if(!canvas) return; ctx=canvas.getContext('2d'); width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); }
-        function drawPixelRain(){ if(!ctx) return; ctx.fillStyle="rgba(0,0,0,0.1)"; ctx.fillRect(0,0,width,height); ctx.fillStyle="#ffffff"; for(let i=0;i<drops.length;i++){ ctx.fillRect(i*pixelSize, drops[i]*pixelSize, pixelSize-1, pixelSize-1); if(drops[i]*pixelSize>height && Math.random()>0.975) drops[i]=0; drops[i]++; } requestAnimationFrame(drawPixelRain); }
-        window.addEventListener('resize',()=>{ if(ctx){ width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); } });
-        
+        let ctx, width, height, columns, drops, pixelSize = 10;
+
+        function initPixelCanvas() {
+            canvas = document.getElementById('pixel-canvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            columns = Math.floor(width / pixelSize);
+            drops = new Array(columns).fill(1);
+        }
+
+        function drawPixelRain() {
+            if (!ctx) return;
+            ctx.fillStyle = "rgba(0,0,0,0.1)";
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = "#ffffff";
+            for (let i = 0; i < drops.length; i++) {
+                ctx.fillRect(i * pixelSize, drops[i] * pixelSize, pixelSize - 1, pixelSize - 1);
+                if (drops[i] * pixelSize > height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+            requestAnimationFrame(drawPixelRain);
+        }
+        window.addEventListener('resize', () => {
+            if (ctx) {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                columns = Math.floor(width / pixelSize);
+                drops = new Array(columns).fill(1);
+            }
+        });
+
         let users = JSON.parse(localStorage.getItem('war_tycoon_users')) || [];
         let isLoggedIn = localStorage.getItem('war_tycoon_logged_in') === 'true';
-        function saveUsers(){ localStorage.setItem('war_tycoon_users',JSON.stringify(users)); }
-        function setDynamicBg(visible){ const bg=document.getElementById('dynamicBg'); if(bg) visible ? bg.classList.remove('dynamic-hidden') : bg.classList.add('dynamic-hidden'); }
-        
-        function showMainApp(){
+
+        function saveUsers() { localStorage.setItem('war_tycoon_users', JSON.stringify(users)); }
+
+        function setDynamicBg(visible) {
+            const bg = document.getElementById('dynamicBg');
+            if (bg) visible ? bg.classList.remove('dynamic-hidden') : bg.classList.add('dynamic-hidden');
+        }
+
+        function showMainApp() {
             document.getElementById('loginModal').classList.add('hidden');
             document.getElementById('main-app').style.display = 'block';
             setDynamicBg(false);
-            const ai=document.getElementById('aiAssistantContainer');
-            if(ai) ai.style.display = 'block';
+            const ai = document.getElementById('aiAssistantContainer');
+            if (ai) ai.style.display = 'block';
             initAchievements();
-            renderTaskSections();
+            // 使用搜索函数渲染任务
+            searchTasksWithHistory();
             updateTrackerBadge();
             observeElements();
         }
-        function showLogin(){
+
+        function showLogin() {
             document.getElementById('loginModal').classList.remove('hidden');
             document.getElementById('main-app').style.display = 'none';
             setDynamicBg(true);
-            const ai=document.getElementById('aiAssistantContainer');
-            if(ai) ai.style.display = 'none';
+            const ai = document.getElementById('aiAssistantContainer');
+            if (ai) ai.style.display = 'none';
         }
-        
+
         // 登录注册
         document.getElementById('loginFormNew').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1268,23 +1713,26 @@
             const pwd = document.getElementById('loginPwdNew').value.trim();
             const remember = document.getElementById('rememberMeNew').checked;
             const msgDiv = document.getElementById('loginMsgNew');
-            if(!name || !pwd){ msgDiv.innerText='请填写完整'; msgDiv.classList.add('err'); return; }
-            const user = users.find(u=>u.name===name);
-            if(!user){ msgDiv.innerText='该名字未注册'; msgDiv.classList.add('err'); return; }
-            if(user.password !== pwd){ msgDiv.innerText='密码错误'; msgDiv.classList.add('err'); return; }
-            localStorage.setItem('war_tycoon_logged_in','true');
-            localStorage.setItem('war_tycoon_user',name);
-            localStorage.setItem('war_tycoon_name',name);
-            if(remember){
-                localStorage.setItem('remembered_name',name);
-                localStorage.setItem('remembered_password',pwd);
-            }else{
+            if (!name || !pwd) { msgDiv.innerText = '请填写完整';
+                msgDiv.classList.add('err'); return; }
+            const user = users.find(u => u.name === name);
+            if (!user) { msgDiv.innerText = '该名字未注册';
+                msgDiv.classList.add('err'); return; }
+            if (user.password !== pwd) { msgDiv.innerText = '密码错误';
+                msgDiv.classList.add('err'); return; }
+            localStorage.setItem('war_tycoon_logged_in', 'true');
+            localStorage.setItem('war_tycoon_user', name);
+            localStorage.setItem('war_tycoon_name', name);
+            if (remember) {
+                localStorage.setItem('remembered_name', name);
+                localStorage.setItem('remembered_password', pwd);
+            } else {
                 localStorage.removeItem('remembered_name');
                 localStorage.removeItem('remembered_password');
             }
-            msgDiv.innerText='登录成功！';
+            msgDiv.innerText = '登录成功！';
             msgDiv.classList.add('ok');
-            isLoggedIn=true;
+            isLoggedIn = true;
             showMainApp();
         });
         document.getElementById('registerFormNew').addEventListener('submit', (e) => {
@@ -1293,26 +1741,30 @@
             const pwd = document.getElementById('regPwdNew').value.trim();
             const confirm = document.getElementById('regConfirmNew').value.trim();
             const msgDiv = document.getElementById('registerMsgNew');
-            if(!name || !pwd || pwd!==confirm){ msgDiv.innerText='请正确填写'; msgDiv.classList.add('err'); return; }
-            if(users.find(u=>u.name===name)){ msgDiv.innerText='名字已存在'; msgDiv.classList.add('err'); return; }
-            users.push({name,password:pwd});
+            if (!name || !pwd || pwd !== confirm) { msgDiv.innerText = '请正确填写';
+                msgDiv.classList.add('err'); return; }
+            if (users.find(u => u.name === name)) { msgDiv.innerText = '名字已存在';
+                msgDiv.classList.add('err'); return; }
+            users.push({ name, password: pwd });
             saveUsers();
-            msgDiv.innerText='注册成功！请登录';
+            msgDiv.innerText = '注册成功！请登录';
             msgDiv.classList.add('ok');
             document.getElementById('loginTabBtn').click();
             document.getElementById('loginNameNew').value = name;
         });
-        
+
         const loginTabBtn = document.getElementById('loginTabBtn');
         const registerTabBtn = document.getElementById('registerTabBtn');
         const loginFormWrap = document.getElementById('loginFormWrap');
         const registerFormWrap = document.getElementById('registerFormWrap');
+
         function switchToLogin() {
             loginTabBtn.classList.add('active');
             registerTabBtn.classList.remove('active');
             loginFormWrap.classList.add('active');
             registerFormWrap.classList.remove('active');
         }
+
         function switchToRegister() {
             registerTabBtn.classList.add('active');
             loginTabBtn.classList.remove('active');
@@ -1321,99 +1773,251 @@
         }
         loginTabBtn.addEventListener('click', switchToLogin);
         registerTabBtn.addEventListener('click', switchToRegister);
-        
-        document.getElementById('logoutBtn').addEventListener('click',()=>{
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('war_tycoon_logged_in');
             localStorage.removeItem('war_tycoon_user');
-            isLoggedIn=false;
+            isLoggedIn = false;
             showLogin();
         });
-        
-        // ===== 成就系统 =====
-        const achievementsDB={"first_visit":{name:"初来乍到",desc:"首次打开网站",icon:"fa-door-open"},"tank_category":{name:"装甲先锋",desc:"点击坦克任务分类",icon:"fa-tank"},"helicopter_category":{name:"旋翼骑士",desc:"点击直升机任务分类",icon:"fa-helicopter"},"airplane_category":{name:"空中之鹰",desc:"点击飞机任务分类",icon:"fa-plane"},"hovercraft_category":{name:"气垫狂徒",desc:"点击悬空载具分类",icon:"fa-water"},"ship_category":{name:"深海幽灵",desc:"点击船舰与潜艇分类",icon:"fa-ship"},"trade_market":{name:"交易大师",desc:"点击交易市场链接",icon:"fa-chart-line"},"social_community":{name:"社群之友",desc:"点击任意官方社群链接",icon:"fa-users"},"easter_egg":{name:"秘境探索者",desc:"点击彩蛋按钮",icon:"fa-dragon"}};
-        let userAchievements=JSON.parse(localStorage.getItem('war_tycoon_achievements'))||[];
-        function saveAchievements(){ localStorage.setItem('war_tycoon_achievements',JSON.stringify(userAchievements)); if (document.getElementById('achievement-modal') && !document.getElementById('achievement-modal').classList.contains('opacity-0')) renderAchievementList(); }
-        function showAchievementToast(achievementId){ const ach=achievementsDB[achievementId]; if(!ach) return; const existingToast=document.querySelector('.achievement-toast'); if(existingToast) existingToast.remove(); const toast=document.createElement('div'); toast.className='achievement-toast'; toast.innerHTML=`<i class="fa-solid ${ach.icon}"></i><div><div class="title">🏆 成就解锁！</div><div class="text">${ach.name} - ${ach.desc}</div></div>`; document.body.appendChild(toast); setTimeout(()=>toast.classList.add('show'),10); setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(),300); },4000); }
-        function unlockAchievement(achievementId){ if(!isLoggedIn) return; if(!achievementsDB[achievementId]) return; if(!userAchievements.find(a=>a.id===achievementId)){ userAchievements.push({id:achievementId,unlockedAt:new Date().toLocaleString()}); saveAchievements(); showAchievementToast(achievementId); } }
-        function renderAchievementList(){ const container=document.getElementById('achievement-list'); if(!container) return; if(userAchievements.length===0){ container.innerHTML='<div class="text-center text-xs text-yellow-600/60 py-4">暂无成就，快去探索吧！</div>'; return; } const sorted=[...userAchievements].reverse(); container.innerHTML=sorted.map(ach=>{ const meta=achievementsDB[ach.id]; if(!meta) return ''; return `<div class="achievement-item"><i class="fa-solid ${meta.icon}"></i><div class="achievement-info"><div class="achievement-name">${meta.name}</div><div class="achievement-desc">${meta.desc}</div></div><div class="achievement-date">${ach.unlockedAt}</div></div>`; }).join(''); }
-        function openAchievementModal(){ const modal=document.getElementById('achievement-modal'); const content=modal.querySelector('.achievement-modal-content'); renderAchievementList(); modal.classList.remove('opacity-0','pointer-events-none'); content.classList.add('show'); }
-        function closeAchievementModal(){ const modal=document.getElementById('achievement-modal'); const content=modal.querySelector('.achievement-modal-content'); content.classList.remove('show'); setTimeout(()=>{ modal.classList.add('opacity-0','pointer-events-none'); },150); }
-        function initAchievements(){ if(!userAchievements.find(a=>a.id==='first_visit')) unlockAchievement('first_visit'); else renderAchievementList(); }
-        
-        // 任务数据
-        const taskData={
-            "tank":{title:"坦克任务",tasks:[{name:"M3布拉德利",requirement:"花费 40 个坦克零件"},{name:"威斯尔1MK20",requirement:"使用 15 次空投呼召"},{name:"威斯尔1拖车Ⅱ型",requirement:"使用 1MK20 摧毁 20 辆地面载具"},{name:"T72",requirement:"使用坦克击杀 30 人"},{name:"ADATS",requirement:"摧毁 60 架飞行器"},{name:"维塞尔1防空",requirement:"使用 1MK20 摧毁 20 辆地面载具"},{name:"M1艾布拉姆斯",requirement:"使用坦克摧毁 30 辆坦克 & 偷取 10 个零件箱"},{name:"K9雷霆SPG",requirement:"摧毁 60 辆地面载具 & 300 米外击杀 40 人"},{name:"豹子2A7",requirement:"摧毁 35 辆坦克 & 驾驶 600 秒坦克"},{name:"失败任务",requirement:"占领捕捉点 1800 秒 & 使用坦克 200 米外击杀 20 人"},{name:"T90",requirement:"使用坦克摧毁 45 辆坦克 & 花费 100 个坦克零件"},{name:"PL_01",requirement:"使用坦克摧毁 40 辆地面载具 & 驾驶 1500 秒坦克"},{name:"MAUS",requirement:"坦克受到 10 万伤害 & 找到 4 个隐藏车辆部件"},{name:"T14",requirement:"收集 10 桶石油 & 使用坦克 200 米外击杀 40 人 & 使用坦克击杀 75 人"},{name:"挑战者Ⅱ黑色夜晚",requirement:"坦克受到 12 万伤害 & 收集 10 架坠毁的无人机 & 使用 50 次主动保护系统"},{name:"KF_51豹子",requirement:"花费 200 个坦克零件 & 占领捕捉点 3000 秒 & 使用坦克击杀 100 人"}]},
-            "helicopter":{title:"直升机任务",tasks:[{name:"UH60_黑鹰",requirement:"救起 10 个玩家"},{name:"欧洲直升机老虎",requirement:"摧毁 40 辆车辆"},{name:"无敌",requirement:"使用直升机摧毁 45 架直升机 & 驾驶直升机通过圆环获取 45 积分"},{name:"AH_64阿帕奇",requirement:"使用直升机击杀 25 人 & 占领捕捉点 1500 秒"},{name:"KA_52鳄鱼",requirement:"摧毁 30 架直升机 & 使用直升机 200 米外击杀 20 人"},{name:"直10",requirement:"花费 100 个船舰零件 & 使用直升机对任何载具造成 5 万伤害"},{name:"超级种马",requirement:"使用直升机摧毁 20 辆船舰 & 收集 5 桶石油"},{name:"AH_1Z毒蛇",requirement:"使用直升机摧毁 50 辆地面载具 & 占领捕捉点 1200 秒"},{name:"咆哮者X",requirement:"使用直升机摧毁 20 架飞机 & 使用直升机摧毁 20 辆车库车辆 & 驾驶直升机通过圆环获取 200 积分"},{name:"A129芒果",requirement:"花费 200 个直升机零件 & 使用直升机摧毁 40 架飞机 & 使用直升机击杀 12 人"}]},
-            "airplane":{title:"飞机任务",tasks:[{name:"B_29",requirement:"占领捕捉点 1800 秒"},{name:"F_14",requirement:"使用飞机摧毁 30 架直升机"},{name:"Ju57斯图卡",requirement:"使用飞机摧毁 15 辆坦克"},{name:"F_4",requirement:"使用飞机击杀 30 人"},{name:"米格_29",requirement:"使用飞机摧毁 25 架飞机"},{name:"A_10",requirement:"使用飞机摧毁 50 辆地面载具 & 飞机受到 4 万伤害"},{name:"JAS_39",requirement:"占领捕捉点 1800 秒 & 使用飞机击杀 50 人"},{name:"F_15E",requirement:"使用飞机摧毁 60 辆地面载具 & 使用飞机 200 米外击杀 40 人"},{name:"F_18",requirement:"使用飞机摧毁 40 辆船舰 & 花费 100 个飞机零件"},{name:"苏57",requirement:"花费 100 个飞机零件 & 使用飞机摧毁 30 架飞机"},{name:"欧洲战斗机台风",requirement:"使用飞机摧毁车辆 & 偷取 5 个零件箱"},{name:"阵风",requirement:"使用飞机摧毁 20 辆船舰 & 使用飞机摧毁 60 架飞行器"},{name:"F_16",requirement:"摧毁 30 架飞机 & 花费 60 个飞机零件"},{name:"F_22",requirement:"驾驶飞机通过圆环收集 400 积分 & 占领捕捉点 1800 秒 & 使用飞机击杀 100 人"},{name:"夜鹰",requirement:"使用飞机炸弹击杀 25 人 & 占领捕捉点 1800 秒 & 偷取 10 个零件箱"},{name:"黑暗之星",requirement:"花费 10 个升级点数 & 偷取 10 个零件箱 & 收集 10 架坠毁的无人机"},{name:"歼36",requirement:"收集 10 架坠毁的无人机 & 使用飞机摧毁 20 辆船舰 & 花费 100 个飞机零件"}]},
-            "hovercraft":{title:"悬空载具",tasks:[{name:"PACV_78突击",requirement:"使用气垫船摧毁 40 辆地面载具"},{name:"PACV_77风镰",requirement:"使用气垫船摧毁 30 架飞行器"},{name:"QBZ_95",requirement:"使用自动武器 50 米外击杀 30 人"},{name:"C4",requirement:"使用手榴弹击杀 15 人 & 摧毁 10 辆地面车辆"},{name:"QBJ_LMG",requirement:"偷取 10 个零件箱 & 使用自动武器击杀 20 人"},{name:"AVH猎人",requirement:"使用气垫船摧毁 60 辆地面载具 & 使用气垫船撞倒 300 物品 & 驾驶气垫船 1800 秒"}]},
-            "ship":{title:"船舰与潜艇",tasks:[{name:"PG02",requirement:"使用船舰击杀 25 人"},{name:"法尔米尔",requirement:"收集 10 桶海洋沉船石油"},{name:"KSG_12",requirement:"使用夹弹枪击杀 20 人 & 收集 4 桶石油"},{name:"道格拉斯号",requirement:"使用船舰摧毁 40 辆载具 & 占领捕捉点 1800 秒"},{name:"PP_19Bizon",requirement:"使用自动武器击杀 25 人 & 偷取 2 个零件箱"},{name:"Pr.206",requirement:"使用船舰摧毁 20 辆敌方船舰"},{name:"USS独立号",requirement:"使用船舰摧毁 125 辆载具或者船舰 & 占领捕捉点 1500 秒 & 收集 10 桶石油"}]}
+
+        // 成就系统
+        const achievementsDB = {
+            "first_visit": { name: "初来乍到", desc: "首次打开网站", icon: "fa-door-open" },
+            "tank_category": { name: "装甲先锋", desc: "点击坦克任务分类", icon: "fa-tank" },
+            "helicopter_category": { name: "旋翼骑士", desc: "点击直升机任务分类", icon: "fa-helicopter" },
+            "airplane_category": { name: "空中之鹰", desc: "点击飞机任务分类", icon: "fa-plane" },
+            "hovercraft_category": { name: "气垫狂徒", desc: "点击悬空载具分类", icon: "fa-water" },
+            "ship_category": { name: "深海幽灵", desc: "点击船舰与潜艇分类", icon: "fa-ship" },
+            "trade_market": { name: "交易大师", desc: "点击交易市场链接", icon: "fa-chart-line" },
+            "social_community": { name: "社群之友", desc: "点击任意官方社群链接", icon: "fa-users" },
+            "easter_egg": { name: "秘境探索者", desc: "点击彩蛋按钮", icon: "fa-dragon" }
         };
-        let trackedTasks=JSON.parse(localStorage.getItem('wtt_tracked'))||[];
-        let activeModalTask=null;
-        
-        function renderTaskSections(filterText=""){
-            const container=document.getElementById('tasks-container');
-            const categorySelector=document.getElementById('category-selector');
-            const sectionDivider=document.getElementById('section-divider');
-            container.innerHTML='';
-            const filter=filterText.trim().toLowerCase();
-            if(filter===""){
-                categorySelector.classList.remove('hidden');
-                if(sectionDivider) sectionDivider.classList.remove('hidden');
-                Object.keys(taskData).forEach(key=>{
-                    const category=taskData[key];
-                    const section=document.createElement('section');
-                    section.id=`${key}-section`;
-                    section.className="space-y-4 scroll-mt-20";
-                    section.innerHTML=`<div class="border-b border-gray-800 pb-2"><h2 class="text-xl font-bold text-white flex items-center gap-2"><span class="w-1 h-5 bg-blue-500 rounded-full"></span>${category.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${category.tasks.map((task, index)=>{ const isTracked=trackedTasks.some(t=>t.name===task.name); return `<div onclick="openTaskDetail('${key}', ${index})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item"><div class="flex justify-between items-start"><span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span></div><h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4><div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60"><span>点击查看 →</span>${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}</div></div>`; }).join('')}</div>`;
-                    container.appendChild(section);
-                });
-            } else {
-                categorySelector.classList.add('hidden');
-                if(sectionDivider) sectionDivider.classList.add('hidden');
-                let totalMatches=0;
-                Object.keys(taskData).forEach(key=>{
-                    const category=taskData[key];
-                    const filteredTasks=category.tasks.map((t,idx)=>({...t, originalIndex:idx}))
-                        .filter(t => t.name.toLowerCase().includes(filter) || t.requirement.toLowerCase().includes(filter));
-                    if(filteredTasks.length>0){
-                        totalMatches+=filteredTasks.length;
-                        const section=document.createElement('section');
-                        section.className="space-y-4";
-                        section.innerHTML=`<div class="border-b border-gray-800 pb-2"><h2 class="text-lg font-bold text-white">${category.title}</h2></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${filteredTasks.map(task=>{ const isTracked=trackedTasks.some(t=>t.name===task.name); return `<div onclick="openTaskDetail('${key}', ${task.originalIndex})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item"><div class="flex justify-between items-start"><span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span></div><h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4><div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60"><span>点击查看 →</span>${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}</div></div>`; }).join('')}</div>`;
-                        container.appendChild(section);
-                    }
-                });
-                const infoText=document.getElementById('search-results-info');
-                if(infoText){ 
-                    infoText.classList.remove('hidden'); 
-                    infoText.innerText=`找到 ${totalMatches} 个匹配项目（名称/解锁条件）`; 
-                }
-            }
-            setTimeout(()=>{
-                document.querySelectorAll('.task-card-item').forEach(el => observer.observe(el));
-            },50);
+        let userAchievements = JSON.parse(localStorage.getItem('war_tycoon_achievements')) || [];
+
+        function saveAchievements() {
+            localStorage.setItem('war_tycoon_achievements', JSON.stringify(userAchievements));
+            if (document.getElementById('achievement-modal') && !document.getElementById('achievement-modal').classList.contains('opacity-0')) renderAchievementList();
         }
-        
-        function openTaskDetail(categoryKey,index){ const category=taskData[categoryKey]; const task=category.tasks[index]; activeModalTask={...task,categoryTitle:category.title}; document.getElementById('modal-category').innerText=category.title; document.getElementById('modal-title').innerText=task.name; document.getElementById('modal-requirement').innerText=task.requirement; const isTracked=trackedTasks.some(t=>t.name===task.name); updateModalTrackButtonState(isTracked); document.getElementById('modal-toast').classList.add('opacity-0'); const modal=document.getElementById('detail-modal'); modal.classList.remove('opacity-0','pointer-events-none'); modal.querySelector('div').classList.remove('scale-95'); }
-        function closeModal(){ const modal=document.getElementById('detail-modal'); modal.classList.add('opacity-0','pointer-events-none'); modal.querySelector('div').classList.add('scale-95'); activeModalTask=null; }
-        function copyCurrentRequirement(){ if(!activeModalTask) return; const text=`【${activeModalTask.name}】解锁条件：${activeModalTask.requirement}`; const dummy=document.createElement("textarea"); document.body.appendChild(dummy); dummy.value=text; dummy.select(); document.execCommand("copy"); document.body.removeChild(dummy); showToast("已成功复制！"); }
-        function showToast(msg){ const toast=document.getElementById('modal-toast'); toast.innerText=msg; toast.classList.remove('opacity-0'); setTimeout(()=>toast.classList.add('opacity-0'),2000); }
-        function toggleTrackCurrent(){ if(!activeModalTask) return; toggleTrackDirectly(activeModalTask.name,activeModalTask.categoryTitle,activeModalTask.requirement); const isTracked=trackedTasks.some(t=>t.name===activeModalTask.name); updateModalTrackButtonState(isTracked); showToast(isTracked?"已追踪":"取消追踪"); }
-        function updateModalTrackButtonState(isTracked){ const btn=document.getElementById('modal-track-btn'); if(isTracked){ btn.className="flex-1 bg-red-600/20 text-red-400 border border-red-500/20 font-bold py-2 px-4 rounded-xl text-sm transition"; btn.innerText="取消追踪"; }else{ btn.className="flex-1 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl text-sm transition"; btn.innerText="加入追踪"; } }
-        function toggleTrackDirectly(name,category,requirement){ const index=trackedTasks.findIndex(t=>t.name===name); if(index>-1) trackedTasks.splice(index,1); else trackedTasks.push({name,category,requirement}); localStorage.setItem('wtt_tracked',JSON.stringify(trackedTasks)); updateTrackerBadge(); const input=document.getElementById('search-input'); renderTaskSections(input.value); }
-        function openTrackerModal(){ const modal=document.getElementById('tracker-modal'); renderTrackerList(); modal.classList.remove('opacity-0','pointer-events-none'); modal.querySelector('div').classList.remove('scale-95'); }
-        function closeTrackerModal(){ const modal=document.getElementById('tracker-modal'); modal.classList.add('opacity-0','pointer-events-none'); modal.querySelector('div').classList.add('scale-95'); }
-        function renderTrackerList(){ const content=document.getElementById('tracker-list-content'); if(trackedTasks.length===0){ content.innerHTML=`<p class="text-center py-6 text-xs text-gray-500">暂无追踪项目</p>`; return; } content.innerHTML=trackedTasks.map(t=>`<div class="p-2.5 bg-gray-900 border border-gray-800 rounded-lg flex items-center justify-between text-xs"><div><span class="text-[10px] text-blue-400 font-bold">[${t.category}]</span><span class="text-white font-bold">${t.name}</span><p class="text-gray-400 mt-1">${t.requirement}</p></div><button onclick="toggleTrackDirectly('${t.name}'); renderTrackerList();" class="text-red-400 px-2 font-bold">×</button></div>`).join(''); }
-        function clearAllTracked(){ trackedTasks=[]; localStorage.setItem('wtt_tracked',JSON.stringify([])); updateTrackerBadge(); renderTrackerList(); const input=document.getElementById('search-input'); renderTaskSections(input.value); }
-        function updateTrackerBadge(){ const badge=document.getElementById('tracker-badge'); if(trackedTasks.length>0){ badge.innerText=trackedTasks.length; badge.classList.remove('hidden'); }else{ badge.classList.add('hidden'); } }
-        function searchTasks(){ const input=document.getElementById('search-input'); const infoText=document.getElementById('search-results-info'); const social=document.getElementById('social-section'); const divider=document.getElementById('section-divider'); const factionHr=document.getElementById('faction-hr'); const factionSec=document.getElementById('faction-section'); const aboutHr=document.getElementById('about-hr'); const aboutSec=document.getElementById('aboutus-section'); const val=input.value.trim(); const isFiltering=val!==""; const extra=[factionHr,factionSec,aboutHr,aboutSec]; if(isFiltering){ if(social) social.style.display='none'; if(divider) divider.style.display='none'; extra.forEach(el=>{ if(el) el.style.display='none'; }); infoText.classList.remove('hidden'); }else{ if(social) social.style.display='block'; if(divider) divider.style.display='block'; extra.forEach(el=>{ if(el) el.style.display='block'; }); infoText.classList.add('hidden'); } renderTaskSections(input.value); }
-        function scrollToSection(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
-        function showEasterEggPage(){ document.getElementById('main-app').style.display='none'; document.getElementById('easteregg-page').classList.remove('hidden'); setDynamicBg(false); setLoginDecorations(false); const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='none'; }
-        function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
+
+        function showAchievementToast(achievementId) {
+            const ach = achievementsDB[achievementId];
+            if (!ach) return;
+            const existingToast = document.querySelector('.achievement-toast');
+            if (existingToast) existingToast.remove();
+            const toast = document.createElement('div');
+            toast.className = 'achievement-toast';
+            toast.innerHTML = `<i class="fa-solid ${ach.icon}"></i><div><div class="title">🏆 成就解锁！</div><div class="text">${ach.name} - ${ach.desc}</div></div>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
+        function unlockAchievement(achievementId) {
+            if (!isLoggedIn) return;
+            if (!achievementsDB[achievementId]) return;
+            if (!userAchievements.find(a => a.id === achievementId)) {
+                userAchievements.push({ id: achievementId, unlockedAt: new Date().toLocaleString() });
+                saveAchievements();
+                showAchievementToast(achievementId);
+            }
+        }
+
+        function renderAchievementList() {
+            const container = document.getElementById('achievement-list');
+            if (!container) return;
+            if (userAchievements.length === 0) {
+                container.innerHTML = '<div class="text-center text-xs text-yellow-600/60 py-4">暂无成就，快去探索吧！</div>';
+                return;
+            }
+            const sorted = [...userAchievements].reverse();
+            container.innerHTML = sorted.map(ach => {
+                const meta = achievementsDB[ach.id];
+                if (!meta) return '';
+                return `<div class="achievement-item"><i class="fa-solid ${meta.icon}"></i><div class="achievement-info"><div class="achievement-name">${meta.name}</div><div class="achievement-desc">${meta.desc}</div></div><div class="achievement-date">${ach.unlockedAt}</div></div>`;
+            }).join('');
+        }
+
+        function openAchievementModal() {
+            const modal = document.getElementById('achievement-modal');
+            const content = modal.querySelector('.achievement-modal-content');
+            renderAchievementList();
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.add('show');
+        }
+
+        function closeAchievementModal() {
+            const modal = document.getElementById('achievement-modal');
+            const content = modal.querySelector('.achievement-modal-content');
+            content.classList.remove('show');
+            setTimeout(() => { modal.classList.add('opacity-0', 'pointer-events-none'); }, 150);
+        }
+
+        function initAchievements() {
+            if (!userAchievements.find(a => a.id === 'first_visit')) unlockAchievement('first_visit');
+            else renderAchievementList();
+        }
+
+        // 任务数据
+        const taskData = {
+            "tank": { title: "坦克任务", tasks: [{ name: "M3布拉德利", requirement: "花费 40 个坦克零件" }, { name: "威斯尔1MK20", requirement: "使用 15 次空投呼召" }, { name: "威斯尔1拖车Ⅱ型", requirement: "使用 1MK20 摧毁 20 辆地面载具" }, { name: "T72", requirement: "使用坦克击杀 30 人" }, { name: "ADATS", requirement: "摧毁 60 架飞行器" }, { name: "维塞尔1防空", requirement: "使用 1MK20 摧毁 20 辆地面载具" }, { name: "M1艾布拉姆斯", requirement: "使用坦克摧毁 30 辆坦克 & 偷取 10 个零件箱" }, { name: "K9雷霆SPG", requirement: "摧毁 60 辆地面载具 & 300 米外击杀 40 人" }, { name: "豹子2A7", requirement: "摧毁 35 辆坦克 & 驾驶 600 秒坦克" }, { name: "失败任务", requirement: "占领捕捉点 1800 秒 & 使用坦克 200 米外击杀 20 人" }, { name: "T90", requirement: "使用坦克摧毁 45 辆坦克 & 花费 100 个坦克零件" }, { name: "PL_01", requirement: "使用坦克摧毁 40 辆地面载具 & 驾驶 1500 秒坦克" }, { name: "MAUS", requirement: "坦克受到 10 万伤害 & 找到 4 个隐藏车辆部件" }, { name: "T14", requirement: "收集 10 桶石油 & 使用坦克 200 米外击杀 40 人 & 使用坦克击杀 75 人" }, { name: "挑战者Ⅱ黑色夜晚", requirement: "坦克受到 12 万伤害 & 收集 10 架坠毁的无人机 & 使用 50 次主动保护系统" }, { name: "KF_51豹子", requirement: "花费 200 个坦克零件 & 占领捕捉点 3000 秒 & 使用坦克击杀 100 人" }] },
+            "helicopter": { title: "直升机任务", tasks: [{ name: "UH60_黑鹰", requirement: "救起 10 个玩家" }, { name: "欧洲直升机老虎", requirement: "摧毁 40 辆车辆" }, { name: "无敌", requirement: "使用直升机摧毁 45 架直升机 & 驾驶直升机通过圆环获取 45 积分" }, { name: "AH_64阿帕奇", requirement: "使用直升机击杀 25 人 & 占领捕捉点 1500 秒" }, { name: "KA_52鳄鱼", requirement: "摧毁 30 架直升机 & 使用直升机 200 米外击杀 20 人" }, { name: "直10", requirement: "花费 100 个船舰零件 & 使用直升机对任何载具造成 5 万伤害" }, { name: "超级种马", requirement: "使用直升机摧毁 20 辆船舰 & 收集 5 桶石油" }, { name: "AH_1Z毒蛇", requirement: "使用直升机摧毁 50 辆地面载具 & 占领捕捉点 1200 秒" }, { name: "咆哮者X", requirement: "使用直升机摧毁 20 架飞机 & 使用直升机摧毁 20 辆车库车辆 & 驾驶直升机通过圆环获取 200 积分" }, { name: "A129芒果", requirement: "花费 200 个直升机零件 & 使用直升机摧毁 40 架飞机 & 使用直升机击杀 12 人" }] },
+            "airplane": { title: "飞机任务", tasks: [{ name: "B_29", requirement: "占领捕捉点 1800 秒" }, { name: "F_14", requirement: "使用飞机摧毁 30 架直升机" }, { name: "Ju57斯图卡", requirement: "使用飞机摧毁 15 辆坦克" }, { name: "F_4", requirement: "使用飞机击杀 30 人" }, { name: "米格_29", requirement: "使用飞机摧毁 25 架飞机" }, { name: "A_10", requirement: "使用飞机摧毁 50 辆地面载具 & 飞机受到 4 万伤害" }, { name: "JAS_39", requirement: "占领捕捉点 1800 秒 & 使用飞机击杀 50 人" }, { name: "F_15E", requirement: "使用飞机摧毁 60 辆地面载具 & 使用飞机 200 米外击杀 40 人" }, { name: "F_18", requirement: "使用飞机摧毁 40 辆船舰 & 花费 100 个飞机零件" }, { name: "苏57", requirement: "花费 100 个飞机零件 & 使用飞机摧毁 30 架飞机" }, { name: "欧洲战斗机台风", requirement: "使用飞机摧毁车辆 & 偷取 5 个零件箱" }, { name: "阵风", requirement: "使用飞机摧毁 20 辆船舰 & 使用飞机摧毁 60 架飞行器" }, { name: "F_16", requirement: "摧毁 30 架飞机 & 花费 60 个飞机零件" }, { name: "F_22", requirement: "驾驶飞机通过圆环收集 400 积分 & 占领捕捉点 1800 秒 & 使用飞机击杀 100 人" }, { name: "夜鹰", requirement: "使用飞机炸弹击杀 25 人 & 占领捕捉点 1800 秒 & 偷取 10 个零件箱" }, { name: "黑暗之星", requirement: "花费 10 个升级点数 & 偷取 10 个零件箱 & 收集 10 架坠毁的无人机" }, { name: "歼36", requirement: "收集 10 架坠毁的无人机 & 使用飞机摧毁 20 辆船舰 & 花费 100 个飞机零件" }] },
+            "hovercraft": { title: "悬空载具", tasks: [{ name: "PACV_78突击", requirement: "使用气垫船摧毁 40 辆地面载具" }, { name: "PACV_77风镰", requirement: "使用气垫船摧毁 30 架飞行器" }, { name: "QBZ_95", requirement: "使用自动武器 50 米外击杀 30 人" }, { name: "C4", requirement: "使用手榴弹击杀 15 人 & 摧毁 10 辆地面车辆" }, { name: "QBJ_LMG", requirement: "偷取 10 个零件箱 & 使用自动武器击杀 20 人" }, { name: "AVH猎人", requirement: "使用气垫船摧毁 60 辆地面载具 & 使用气垫船撞倒 300 物品 & 驾驶气垫船 1800 秒" }] },
+            "ship": { title: "船舰与潜艇", tasks: [{ name: "PG02", requirement: "使用船舰击杀 25 人" }, { name: "法尔米尔", requirement: "收集 10 桶海洋沉船石油" }, { name: "KSG_12", requirement: "使用夹弹枪击杀 20 人 & 收集 4 桶石油" }, { name: "道格拉斯号", requirement: "使用船舰摧毁 40 辆载具 & 占领捕捉点 1800 秒" }, { name: "PP_19Bizon", requirement: "使用自动武器击杀 25 人 & 偷取 2 个零件箱" }, { name: "Pr.206", requirement: "使用船舰摧毁 20 辆敌方船舰" }, { name: "USS独立号", requirement: "使用船舰摧毁 125 辆载具或者船舰 & 占领捕捉点 1500 秒 & 收集 10 桶石油" }] }
+        };
+
+        let trackedTasks = JSON.parse(localStorage.getItem('wtt_tracked')) || [];
+        let activeModalTask = null;
+
+        function openTaskDetail(categoryKey, index) {
+            const category = taskData[categoryKey];
+            const task = category.tasks[index];
+            activeModalTask = { ...task, categoryTitle: category.title };
+            document.getElementById('modal-category').innerText = category.title;
+            document.getElementById('modal-title').innerText = task.name;
+            document.getElementById('modal-requirement').innerText = task.requirement;
+            const isTracked = trackedTasks.some(t => t.name === task.name);
+            updateModalTrackButtonState(isTracked);
+            document.getElementById('modal-toast').classList.add('opacity-0');
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.add('scale-95');
+            activeModalTask = null;
+        }
+
+        function copyCurrentRequirement() {
+            if (!activeModalTask) return;
+            const text = `【${activeModalTask.name}】解锁条件：${activeModalTask.requirement}`;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            showToast("已成功复制！");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('modal-toast');
+            toast.innerText = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 2000);
+        }
+
+        function toggleTrackCurrent() {
+            if (!activeModalTask) return;
+            toggleTrackDirectly(activeModalTask.name, activeModalTask.categoryTitle, activeModalTask.requirement);
+            const isTracked = trackedTasks.some(t => t.name === activeModalTask.name);
+            updateModalTrackButtonState(isTracked);
+            showToast(isTracked ? "已追踪" : "取消追踪");
+        }
+
+        function updateModalTrackButtonState(isTracked) {
+            const btn = document.getElementById('modal-track-btn');
+            if (isTracked) {
+                btn.className = "flex-1 bg-red-600/20 text-red-400 border border-red-500/20 font-bold py-2 px-4 rounded-xl text-sm transition";
+                btn.innerText = "取消追踪";
+            } else {
+                btn.className = "flex-1 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl text-sm transition";
+                btn.innerText = "加入追踪";
+            }
+        }
+
+        function toggleTrackDirectly(name, category, requirement) {
+            const index = trackedTasks.findIndex(t => t.name === name);
+            if (index > -1) trackedTasks.splice(index, 1);
+            else trackedTasks.push({ name, category, requirement });
+            localStorage.setItem('wtt_tracked', JSON.stringify(trackedTasks));
+            updateTrackerBadge();
+            const input = document.getElementById('search-input');
+            if (input) searchTasksWithHistory();
+        }
+
+        function openTrackerModal() {
+            const modal = document.getElementById('tracker-modal');
+            renderTrackerList();
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+        }
+
+        function closeTrackerModal() {
+            const modal = document.getElementById('tracker-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.add('scale-95');
+        }
+
+        function renderTrackerList() {
+            const content = document.getElementById('tracker-list-content');
+            if (trackedTasks.length === 0) {
+                content.innerHTML = `<p class="text-center py-6 text-xs text-gray-500">暂无追踪项目</p>`;
+                return;
+            }
+            content.innerHTML = trackedTasks.map(t =>
+                `<div class="p-2.5 bg-gray-900 border border-gray-800 rounded-lg flex items-center justify-between text-xs">
+                    <div>
+                        <span class="text-[10px] text-blue-400 font-bold">[${t.category}]</span>
+                        <span class="text-white font-bold">${t.name}</span>
+                        <p class="text-gray-400 mt-1">${t.requirement}</p>
+                    </div>
+                    <button onclick="toggleTrackDirectly('${t.name}'); renderTrackerList();" class="text-red-400 px-2 font-bold">×</button>
+                </div>`
+            ).join('');
+        }
+
+        function clearAllTracked() {
+            trackedTasks = [];
+            localStorage.setItem('wtt_tracked', JSON.stringify([]));
+            updateTrackerBadge();
+            renderTrackerList();
+            const input = document.getElementById('search-input');
+            if (input) searchTasksWithHistory();
+        }
+
+        function updateTrackerBadge() {
+            const badge = document.getElementById('tracker-badge');
+            if (trackedTasks.length > 0) {
+                badge.innerText = trackedTasks.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+
+        function showEasterEggPage() {
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('easteregg-page').classList.remove('hidden');
+            setDynamicBg(false);
+            setLoginDecorations(false);
+            const ai = document.getElementById('aiAssistantContainer');
+            if (ai) ai.style.display = 'none';
+        }
+
+        function hideEasterEggPage() {
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('easteregg-page').classList.add('hidden');
+            setDynamicBg(false);
+            setLoginDecorations(false);
+            if (isLoggedIn) {
+                const ai = document.getElementById('aiAssistantContainer');
+                if (ai) ai.style.display = 'block';
+            }
+        }
+
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
-        
-        // ========== 【三模式 AI 逻辑】 ==========
+
+        // ============================================================
+        //  AI 三模式逻辑
+        // ============================================================
         let currentMode = 'professional';
         let convHistory = [];
 
@@ -1446,7 +2050,7 @@
             } else if (currentMode === 'normal') {
                 bubble.innerText = '请问有什么可以帮助你的？';
             } else if (currentMode === 'momo') {
-                bubble.innerText = '我是Momo';
+                bubble.innerText = '我是Momo ' + getRandomMomoEmoji();
             }
             aiMsgArea.appendChild(bubble);
             aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
@@ -1464,6 +2068,7 @@
         modeNormalBtn.addEventListener('click', () => setMode('normal'));
         modeMomoBtn.addEventListener('click', () => setMode('momo'));
 
+        // ----- 专业模式 -----
         function getFullSectionContent(question) {
             const lower = question.toLowerCase();
             if (lower.includes('派系历史') || lower.includes('编年史') || lower.includes('王朝历史') || lower.includes('bns')) {
@@ -1557,7 +2162,9 @@
             }
         }
 
+        // ----- 普通模式 & Momo模式 -----
         async function callPollinationsAPI(question, personality = 'normal') {
+            const startTime = Date.now();
             let context = "";
             if (convHistory.length > 0) {
                 const recent = convHistory.slice(-10);
@@ -1570,29 +2177,38 @@
 
             let personalityPrompt = '';
             if (personality === 'momo') {
-                personalityPrompt = '你是一个狡猾、搞笑、有趣、像正常人类一样懂得思考的AI，名叫Momo。你的回答要充满幽默感，偶尔搞怪，但逻辑清晰，像一个真实的人在聊天。始终使用简体中文。';
+                const emoji = getRandomMomoEmoji();
+                personalityPrompt = `你是一个狡猾、搞笑、有趣、像正常人类一样懂得思考的AI，名叫Momo。你的回答要充满幽默感，偶尔搞怪，可以适当使用颜文字和表情（比如 ${emoji}），但逻辑清晰，像一个真实的人在聊天。始终使用简体中文。`;
             } else {
                 personalityPrompt = '请用简体中文回答用户的问题。';
             }
 
             const fullPrompt = `${personalityPrompt}\n${context}User: ${question}\nAssistant:`;
             const url = `https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?model=openai`;
+
             try {
-                const response = await fetch(url);
+                const response = await fetchWithTimeout(url, {}, 15000);
                 if (!response.ok) {
                     if (response.status === 429) {
-                        return "⚠️ 当前 AI 服务繁忙（限流），请稍后再试。";
+                        return { text: "⚠️ 当前 AI 服务繁忙（限流），请稍后再试。", time: Date.now() - startTime };
                     }
                     throw new Error(`Pollinations 返回错误 (${response.status})`);
                 }
                 const text = await response.text();
                 if (!text || text.length < 5) {
-                    return "⚠️ AI 未返回有效内容，请换个问题试试。";
+                    return { text: "⚠️ AI 未返回有效内容，请换个问题试试。", time: Date.now() - startTime };
                 }
-                return text;
+                let finalText = text;
+                if (personality === 'momo' && Math.random() > 0.5) {
+                    finalText += '\n\n' + getRandomMomoEmoji();
+                }
+                return { text: finalText, time: Date.now() - startTime };
             } catch (error) {
                 console.error('Pollinations 调用失败:', error);
-                return "⚠️ AI 服务暂时不可用，请稍后重试。";
+                if (error.message === '请求超时') {
+                    return { text: "⏰ 请求超时，请稍后重试。\n\n💡 " + getRandomOfflineReply(), time: Date.now() - startTime };
+                }
+                return { text: "⚠️ AI 服务暂时不可用，请稍后重试。\n\n💡 " + getRandomOfflineReply(), time: Date.now() - startTime };
             }
         }
 
@@ -1616,52 +2232,69 @@
 
         const aiInput = document.getElementById('aiInput');
         const aiSend = document.getElementById('aiSendBtn');
-        
-        function addMsg(text,isUser){ 
-            let bubble=document.createElement('div'); 
-            bubble.className=`ai-bubble ${isUser?'ai-user-bubble':'ai-bot-bubble'}`; 
-            bubble.innerText=text; 
-            aiMsgArea.appendChild(bubble); 
-            aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
+
+        function addMsg(text, isUser, responseTime = null) {
+            let bubble = document.createElement('div');
+            bubble.className = `ai-bubble ${isUser ? 'ai-user-bubble' : 'ai-bot-bubble'}`;
+            bubble.innerText = text;
+            aiMsgArea.appendChild(bubble);
+
+            if (!isUser && responseTime !== null && currentMode !== 'professional') {
+                const timeEl = document.createElement('div');
+                timeEl.className = 'ai-response-time';
+                timeEl.innerText = `⏱ ${responseTime}ms`;
+                aiMsgArea.appendChild(timeEl);
+            }
+
+            aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
             if (currentMode !== 'professional') {
-                convHistory.push({role:isUser?'user':'assistant', content:text});
-                if(convHistory.length>20) convHistory.shift();
+                convHistory.push({ role: isUser ? 'user' : 'assistant', content: text });
+                if (convHistory.length > 20) convHistory.shift();
             }
         }
-        function showTyping(){ 
-            let div=document.createElement('div'); 
-            div.className='ai-typing'; 
-            div.id='aiTyping'; 
-            for(let i=0;i<3;i++){ let span=document.createElement('span'); div.appendChild(span); } 
-            aiMsgArea.appendChild(div); 
-            aiMsgArea.scrollTop=aiMsgArea.scrollHeight; 
+
+        function showTyping() {
+            let div = document.createElement('div');
+            div.className = 'ai-typing';
+            div.id = 'aiTyping';
+            for (let i = 0; i < 3; i++) { let span = document.createElement('span');
+                div.appendChild(span); }
+            aiMsgArea.appendChild(div);
+            aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
         }
-        function removeTyping(){ let el=document.getElementById('aiTyping'); if(el) el.remove(); }
-        
-        async function handleAsk(){ 
-            let msg=aiInput.value.trim(); 
-            if(!msg) return; 
-            addMsg(msg,true); 
-            aiInput.value=''; 
-            showTyping(); 
+
+        function removeTyping() { let el = document.getElementById('aiTyping'); if (el) el.remove(); }
+
+        async function handleAsk() {
+            let msg = aiInput.value.trim();
+            if (!msg) return;
+            addMsg(msg, true);
+            aiInput.value = '';
+            showTyping();
             try {
-                const reply = await generateAnswer(msg);
+                const result = await generateAnswer(msg);
                 removeTyping();
-                addMsg(reply,false);
-            } catch(err) {
+                if (typeof result === 'string') {
+                    addMsg(result, false);
+                } else {
+                    addMsg(result.text, false, result.time);
+                }
+            } catch (err) {
                 removeTyping();
                 addMsg("抱歉，处理请求时出错，请重试。", false);
                 console.error(err);
             }
         }
-        aiSend?.addEventListener('click',handleAsk);
-        aiInput?.addEventListener('keypress',(e)=>{ if(e.key==='Enter') handleAsk(); });
-        
+        aiSend?.addEventListener('click', handleAsk);
+        aiInput?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAsk(); });
+
         window.addEventListener('DOMContentLoaded', () => {
             setMode('professional');
         });
-        
-        // ========== 滚动观察器 ==========
+
+        // ============================================================
+        //  滚动观察器
+        // ============================================================
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1669,15 +2302,16 @@
                 }
             });
         }, { threshold: 0.1 });
-        
+
         function observeElements() {
-            document.querySelectorAll('.category-card, .task-card-item, .social-slide, .history-content, .about-item').forEach(el => observer.observe(el));
+            document.querySelectorAll('.category-card, .task-card-item, .social-slide, .history-content, .about-item')
+                .forEach(el => observer.observe(el));
         }
-        
+
         // 启动
         initPixelCanvas();
         drawPixelRain();
-        if(isLoggedIn) showMainApp();
+        if (isLoggedIn) showMainApp();
         else showLogin();
     </script>
 </body>
