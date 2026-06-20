@@ -899,7 +899,7 @@
     </style>
 </head>
 <body>
-    <!-- ===== 加载界面（优化版） ===== -->
+    <!-- ===== 加载界面（随机时长版） ===== -->
     <div id="loadingScreen" class="loading-screen">
         <div class="particles" id="particles"></div>
         <div class="update-screen">
@@ -1300,7 +1300,7 @@
 
     <script>
         // ============================================================
-        //  1. 加载动画（真实资源加载进度 + 跳过功能）
+        //  1. 加载动画（随机时长 3~8 秒）
         // ============================================================
         (function initLoading() {
             const progressBar = document.getElementById('progressBar');
@@ -1310,9 +1310,14 @@
             const skipBtn = document.getElementById('skipLoading');
             const loadingScreen = document.getElementById('loadingScreen');
 
+            // === 随机总时长（3~8 秒） ===
+            const totalDuration = 3000 + Math.random() * 5000; // 3000ms ~ 8000ms
+            const totalDurationSec = (totalDuration / 1000).toFixed(1);
+            
             let progress = 0;
             let loaded = false;
             let skipRequested = false;
+            let startTime = Date.now();
 
             const statuses = [
                 '正在启动战争引擎...',
@@ -1324,43 +1329,78 @@
             ];
             let statusIndex = 0;
 
-            const timeTexts = [
-                '剩余时间约 8 分钟',
-                '剩余时间约 6 分钟',
-                '剩余时间约 4 分钟',
-                '剩余时间约 2 分钟',
-                '剩余时间约 1 分钟',
-                '即将完成...'
-            ];
+            // 根据总时长生成对应的剩余时间文本
+            function getTimeTexts(totalSec) {
+                const min = Math.floor(totalSec / 60);
+                const sec = Math.floor(totalSec % 60);
+                if (min > 0) {
+                    return [
+                        `剩余时间约 ${min} 分 ${sec} 秒`,
+                        `剩余时间约 ${min} 分 ${sec-2} 秒`,
+                        `剩余时间约 ${min-1} 分 ${sec+10} 秒`,
+                        `剩余时间约 ${min-1} 分 ${sec-5} 秒`,
+                        `剩余时间约 ${min-2} 分 ${sec+15} 秒`,
+                        '即将完成...'
+                    ];
+                } else {
+                    return [
+                        `剩余时间约 ${sec} 秒`,
+                        `剩余时间约 ${sec-2} 秒`,
+                        `剩余时间约 ${sec-4} 秒`,
+                        `剩余时间约 ${sec-6} 秒`,
+                        `剩余时间约 ${sec-8} 秒`,
+                        '即将完成...'
+                    ];
+                }
+            }
+
+            let timeTexts = getTimeTexts(totalDurationSec);
             let timeIndex = 0;
 
-            function simulateLoading() {
-                if (loaded || skipRequested) return;
-                const increment = 0.5 + Math.random() * 2.5;
-                progress = Math.min(progress + increment, 100);
-                progressBar.style.width = progress + '%';
-                progressText.textContent = '加载中 ' + Math.floor(progress) + '%';
-
-                const newIndex = Math.min(Math.floor(progress / 15), statuses.length - 1);
+            // 更新状态文字
+            function updateStatus(progressVal) {
+                const newIndex = Math.min(Math.floor(progressVal / 17), statuses.length - 1);
                 if (newIndex > statusIndex) {
                     statusIndex = newIndex;
                     statusText.textContent = statuses[statusIndex];
                 }
-                const newTimeIndex = Math.min(Math.floor(progress / 17), timeTexts.length - 1);
+                // 更新剩余时间
+                const newTimeIndex = Math.min(Math.floor(progressVal / 17), timeTexts.length - 1);
                 if (newTimeIndex > timeIndex) {
                     timeIndex = newTimeIndex;
                     timeEl.textContent = timeTexts[newTimeIndex];
                 }
+            }
 
-                if (progress >= 100) {
+            function simulateLoading() {
+                if (loaded || skipRequested) return;
+
+                const elapsed = Date.now() - startTime;
+                // 基于时间计算进度（带一点随机波动，更真实）
+                const baseProgress = Math.min((elapsed / totalDuration) * 100, 99);
+                // 添加 ±2% 的随机波动
+                const randomOffset = (Math.random() - 0.5) * 4;
+                progress = Math.min(Math.max(baseProgress + randomOffset, 0), 99);
+
+                progressBar.style.width = progress + '%';
+                progressText.textContent = '加载中 ' + Math.floor(progress) + '%';
+                updateStatus(progress);
+
+                if (elapsed >= totalDuration) {
+                    // 完成加载
                     loaded = true;
+                    progress = 100;
+                    progressBar.style.width = '100%';
                     progressText.textContent = '加载完成 100%';
                     statusText.textContent = '✅ 准备就绪！';
                     timeEl.textContent = '即将启动...';
-                    setTimeout(finishLoading, 400);
+                    setTimeout(finishLoading, 300);
                     return;
                 }
-                const delay = 100 + Math.random() * 200;
+
+                // 动态调整更新间隔（越往后越快）
+                const remaining = totalDuration - elapsed;
+                const delay = Math.min(50 + remaining * 0.02, 200);
                 setTimeout(simulateLoading, delay);
             }
 
@@ -1372,6 +1412,7 @@
                 }, 600);
             }
 
+            // 跳过加载
             skipBtn.addEventListener('click', function() {
                 if (loaded) return;
                 skipRequested = true;
@@ -1383,8 +1424,10 @@
                 setTimeout(finishLoading, 300);
             });
 
-            setTimeout(simulateLoading, 300);
+            // 启动加载
+            setTimeout(simulateLoading, 200);
 
+            // 粒子生成
             const container = document.getElementById('particles');
             if (container) {
                 for (let i = 0; i < 50; i++) {
@@ -1398,6 +1441,8 @@
                     container.appendChild(particle);
                 }
             }
+
+            console.log(`⚙️ 加载总时长: ${(totalDuration/1000).toFixed(1)} 秒`);
         })();
 
         // ============================================================
@@ -1692,7 +1737,6 @@
             const ai = document.getElementById('aiAssistantContainer');
             if (ai) ai.style.display = 'block';
             initAchievements();
-            // 使用搜索函数渲染任务
             searchTasksWithHistory();
             updateTrackerBadge();
             observeElements();
