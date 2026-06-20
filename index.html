@@ -125,7 +125,7 @@
             font-size: 20px;
             width: 32px;
             text-align: center;
-            color: #facc15;
+            color: #facc15 !important;
         }
         .achievement-info { flex: 1; }
         .achievement-name {
@@ -226,6 +226,17 @@
         .achievement-toast.show {
             transform: translateX(0);
         }
+        .achievement-toast i {
+            color: #facc15 !important;
+            font-size: 24px;
+        }
+        .achievement-toast .title {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+        .achievement-toast .text {
+            color: #fde047;
+        }
         .task-card {
             background: rgba(18, 25, 45, 0.7);
             backdrop-filter: blur(8px);
@@ -256,7 +267,7 @@
         }
         .dynamic-hidden { display: none !important; }
 
-        /* ========== 新增动画效果（不改变原有布局与功能） ========== */
+        /* ========== 加载动画样式 ========== */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -269,199 +280,161 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.8s ease;
         }
         .loading-screen.fade-out {
             opacity: 0;
             pointer-events: none;
         }
-        .loader {
-            width: 200px;
-            height: 4px;
-            background: #1e2a3a;
-            border-radius: 4px;
+
+        .update-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .computer-icon {
+            position: relative;
+            width: 120px;
+            height: 100px;
+        }
+        .computer-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 65px;
+            background: #0f1a2e;
+            border-radius: 6px 6px 2px 2px;
+            border: 2px solid #1a3a6a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .screen-glow {
+            width: 78px;
+            height: 50px;
+            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #0055aa 100%);
+            border-radius: 3px;
+            position: relative;
             overflow: hidden;
-            margin-top: 20px;
         }
-        .loader-bar {
-            width: 0%;
+        .screen-glow::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 40%,
+                rgba(50, 130, 255, 0.2) 50%,
+                transparent 60%
+            );
+            animation: screenShine 3s ease-in-out infinite;
+        }
+        @keyframes screenShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .computer-stand {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 10px;
+            background: #1a2a4a;
+            border-radius: 0 0 4px 4px;
+        }
+        .computer-base {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #1a3a5a;
+            border-radius: 2px;
+        }
+
+        .progress-container {
+            width: 280px;
+            height: 6px;
+            background: #0f1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #1a3a6a;
+        }
+        .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #a855f7);
-            animation: loadProgress 1.8s ease-out forwards;
+            width: 0%;
+            background: linear-gradient(90deg, #003366, #3366ff, #6699ff);
+            border-radius: 3px;
+            animation: progressFill 8s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(50, 130, 255, 0.5);
         }
-        @keyframes loadProgress {
+        @keyframes progressFill {
             0% { width: 0%; }
-            30% { width: 35%; }
-            70% { width: 75%; }
+            20% { width: 15%; }
+            40% { width: 35%; }
+            60% { width: 55%; }
+            80% { width: 80%; }
+            95% { width: 98%; }
             100% { width: 100%; }
         }
-        .nav-slide {
-            animation: slideDown 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+
+        .status-text {
+            color: #3388cc;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            animation: textPulse 2s ease-in-out infinite;
         }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-60px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
-        .title-scale {
-            animation: scaleFadeIn 0.8s ease-out forwards;
+
+        .time-remaining {
+            color: #446688;
+            font-size: 12px;
+            margin-top: -25px;
+            font-weight: 300;
         }
-        @keyframes scaleFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .search-delay {
-            animation: fadeInUp 0.6s ease-out 0.2s forwards;
-            opacity: 0;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .category-card, .task-card-item, .social-slide, .history-content, .about-item {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.4, 1);
-        }
-        .category-card.visible, .task-card-item.visible, .social-slide.visible, .history-content.visible, .about-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .category-card:nth-child(1) { transition-delay: 0s; }
-        .category-card:nth-child(2) { transition-delay: 0.05s; }
-        .category-card:nth-child(3) { transition-delay: 0.1s; }
-        .category-card:nth-child(4) { transition-delay: 0.15s; }
-        .category-card:nth-child(5) { transition-delay: 0.2s; }
-        .login-card-animate {
-            animation: cardPop 0.5s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
-        }
-        @keyframes cardPop {
-            from { opacity: 0; transform: scale(0.95); backdrop-filter: blur(0px); }
-            to { opacity: 1; transform: scale(1); backdrop-filter: blur(10px); }
-        }
-        /* AI 助手样式（完全保留原有位置与样式） */
-        .ai-floating-btn {
+
+        .particles {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #3b82f6, #a855f7);
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px -5px rgba(59,130,246,0.5);
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
-        .ai-floating-btn:hover { transform: scale(1.08); }
-        .ai-chat-window {
-            position: fixed;
-            bottom: 90px;
-            right: 24px;
-            width: 380px;
-            height: 520px;
-            background: #0f1422e6;
-            backdrop-filter: blur(16px);
-            border-radius: 28px;
-            border: 1px solid rgba(59,130,246,0.4);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            z-index: 1001;
-            overflow: hidden;
-        }
-        .ai-chat-window.hidden-ai { display: none; }
-        .ai-header {
-            background: rgba(20, 28, 45, 0.9);
-            padding: 14px 18px;
-            border-bottom: 1px solid #3b82f640;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .ai-message-area {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            overscroll-behavior: contain;
-        }
-        .ai-bubble {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            line-height: 1.4;
-            word-break: break-word;
-            white-space: pre-wrap;
-        }
-        .ai-user-bubble {
-            align-self: flex-end;
-            background: #3b82f6;
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        .ai-bot-bubble {
-            align-self: flex-start;
-            background: rgba(30, 41, 59, 0.9);
-            border: 1px solid #3b82f640;
-            color: #e2e8f0;
-            border-bottom-left-radius: 4px;
-        }
-        .ai-typing {
-            align-self: flex-start;
-            background: rgba(30,41,59,0.7);
-            border-radius: 20px;
-            padding: 10px 16px;
-            display: flex;
-            gap: 5px;
-        }
-        .ai-typing span {
-            width: 8px;
-            height: 8px;
-            background: #94a3b8;
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(50, 130, 255, 0.15);
             border-radius: 50%;
-            animation: blinkAI 1.4s infinite;
+            animation: floatUp linear infinite;
         }
-        .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
-        .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes blinkAI { 0%,60%,100%{ opacity: 0.3; transform: scale(0.8);} 30%{ opacity:1; transform:scale(1.2);} }
-        .ai-input-area {
-            padding: 12px;
-            border-top: 1px solid #334155;
-            background: rgba(0,0,0,0.3);
-            display: flex;
-            gap: 10px;
-        }
-        .ai-input-area input {
-            flex: 1;
-            background: #1e293b;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 16px;
-            color: white;
-            font-size: 13px;
-            outline: none;
-        }
-        .ai-input-area input:focus { border: 1px solid #3b82f6; background: #0f172a; }
-        .ai-send-btn {
-            background: #3b82f6;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        @media (max-width: 500px) {
-            .ai-chat-window { width: 320px; height: 480px; right: 16px; bottom: 80px; }
-            .ai-floating-btn { bottom: 16px; right: 16px; }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
         }
 
         /* ===== 模式切换按钮（输入框上方） ===== */
@@ -494,7 +467,7 @@
             border-color: #3b82f6;
         }
 
-        /* 登录界面科技风（原有，无修改） */
+        /* 登录界面科技风 */
         :root{
             --bg:#05060a;
             --stroke: rgba(255,255,255,.14);
@@ -685,16 +658,160 @@
             color: rgba(255,255,255,.55);
             font-size:12px;
         }
+
+        /* AI 助手样式 */
+        .ai-floating-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #a855f7);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px -5px rgba(59,130,246,0.5);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .ai-floating-btn:hover { transform: scale(1.08); }
+        .ai-chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 24px;
+            width: 380px;
+            height: 520px;
+            background: #0f1422e6;
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            border: 1px solid rgba(59,130,246,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+            overflow: hidden;
+        }
+        .ai-chat-window.hidden-ai { display: none; }
+        .ai-header {
+            background: rgba(20, 28, 45, 0.9);
+            padding: 14px 18px;
+            border-bottom: 1px solid #3b82f640;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ai-message-area {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overscroll-behavior: contain;
+        }
+        .ai-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+        .ai-user-bubble {
+            align-self: flex-end;
+            background: #3b82f6;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .ai-bot-bubble {
+            align-self: flex-start;
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid #3b82f640;
+            color: #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+        .ai-typing {
+            align-self: flex-start;
+            background: rgba(30,41,59,0.7);
+            border-radius: 20px;
+            padding: 10px 16px;
+            display: flex;
+            gap: 5px;
+        }
+        .ai-typing span {
+            width: 8px;
+            height: 8px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: blinkAI 1.4s infinite;
+        }
+        .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blinkAI { 0%,60%,100%{ opacity: 0.3; transform: scale(0.8);} 30%{ opacity:1; transform:scale(1.2);} }
+        .ai-input-area {
+            padding: 12px;
+            border-top: 1px solid #334155;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            gap: 10px;
+        }
+        .ai-input-area input {
+            flex: 1;
+            background: #1e293b;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 13px;
+            outline: none;
+        }
+        .ai-input-area input:focus { border: 1px solid #3b82f6; background: #0f172a; }
+        .ai-send-btn {
+            background: #3b82f6;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        @media (max-width: 500px) {
+            .ai-chat-window { width: 320px; height: 480px; right: 16px; bottom: 80px; }
+            .ai-floating-btn { bottom: 16px; right: 16px; }
+        }
+
+        /* ===== 成就图标金色 ===== */
+        .achievement-item i {
+            color: #facc15 !important;
+        }
+        .achievement-modal-title i {
+            color: #facc15 !important;
+        }
     </style>
 </head>
 <body>
-    <!-- 加载界面（原有） -->
+    <!-- ===== 加载界面 ===== -->
     <div id="loadingScreen" class="loading-screen">
-        <div style="width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #3b82f6, #a855f7); animation: pulse 1.2s infinite;"></div>
-        <div style="margin-top: 20px; font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #fff, #a5b4fc); -webkit-background-clip: text; background-clip: text; color: transparent;">AVARUS</div>
-        <div class="loader"><div class="loader-bar"></div></div>
-        <div style="margin-top: 12px; color: #88aaff; font-size: 12px;">正在启动战争引擎...</div>
-        <canvas id="particleCanvas" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none;"></canvas>
+        <div class="particles" id="particles"></div>
+        <div class="update-screen">
+            <div class="computer-icon">
+                <div class="computer-body">
+                    <div class="screen-glow"></div>
+                </div>
+                <div class="computer-stand"></div>
+                <div class="computer-base"></div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="status-text">正在启动战争引擎...</div>
+            <div class="time-remaining" id="timeRemaining">剩余时间约 8 分钟</div>
+        </div>
     </div>
 
     <div id="dynamicBg" class="dynamic-bg-layer dynamic-hidden">
@@ -763,7 +880,7 @@
         </div>
     </div>
 
-    <!-- 主页面内容（完全原有） -->
+    <!-- 主页面内容 -->
     <div id="main-app" style="display: none;">
         <nav class="sticky top-0 z-40 glass-nav px-4 py-3 nav-slide">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -783,7 +900,6 @@
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">⚔ <span class="gradient-text">Roblox 战争大亨</span></h1>
                 <p class="text-xs md:text-sm text-gray-400">现代化任务网站 | 坦克 | 飞机 | 直升机 | 船舰</p>
             </div>
-            <!-- 搜索框（模式切换已移至AI窗口内） -->
             <div class="max-w-md mx-auto mt-6 px-2 search-delay">
                 <div class="flex items-center gap-2">
                     <input type="text" id="search-input" oninput="searchTasks()" placeholder="输入「任务名/解锁条件」进行搜索..." class="w-full bg-darkCard border border-gray-700 rounded-xl py-3 px-4 text-sm text-white">
@@ -948,9 +1064,14 @@
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-200 achievement-modal-content backdrop-blur-xl">
             <div class="p-5">
-                <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就</h3><button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button></div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-yellow-500"></i> 我的成就
+                    </h3>
+                    <button onclick="closeAchievementModal()" class="text-gray-400 hover:text-white text-xl">×</button>
+                </div>
                 <div id="achievement-list" class="achievement-scroll space-y-2 max-h-96 overflow-y-auto pr-1"></div>
-                <div class="mt-3 text-right text-[10px] text-gray-500">成就将自动保存</div>
+                <div class="mt-3 text-right text-[10px] text-yellow-600/60">成就将自动保存</div>
             </div>
         </div>
     </div>
@@ -967,7 +1088,6 @@
                     <div class="p-6">
                         <div class="flex flex-col md:flex-row gap-6">
                             <div class="md:w-1/3 flex flex-col items-center justify-center text-center space-y-3">
-                                <!-- ===== 恢复为忍者图标 ===== -->
                                 <div class="relative geoffrey-avatar float-slow">
                                     <div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center avatar-glow">
                                         <i class="fa-solid fa-user-ninja text-6xl text-white"></i>
@@ -1004,7 +1124,6 @@
         <div id="aiChatWindow" class="ai-chat-window hidden-ai">
             <div class="ai-header">
                 <div class="flex items-center gap-2">
-                    <!-- AI 芯片图标（SVG） -->
                     <svg width="32" height="32" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                         <defs>
                             <style>
@@ -1053,10 +1172,7 @@
                 </div>
                 <button id="closeAiWindow" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="aiMessageArea" class="ai-message-area">
-                <!-- 初始消息将由JS添加 -->
-            </div>
-            <!-- 模式切换按钮（输入框上方） -->
+            <div id="aiMessageArea" class="ai-message-area"></div>
             <div class="ai-mode-selector">
                 <button id="modeProfessional" class="active" data-mode="professional">专业模式（网页解惑）</button>
                 <button id="modeNormal" data-mode="normal">普通模式</button>
@@ -1070,43 +1186,51 @@
     </div>
 
     <script>
-        // 粒子动画（加载界面）
-        function startParticleAnimation() {
-            const canvas = document.getElementById('particleCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let width = window.innerWidth, height = window.innerHeight;
-            canvas.width = width; canvas.height = height;
-            let particles = [];
-            for(let i=0;i<60;i++) {
-                particles.push({ x: Math.random()*width, y: Math.random()*height, radius: Math.random()*3+1, alpha: Math.random()*0.5+0.2, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.3 });
+        // ========== 加载动画粒子生成 ==========
+        (function initParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.width = (Math.random() * 3 + 1) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
             }
-            function draw() {
-                if (!ctx) return;
-                ctx.clearRect(0,0,width,height);
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
-                    ctx.fillStyle = `rgba(59,130,246,${p.alpha})`;
-                    ctx.fill();
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    if(p.x<0) p.x=width; if(p.x>width) p.x=0;
-                    if(p.y<0) p.y=height; if(p.y>height) p.y=0;
-                });
-                requestAnimationFrame(draw);
-            }
-            draw();
-            window.addEventListener('resize',()=>{ width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; });
-        }
-        startParticleAnimation();
+        })();
+
+        // ========== 剩余时间动态更新 ==========
+        (function updateTimeRemaining() {
+            const timeEl = document.getElementById('timeRemaining');
+            if (!timeEl) return;
+            const timeTexts = [
+                '剩余时间约 8 分钟',
+                '剩余时间约 6 分钟',
+                '剩余时间约 4 分钟',
+                '剩余时间约 2 分钟',
+                '剩余时间约 1 分钟',
+                '即将完成...'
+            ];
+            let index = 0;
+            setInterval(() => {
+                index = (index + 1) % timeTexts.length;
+                timeEl.textContent = timeTexts[index];
+            }, 5000);
+        })();
+
+        // ========== 加载完成后淡出 ==========
         setTimeout(() => {
             const loading = document.getElementById('loadingScreen');
-            if(loading) loading.classList.add('fade-out');
-            setTimeout(() => { if(loading) loading.style.display = 'none'; }, 700);
-        }, 1800);
+            if (loading) loading.classList.add('fade-out');
+            setTimeout(() => {
+                if (loading) loading.style.display = 'none';
+            }, 800);
+        }, 5500);
 
-        // ==================== 原有全部脚本（保留，仅AI部分修改） ====================
+        // ========== 原有全部脚本 ==========
         const canvas = document.getElementById('pixel-canvas');
         let ctx, width, height, columns, drops, pixelSize=10;
         function initPixelCanvas(){ canvas=document.getElementById('pixel-canvas'); if(!canvas) return; ctx=canvas.getContext('2d'); width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; columns=Math.floor(width/pixelSize); drops=new Array(columns).fill(1); }
@@ -1137,7 +1261,7 @@
             if(ai) ai.style.display = 'none';
         }
         
-        // 登录注册（原有）
+        // 登录注册
         document.getElementById('loginFormNew').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('loginNameNew').value.trim();
@@ -1205,18 +1329,18 @@
             showLogin();
         });
         
-        // 成就系统（原有）
+        // ===== 成就系统 =====
         const achievementsDB={"first_visit":{name:"初来乍到",desc:"首次打开网站",icon:"fa-door-open"},"tank_category":{name:"装甲先锋",desc:"点击坦克任务分类",icon:"fa-tank"},"helicopter_category":{name:"旋翼骑士",desc:"点击直升机任务分类",icon:"fa-helicopter"},"airplane_category":{name:"空中之鹰",desc:"点击飞机任务分类",icon:"fa-plane"},"hovercraft_category":{name:"气垫狂徒",desc:"点击悬空载具分类",icon:"fa-water"},"ship_category":{name:"深海幽灵",desc:"点击船舰与潜艇分类",icon:"fa-ship"},"trade_market":{name:"交易大师",desc:"点击交易市场链接",icon:"fa-chart-line"},"social_community":{name:"社群之友",desc:"点击任意官方社群链接",icon:"fa-users"},"easter_egg":{name:"秘境探索者",desc:"点击彩蛋按钮",icon:"fa-dragon"}};
         let userAchievements=JSON.parse(localStorage.getItem('war_tycoon_achievements'))||[];
         function saveAchievements(){ localStorage.setItem('war_tycoon_achievements',JSON.stringify(userAchievements)); if (document.getElementById('achievement-modal') && !document.getElementById('achievement-modal').classList.contains('opacity-0')) renderAchievementList(); }
-        function showAchievementToast(achievementId){ const ach=achievementsDB[achievementId]; if(!ach) return; const existingToast=document.querySelector('.achievement-toast'); if(existingToast) existingToast.remove(); const toast=document.createElement('div'); toast.className='achievement-toast'; toast.innerHTML=`<i class="fa-solid ${ach.icon}"></i><div class="text"><div class="title">🏆 成就解锁！</div><div>${ach.name} - ${ach.desc}</div></div>`; document.body.appendChild(toast); setTimeout(()=>toast.classList.add('show'),10); setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(),300); },4000); }
+        function showAchievementToast(achievementId){ const ach=achievementsDB[achievementId]; if(!ach) return; const existingToast=document.querySelector('.achievement-toast'); if(existingToast) existingToast.remove(); const toast=document.createElement('div'); toast.className='achievement-toast'; toast.innerHTML=`<i class="fa-solid ${ach.icon}"></i><div><div class="title">🏆 成就解锁！</div><div class="text">${ach.name} - ${ach.desc}</div></div>`; document.body.appendChild(toast); setTimeout(()=>toast.classList.add('show'),10); setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(),300); },4000); }
         function unlockAchievement(achievementId){ if(!isLoggedIn) return; if(!achievementsDB[achievementId]) return; if(!userAchievements.find(a=>a.id===achievementId)){ userAchievements.push({id:achievementId,unlockedAt:new Date().toLocaleString()}); saveAchievements(); showAchievementToast(achievementId); } }
-        function renderAchievementList(){ const container=document.getElementById('achievement-list'); if(!container) return; if(userAchievements.length===0){ container.innerHTML='<div class="text-center text-xs text-gray-500 py-4">暂无成就，快去探索吧！</div>'; return; } const sorted=[...userAchievements].reverse(); container.innerHTML=sorted.map(ach=>{ const meta=achievementsDB[ach.id]; if(!meta) return ''; return `<div class="achievement-item"><i class="fa-solid ${meta.icon}"></i><div class="achievement-info"><div class="achievement-name">${meta.name}</div><div class="achievement-desc">${meta.desc}</div></div><div class="achievement-date">${ach.unlockedAt}</div></div>`; }).join(''); }
+        function renderAchievementList(){ const container=document.getElementById('achievement-list'); if(!container) return; if(userAchievements.length===0){ container.innerHTML='<div class="text-center text-xs text-yellow-600/60 py-4">暂无成就，快去探索吧！</div>'; return; } const sorted=[...userAchievements].reverse(); container.innerHTML=sorted.map(ach=>{ const meta=achievementsDB[ach.id]; if(!meta) return ''; return `<div class="achievement-item"><i class="fa-solid ${meta.icon}"></i><div class="achievement-info"><div class="achievement-name">${meta.name}</div><div class="achievement-desc">${meta.desc}</div></div><div class="achievement-date">${ach.unlockedAt}</div></div>`; }).join(''); }
         function openAchievementModal(){ const modal=document.getElementById('achievement-modal'); const content=modal.querySelector('.achievement-modal-content'); renderAchievementList(); modal.classList.remove('opacity-0','pointer-events-none'); content.classList.add('show'); }
         function closeAchievementModal(){ const modal=document.getElementById('achievement-modal'); const content=modal.querySelector('.achievement-modal-content'); content.classList.remove('show'); setTimeout(()=>{ modal.classList.add('opacity-0','pointer-events-none'); },150); }
         function initAchievements(){ if(!userAchievements.find(a=>a.id==='first_visit')) unlockAchievement('first_visit'); else renderAchievementList(); }
         
-        // 任务数据（原有，完整）
+        // 任务数据
         const taskData={
             "tank":{title:"坦克任务",tasks:[{name:"M3布拉德利",requirement:"花费 40 个坦克零件"},{name:"威斯尔1MK20",requirement:"使用 15 次空投呼召"},{name:"威斯尔1拖车Ⅱ型",requirement:"使用 1MK20 摧毁 20 辆地面载具"},{name:"T72",requirement:"使用坦克击杀 30 人"},{name:"ADATS",requirement:"摧毁 60 架飞行器"},{name:"维塞尔1防空",requirement:"使用 1MK20 摧毁 20 辆地面载具"},{name:"M1艾布拉姆斯",requirement:"使用坦克摧毁 30 辆坦克 & 偷取 10 个零件箱"},{name:"K9雷霆SPG",requirement:"摧毁 60 辆地面载具 & 300 米外击杀 40 人"},{name:"豹子2A7",requirement:"摧毁 35 辆坦克 & 驾驶 600 秒坦克"},{name:"失败任务",requirement:"占领捕捉点 1800 秒 & 使用坦克 200 米外击杀 20 人"},{name:"T90",requirement:"使用坦克摧毁 45 辆坦克 & 花费 100 个坦克零件"},{name:"PL_01",requirement:"使用坦克摧毁 40 辆地面载具 & 驾驶 1500 秒坦克"},{name:"MAUS",requirement:"坦克受到 10 万伤害 & 找到 4 个隐藏车辆部件"},{name:"T14",requirement:"收集 10 桶石油 & 使用坦克 200 米外击杀 40 人 & 使用坦克击杀 75 人"},{name:"挑战者Ⅱ黑色夜晚",requirement:"坦克受到 12 万伤害 & 收集 10 架坠毁的无人机 & 使用 50 次主动保护系统"},{name:"KF_51豹子",requirement:"花费 200 个坦克零件 & 占领捕捉点 3000 秒 & 使用坦克击杀 100 人"}]},
             "helicopter":{title:"直升机任务",tasks:[{name:"UH60_黑鹰",requirement:"救起 10 个玩家"},{name:"欧洲直升机老虎",requirement:"摧毁 40 辆车辆"},{name:"无敌",requirement:"使用直升机摧毁 45 架直升机 & 驾驶直升机通过圆环获取 45 积分"},{name:"AH_64阿帕奇",requirement:"使用直升机击杀 25 人 & 占领捕捉点 1500 秒"},{name:"KA_52鳄鱼",requirement:"摧毁 30 架直升机 & 使用直升机 200 米外击杀 20 人"},{name:"直10",requirement:"花费 100 个船舰零件 & 使用直升机对任何载具造成 5 万伤害"},{name:"超级种马",requirement:"使用直升机摧毁 20 辆船舰 & 收集 5 桶石油"},{name:"AH_1Z毒蛇",requirement:"使用直升机摧毁 50 辆地面载具 & 占领捕捉点 1200 秒"},{name:"咆哮者X",requirement:"使用直升机摧毁 20 架飞机 & 使用直升机摧毁 20 辆车库车辆 & 驾驶直升机通过圆环获取 200 积分"},{name:"A129芒果",requirement:"花费 200 个直升机零件 & 使用直升机摧毁 40 架飞机 & 使用直升机击杀 12 人"}]},
@@ -1227,7 +1351,6 @@
         let trackedTasks=JSON.parse(localStorage.getItem('wtt_tracked'))||[];
         let activeModalTask=null;
         
-        // ========== 搜索功能增强：同时匹配任务名称和解锁要求 ==========
         function renderTaskSections(filterText=""){
             const container=document.getElementById('tasks-container');
             const categorySelector=document.getElementById('category-selector');
@@ -1251,7 +1374,6 @@
                 let totalMatches=0;
                 Object.keys(taskData).forEach(key=>{
                     const category=taskData[key];
-                    // 修改过滤条件：同时匹配名称和解锁要求
                     const filteredTasks=category.tasks.map((t,idx)=>({...t, originalIndex:idx}))
                         .filter(t => t.name.toLowerCase().includes(filter) || t.requirement.toLowerCase().includes(filter));
                     if(filteredTasks.length>0){
@@ -1291,9 +1413,9 @@
         function hideEasterEggPage(){ document.getElementById('main-app').style.display='block'; document.getElementById('easteregg-page').classList.add('hidden'); setDynamicBg(false); setLoginDecorations(false); if(isLoggedIn){ const ai=document.getElementById('aiAssistantContainer'); if(ai) ai.style.display='block'; } }
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
         
-        // ========== 【三模式 AI 逻辑（专业 / 普通 / Momo）】 ==========
-        let currentMode = 'professional'; // 'professional' | 'normal' | 'momo'
-        let convHistory = []; // 仅普通模式和Momo模式使用（记录对话历史）
+        // ========== 【三模式 AI 逻辑】 ==========
+        let currentMode = 'professional';
+        let convHistory = [];
 
         const modeProBtn = document.getElementById('modeProfessional');
         const modeNormalBtn = document.getElementById('modeNormal');
@@ -1303,7 +1425,6 @@
         const aiBtn = document.getElementById('aiFloatingBtn');
         const closeAi = document.getElementById('closeAiWindow');
 
-        // 点击浮动按钮：切换聊天窗口显示
         aiBtn.addEventListener('click', () => {
             aiWindow.classList.toggle('hidden-ai');
             if (!aiWindow.classList.contains('hidden-ai') && aiMsgArea.children.length === 0) {
@@ -1311,12 +1432,10 @@
             }
         });
 
-        // 关闭按钮
         closeAi.addEventListener('click', () => {
             aiWindow.classList.add('hidden-ai');
         });
 
-        // 重置聊天
         function resetChat() {
             aiMsgArea.innerHTML = '';
             convHistory = [];
@@ -1333,7 +1452,6 @@
             aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
         }
 
-        // 设置模式
         function setMode(mode) {
             currentMode = mode;
             modeProBtn.classList.toggle('active', mode === 'professional');
@@ -1342,12 +1460,10 @@
             resetChat();
         }
 
-        // 模式切换按钮点击
         modeProBtn.addEventListener('click', () => setMode('professional'));
         modeNormalBtn.addEventListener('click', () => setMode('normal'));
         modeMomoBtn.addEventListener('click', () => setMode('momo'));
 
-        // ----- 专业模式：全站本地检索 + 完整板块返回 -----
         function getFullSectionContent(question) {
             const lower = question.toLowerCase();
             if (lower.includes('派系历史') || lower.includes('编年史') || lower.includes('王朝历史') || lower.includes('bns')) {
@@ -1441,7 +1557,6 @@
             }
         }
 
-        // ----- 普通模式 & Momo模式：外部 AI 对话 -----
         async function callPollinationsAPI(question, personality = 'normal') {
             let context = "";
             if (convHistory.length > 0) {
@@ -1455,7 +1570,6 @@
 
             let personalityPrompt = '';
             if (personality === 'momo') {
-                // ===== Momo 性格（狡猾、搞笑、有趣） =====
                 personalityPrompt = '你是一个狡猾、搞笑、有趣、像正常人类一样懂得思考的AI，名叫Momo。你的回答要充满幽默感，偶尔搞怪，但逻辑清晰，像一个真实的人在聊天。始终使用简体中文。';
             } else {
                 personalityPrompt = '请用简体中文回答用户的问题。';
@@ -1490,7 +1604,6 @@
             return await callPollinationsAPI(question, 'momo');
         }
 
-        // ----- 统一回答生成函数 -----
         async function generateAnswer(question) {
             if (currentMode === 'professional') {
                 return await generateProfessionalAnswer(question);
@@ -1501,7 +1614,6 @@
             }
         }
 
-        // AI 消息处理
         const aiInput = document.getElementById('aiInput');
         const aiSend = document.getElementById('aiSendBtn');
         
@@ -1545,12 +1657,11 @@
         aiSend?.addEventListener('click',handleAsk);
         aiInput?.addEventListener('keypress',(e)=>{ if(e.key==='Enter') handleAsk(); });
         
-        // 初始化
         window.addEventListener('DOMContentLoaded', () => {
             setMode('professional');
         });
         
-        // ========== 滚动观察器（原有） ==========
+        // ========== 滚动观察器 ==========
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
