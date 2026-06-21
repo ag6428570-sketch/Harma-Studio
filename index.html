@@ -22,7 +22,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ========== 全局样式（原有全部保留） ========== */
+        /* ========== 全局样式 ========== */
         .gradient-text {
             background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
             -webkit-background-clip: text;
@@ -270,192 +270,6 @@
         }
         .dynamic-hidden { display: none !important; }
 
-        /* ========== 加载动画样式 ========== */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #050b14;
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s ease;
-        }
-        .loading-screen.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .update-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .computer-icon {
-            position: relative;
-            width: 120px;
-            height: 100px;
-        }
-        .computer-body {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90px;
-            height: 65px;
-            background: #0f1a2e;
-            border-radius: 6px 6px 2px 2px;
-            border: 2px solid #1a3a6a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .screen-glow {
-            width: 78px;
-            height: 50px;
-            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #0055aa 100%);
-            border-radius: 3px;
-            position: relative;
-            overflow: hidden;
-        }
-        .screen-glow::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 40%,
-                rgba(50, 130, 255, 0.2) 50%,
-                transparent 60%
-            );
-            animation: screenShine 3s ease-in-out infinite;
-        }
-        @keyframes screenShine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-        .computer-stand {
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 10px;
-            background: #1a2a4a;
-            border-radius: 0 0 4px 4px;
-        }
-        .computer-base {
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: #1a3a5a;
-            border-radius: 2px;
-        }
-
-        .progress-container {
-            width: 280px;
-            height: 6px;
-            background: #0f1a2e;
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid #1a3a6a;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #003366, #3366ff, #6699ff);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 20px rgba(50, 130, 255, 0.5);
-        }
-
-        .progress-text {
-            color: #6699cc;
-            font-size: 12px;
-            margin-top: 8px;
-            font-family: monospace;
-            letter-spacing: 0.5px;
-        }
-
-        .status-text {
-            color: #3388cc;
-            font-size: 14px;
-            font-weight: 400;
-            letter-spacing: 0.5px;
-            animation: textPulse 2s ease-in-out infinite;
-        }
-        @keyframes textPulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        .time-remaining {
-            color: #446688;
-            font-size: 12px;
-            margin-top: -25px;
-            font-weight: 300;
-        }
-
-        .skip-btn {
-            margin-top: 16px;
-            padding: 6px 20px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            color: #6688aa;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .skip-btn:hover {
-            background: rgba(255,255,255,0.12);
-            color: #88bbdd;
-            border-color: rgba(59,130,246,0.4);
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(50, 130, 255, 0.15);
-            border-radius: 50%;
-            animation: floatUp linear infinite;
-        }
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-10vh) scale(1);
-                opacity: 0;
-            }
-        }
-
         /* ===== 搜索高亮 ===== */
         .search-highlight {
             background: #fbbf24 !important;
@@ -465,7 +279,7 @@
             font-weight: 600;
         }
 
-        /* ===== 搜索历史下拉（滚动条样式与派系历史一致） ===== */
+        /* ===== 搜索历史下拉 ===== */
         .search-history-dropdown {
             position: absolute;
             top: 100%;
@@ -482,7 +296,6 @@
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        /* 滚动条样式（与派系历史一致） */
         .search-history-dropdown::-webkit-scrollbar {
             width: 4px;
         }
@@ -541,7 +354,7 @@
             opacity: 0.7;
         }
 
-        /* ===== 模式切换按钮（输入框上方） ===== */
+        /* ===== 模式切换按钮 ===== */
         .ai-mode-selector {
             display: flex;
             gap: 6px;
@@ -571,7 +384,7 @@
             border-color: #3b82f6;
         }
 
-        /* 登录界面科技风 */
+        /* ===== 登录界面 ===== */
         :root{
             --bg:#05060a;
             --stroke: rgba(255,255,255,.14);
@@ -763,7 +576,7 @@
             font-size:12px;
         }
 
-        /* AI 助手样式 */
+        /* ===== AI 助手样式 ===== */
         .ai-floating-btn {
             position: fixed;
             bottom: 24px;
@@ -896,35 +709,291 @@
         .achievement-modal-title i {
             color: #facc15 !important;
         }
+
+        /* ================================================================
+           終端機啟動動畫（藍色主題版）
+           ================================================================ */
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        .terminal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: #050b14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+        }
+
+        .terminal-overlay.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        /* 掃描線效果 */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(59, 130, 246, 0.03) 2px,
+                rgba(59, 130, 246, 0.03) 4px
+            );
+        }
+
+        .glow-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+        }
+
+        .terminal-container {
+            width: 90%;
+            max-width: 800px;
+            padding: 2rem;
+            position: relative;
+            z-index: 1005;
+        }
+
+        .terminal-frame {
+            border: 1px solid #1a3a6a;
+            border-radius: 4px;
+            padding: 1.5rem;
+            background: rgba(8, 16, 30, 0.92);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.1), inset 0 0 30px rgba(59, 130, 246, 0.03);
+            position: relative;
+        }
+
+        .terminal-frame::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            animation: borderPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes borderPulse {
+            0%, 100% { border-color: #1a3a6a; }
+            50% { border-color: #3b82f6; }
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #1a3a6a;
+            font-size: 0.8rem;
+            color: #4a7aaa;
+        }
+
+        .terminal-header .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .terminal-body {
+            min-height: 200px;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #3b82f6;
+        }
+
+        .terminal-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.3rem;
+            min-height: 1.8rem;
+        }
+
+        .prompt {
+            color: #3b82f6;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .typing-text {
+            color: #3b82f6;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: #3b82f6;
+            animation: cursorBlink 0.7s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+
+        @keyframes cursorBlink {
+            50% { opacity: 0; }
+        }
+
+        .glitch {
+            animation: glitch 0.3s ease-in-out;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .progress-bar {
+            display: inline-block;
+            width: 200px;
+            height: 12px;
+            border: 1px solid #1a3a6a;
+            margin-left: 0.5rem;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .progress-text {
+            margin-left: 0.5rem;
+            color: #4a7aaa;
+        }
+
+        .highlight {
+            color: #fff;
+            text-shadow: 0 0 10px #3b82f6;
+            font-weight: 700;
+        }
+
+        .warning {
+            color: #fbbf24;
+        }
+
+        .success {
+            color: #3b82f6;
+        }
+
+        .skip-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4a7aaa;
+            font-size: 0.75rem;
+            opacity: 0;
+            animation: fadeIn 1s ease 2s forwards;
+            z-index: 1010;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+        }
+
+        .skip-hint:hover {
+            color: #3b82f6;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* 终端内部滚动 */
+        .terminal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-body::-webkit-scrollbar-track {
+            background: #0a1620;
+            border-radius: 10px;
+        }
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #1a3a6a;
+            border-radius: 10px;
+        }
+        .terminal-body {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+        }
+
+        @media (max-width: 600px) {
+            .terminal-frame { padding: 1rem; }
+            .terminal-body { font-size: 0.85rem; max-height: 300px; }
+            .progress-bar { width: 120px; }
+        }
     </style>
 </head>
 <body>
-    <!-- ===== 加载界面（随机时长版） ===== -->
-    <div id="loadingScreen" class="loading-screen">
-        <div class="particles" id="particles"></div>
-        <div class="update-screen">
-            <div class="computer-icon">
-                <div class="computer-body">
-                    <div class="screen-glow"></div>
+
+    <!-- ===== 終端機開機動畫 ===== -->
+    <div class="terminal-overlay" id="terminalOverlay">
+        <div class="scanlines"></div>
+        <div class="glow-overlay"></div>
+        <div class="terminal-container" id="terminalContainer">
+            <div class="terminal-frame">
+                <div class="terminal-header">
+                    <div class="status">
+                        <span class="status-dot"></span>
+                        <span>HARMA TERMINAL v2.6.1</span>
+                    </div>
+                    <span>SECURE CONNECTION</span>
                 </div>
-                <div class="computer-stand"></div>
-                <div class="computer-base"></div>
+                <div class="terminal-body" id="terminalBody"></div>
             </div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <div class="progress-text" id="progressText">加载中 0%</div>
-            <div class="status-text" id="loadingStatus">正在启动战争引擎...</div>
-            <div class="time-remaining" id="timeRemaining">剩余时间约 8 分钟</div>
-            <button class="skip-btn" id="skipLoading">跳过加载 →</button>
+        </div>
+        <div class="skip-hint" id="skipHint" onclick="skipBoot()">
+            [ 按 Enter 或點擊此處跳過 ]
         </div>
     </div>
 
+    <!-- ===== 动态背景（保留） ===== -->
     <div id="dynamicBg" class="dynamic-bg-layer dynamic-hidden">
         <canvas id="pixel-canvas"></canvas>
     </div>
 
-    <!-- 登录界面（原有） -->
+    <!-- ===== 登录界面 ===== -->
     <div id="loginModal" class="login-wrap">
         <div class="login-card login-card-animate">
             <div class="topbar">
@@ -986,7 +1055,7 @@
         </div>
     </div>
 
-    <!-- 主页面内容 -->
+    <!-- ===== 主页面 ===== -->
     <div id="main-app" style="display: none;">
         <nav class="sticky top-0 z-40 glass-nav px-4 py-3 nav-slide">
             <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -1006,7 +1075,6 @@
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">⚔ <span class="gradient-text">Roblox 战争大亨</span></h1>
                 <p class="text-xs md:text-sm text-gray-400">现代化任务网站 | 坦克 | 飞机 | 直升机 | 船舰</p>
             </div>
-            <!-- 搜索框（带历史下拉 + 与派系历史一致的滚动条） -->
             <div class="max-w-md mx-auto mt-6 px-2 search-delay">
                 <div class="flex items-center gap-2">
                     <div class="search-wrapper">
@@ -1022,7 +1090,7 @@
             </div>
         </header>
         <main class="max-w-6xl mx-auto px-4 mt-2 space-y-10">
-            <!-- 任务分类快速跳转 -->
+            <!-- 任务分类 -->
             <section id="category-selector" class="space-y-4">
                 <h2 class="text-base font-bold text-gray-400">选择任务分类</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -1035,7 +1103,7 @@
                 <div class="mt-4"><a href="https://wttd.trade/" target="_blank" class="rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 p-4 block max-w-xs text-center text-white"><h3 class="text-lg font-black">⚔ 交易市场 (wttd.trade)</h3></a></div>
             </section>
 
-            <!-- 官方社群区块 -->
+            <!-- 官方社群 -->
             <section id="social-section" class="max-w-xl space-y-4">
                 <h2 class="text-lg font-bold text-gray-300">官方社群</h2>
                 <div class="space-y-3">
@@ -1047,7 +1115,7 @@
                 </div>
             </section>
 
-            <!-- 派系历史完整版 -->
+            <!-- 派系历史 -->
             <hr class="border-gray-800 my-6" />
             <section id="faction-section" class="glass-card p-5 md:p-6 space-y-5">
                 <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700 pb-3"><h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2"><i class="fa-solid fa-landmark text-blue-400"></i> 派系 · 大兴王朝历史<span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">2023-至今</span></h2></div>
@@ -1154,7 +1222,7 @@
                 <div class="text-right text-[11px] text-gray-500 border-t border-gray-700 pt-3 mt-1"><i class="fa-regular fa-clock"></i> 派系纪实 · 源于BNS / 大兴王朝编年史</div>
             </section>
 
-            <!-- 关于我们完整版 -->
+            <!-- 关于我们 -->
             <hr class="border-gray-800 my-6" />
             <section id="aboutus-section" class="glass-card p-5 md:p-6">
                 <div class="flex items-center gap-2 border-b border-indigo-500/30 pb-3 mb-4"><i class="fa-regular fa-star-of-life text-indigo-400 text-xl"></i><h2 class="text-xl md:text-2xl font-black text-white tracking-tight">关于我们 · 重生之翼</h2></div>
@@ -1167,13 +1235,13 @@
                 </div>
             </section>
 
-            <!-- 任务列表渲染区 -->
+            <!-- 任务列表 -->
             <hr id="section-divider" class="border-gray-800 my-6" />
             <div id="tasks-container" class="space-y-12"></div>
         </main>
     </div>
 
-    <!-- 成就模态框 -->
+    <!-- ===== 成就模态框 ===== -->
     <div id="achievement-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-200 achievement-modal-content backdrop-blur-xl">
             <div class="p-5">
@@ -1189,7 +1257,7 @@
         </div>
     </div>
 
-    <!-- 彩蛋页面 -->
+    <!-- ===== 彩蛋页面 ===== -->
     <div id="easteregg-page" class="fixed inset-0 z-50 bg-darkBg easter-egg-bg hidden overflow-y-auto">
         <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
             <div class="max-w-5xl w-full space-y-10">
@@ -1227,11 +1295,11 @@
         </div>
     </div>
 
-    <!-- 任务详情与追踪模态框 -->
+    <!-- ===== 任务详情与追踪模态框 ===== -->
     <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div id="modal-header-accent" class="h-2 w-full bg-blue-500"></div><div class="p-6 space-y-4"><div class="flex justify-between items-start"><div><span id="modal-category" class="text-xs font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-400">分类</span><h3 id="modal-title" class="text-xl font-bold text-white mt-1">名称</h3></div><button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">解锁获取条件</p><p id="modal-requirement" class="text-sm text-gray-100 font-semibold leading-relaxed">要求详情</p></div><div class="flex space-x-2 pt-2"><button id="modal-track-btn" onclick="toggleTrackCurrent()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-sm transition">加入追踪</button><button onclick="copyCurrentRequirement()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-xl text-sm transition">复制</button></div><p id="modal-toast" class="text-xs text-center text-green-400 font-medium opacity-0 transition-opacity duration-200"></p></div></div></div>
     <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200"><div class="bg-darkCard border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200"><div class="p-6 space-y-4"><div class="flex justify-between items-center"><h3 class="text-lg font-bold text-white">我的资料追踪清单</h3><button onclick="closeTrackerModal()" class="text-gray-400 hover:text-white text-xl">×</button></div><div id="tracker-list-content" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div><div class="border-t border-gray-800 pt-4 flex justify-between items-center"><span class="text-xs text-gray-500">提示：资料已储存于浏览器缓存中。</span><button onclick="clearAllTracked()" class="text-xs text-red-400 hover:text-red-300">全部清除</button></div></div></div></div>
 
-    <!-- AI 助手容器 -->
+    <!-- ===== AI 助手 ===== -->
     <div id="aiAssistantContainer">
         <div id="aiFloatingBtn" class="ai-floating-btn"><i class="fa-regular fa-message text-white text-2xl"></i></div>
         <div id="aiChatWindow" class="ai-chat-window hidden-ai">
@@ -1246,38 +1314,22 @@
                         </defs>
                         <rect x="168" y="168" width="176" height="176" rx="22" class="blue"/>
                         <g class="line">
-                            <line x1="190" y1="150" x2="190" y2="120"/>
-                            <circle cx="190" cy="112" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="230" y1="150" x2="230" y2="110"/>
-                            <circle cx="230" cy="102" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="282" y1="150" x2="282" y2="110"/>
-                            <circle cx="282" cy="102" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="322" y1="150" x2="322" y2="120"/>
-                            <circle cx="322" cy="112" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="190" y1="362" x2="190" y2="392"/>
-                            <circle cx="190" cy="400" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="230" y1="362" x2="230" y2="402"/>
-                            <circle cx="230" cy="410" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="282" y1="362" x2="282" y2="402"/>
-                            <circle cx="282" cy="410" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="322" y1="362" x2="322" y2="392"/>
-                            <circle cx="322" cy="400" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="150" y1="190" x2="120" y2="190"/>
-                            <circle cx="112" cy="190" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="150" y1="230" x2="110" y2="230"/>
-                            <circle cx="102" cy="230" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="150" y1="282" x2="110" y2="282"/>
-                            <circle cx="102" cy="282" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="150" y1="322" x2="120" y2="322"/>
-                            <circle cx="112" cy="322" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="362" y1="190" x2="392" y2="190"/>
-                            <circle cx="400" cy="190" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="362" y1="230" x2="402" y2="230"/>
-                            <circle cx="410" cy="230" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="362" y1="282" x2="402" y2="282"/>
-                            <circle cx="410" cy="282" r="10" fill="#2F5BFF" stroke="none"/>
-                            <line x1="362" y1="322" x2="392" y2="322"/>
-                            <circle cx="400" cy="322" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="190" y1="150" x2="190" y2="120"/><circle cx="190" cy="112" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="230" y1="150" x2="230" y2="110"/><circle cx="230" cy="102" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="282" y1="150" x2="282" y2="110"/><circle cx="282" cy="102" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="322" y1="150" x2="322" y2="120"/><circle cx="322" cy="112" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="190" y1="362" x2="190" y2="392"/><circle cx="190" cy="400" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="230" y1="362" x2="230" y2="402"/><circle cx="230" cy="410" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="282" y1="362" x2="282" y2="402"/><circle cx="282" cy="410" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="322" y1="362" x2="322" y2="392"/><circle cx="322" cy="400" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="190" x2="120" y2="190"/><circle cx="112" cy="190" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="230" x2="110" y2="230"/><circle cx="102" cy="230" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="282" x2="110" y2="282"/><circle cx="102" cy="282" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="150" y1="322" x2="120" y2="322"/><circle cx="112" cy="322" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="190" x2="392" y2="190"/><circle cx="400" cy="190" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="230" x2="402" y2="230"/><circle cx="410" cy="230" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="282" x2="402" y2="282"/><circle cx="410" cy="282" r="10" fill="#2F5BFF" stroke="none"/>
+                            <line x1="362" y1="322" x2="392" y2="322"/><circle cx="400" cy="322" r="10" fill="#2F5BFF" stroke="none"/>
                         </g>
                         <text x="256" y="292" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="700" fill="#F2F2F2">AI</text>
                     </svg>
@@ -1299,389 +1351,167 @@
     </div>
 
     <script>
-        // ============================================================
-        //  1. 加载动画（随机时长 3~8 秒）
-        // ============================================================
-        (function initLoading() {
-            const progressBar = document.getElementById('progressBar');
-            const progressText = document.getElementById('progressText');
-            const statusText = document.getElementById('loadingStatus');
-            const timeEl = document.getElementById('timeRemaining');
-            const skipBtn = document.getElementById('skipLoading');
-            const loadingScreen = document.getElementById('loadingScreen');
-
-            // === 随机总时长（3~8 秒） ===
-            const totalDuration = 3000 + Math.random() * 5000; // 3000ms ~ 8000ms
-            const totalDurationSec = (totalDuration / 1000).toFixed(1);
-            
-            let progress = 0;
-            let loaded = false;
-            let skipRequested = false;
-            let startTime = Date.now();
-
-            const statuses = [
-                '正在启动战争引擎...',
-                '加载核心模块...',
-                '初始化派系数据...',
-                '加载任务数据库...',
-                '准备界面元素...',
-                '即将完成...'
+        // ================================================================
+        //  终端开机动画
+        // ================================================================
+        (function terminalBoot() {
+            const bootSequence = [
+                { text: '系统启动中...', type: 'normal', delay: 300 },
+                { text: '内存检测: 8192 MB OK', type: 'normal', delay: 200 },
+                { text: '连接至 HARMA 派系服务器', type: 'normal', delay: 400, hasProgress: true },
+                { text: '验证访客权限...', type: 'normal', delay: 600 },
+                { text: '[访客] 权限已确认', type: 'success', delay: 200 },
+                { text: '加载派系历史数据库...', type: 'normal', delay: 500, hasProgress: true },
+                { text: '加载任务站模块...', type: 'normal', delay: 400, hasProgress: true },
+                { text: '同步战场数据...', type: 'normal', delay: 300 },
+                { text: '警告: 检测到未授权扫描', type: 'warning', delay: 400, glitch: true },
+                { text: '防火墙已启动', type: 'success', delay: 200 },
+                { text: '欢迎回来，指挥官。', type: 'highlight', delay: 800 },
             ];
-            let statusIndex = 0;
 
-            // 根据总时长生成对应的剩余时间文本
-            function getTimeTexts(totalSec) {
-                const min = Math.floor(totalSec / 60);
-                const sec = Math.floor(totalSec % 60);
-                if (min > 0) {
-                    return [
-                        `剩余时间约 ${min} 分 ${sec} 秒`,
-                        `剩余时间约 ${min} 分 ${sec-2} 秒`,
-                        `剩余时间约 ${min-1} 分 ${sec+10} 秒`,
-                        `剩余时间约 ${min-1} 分 ${sec-5} 秒`,
-                        `剩余时间约 ${min-2} 分 ${sec+15} 秒`,
-                        '即将完成...'
-                    ];
-                } else {
-                    return [
-                        `剩余时间约 ${sec} 秒`,
-                        `剩余时间约 ${sec-2} 秒`,
-                        `剩余时间约 ${sec-4} 秒`,
-                        `剩余时间约 ${sec-6} 秒`,
-                        `剩余时间约 ${sec-8} 秒`,
-                        '即将完成...'
-                    ];
+            const terminalBody = document.getElementById('terminalBody');
+            const terminalOverlay = document.getElementById('terminalOverlay');
+            let currentLine = 0;
+            let isTyping = false;
+            let skipRequested = false;
+
+            function createLine() {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+
+                const prompt = document.createElement('span');
+                prompt.className = 'prompt';
+                prompt.textContent = '>';
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'typing-text';
+
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+
+                line.appendChild(prompt);
+                line.appendChild(textSpan);
+                line.appendChild(cursor);
+                terminalBody.appendChild(line);
+
+                return { line, textSpan, cursor };
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function typeText(textSpan, text, speed = 40) {
+                isTyping = true;
+                for (let i = 0; i < text.length; i++) {
+                    if (skipRequested) {
+                        textSpan.textContent = text;
+                        break;
+                    }
+                    textSpan.textContent += text[i];
+                    await sleep(speed + Math.random() * 30);
+                }
+                isTyping = false;
+            }
+
+            async function animateProgress(lineElement, duration = 800) {
+                const progressBar = document.createElement('span');
+                progressBar.className = 'progress-bar';
+                const fill = document.createElement('span');
+                fill.className = 'progress-fill';
+                progressBar.appendChild(fill);
+
+                const progressText = document.createElement('span');
+                progressText.className = 'progress-text';
+                progressText.textContent = '0%';
+
+                lineElement.appendChild(progressBar);
+                lineElement.appendChild(progressText);
+
+                const steps = 20;
+                const stepDuration = duration / steps;
+
+                for (let i = 1; i <= steps; i++) {
+                    if (skipRequested) {
+                        fill.style.width = '100%';
+                        progressText.textContent = '100%';
+                        break;
+                    }
+                    fill.style.width = (i * 5) + '%';
+                    progressText.textContent = (i * 5) + '%';
+                    await sleep(stepDuration);
                 }
             }
 
-            let timeTexts = getTimeTexts(totalDurationSec);
-            let timeIndex = 0;
+            async function runBootSequence() {
+                for (let i = 0; i < bootSequence.length; i++) {
+                    if (skipRequested) {
+                        while (i < bootSequence.length) {
+                            const item = bootSequence[i];
+                            const { line, textSpan } = createLine();
+                            if (item.type === 'highlight') textSpan.classList.add('highlight');
+                            else if (item.type === 'warning') textSpan.classList.add('warning');
+                            else if (item.type === 'success') textSpan.classList.add('success');
+                            textSpan.textContent = item.text;
+                            i++;
+                        }
+                        break;
+                    }
 
-            // 更新状态文字
-            function updateStatus(progressVal) {
-                const newIndex = Math.min(Math.floor(progressVal / 17), statuses.length - 1);
-                if (newIndex > statusIndex) {
-                    statusIndex = newIndex;
-                    statusText.textContent = statuses[statusIndex];
+                    const item = bootSequence[i];
+                    const { line, textSpan, cursor } = createLine();
+
+                    if (item.type === 'highlight') textSpan.classList.add('highlight');
+                    else if (item.type === 'warning') textSpan.classList.add('warning');
+                    else if (item.type === 'success') textSpan.classList.add('success');
+
+                    if (item.glitch) line.classList.add('glitch');
+
+                    await typeText(textSpan, item.text);
+
+                    if (item.hasProgress && !skipRequested) {
+                        cursor.remove();
+                        await animateProgress(line);
+                    }
+
+                    if (i < bootSequence.length - 1) cursor.remove();
+
+                    if (!skipRequested) await sleep(item.delay);
+                    currentLine++;
                 }
-                // 更新剩余时间
-                const newTimeIndex = Math.min(Math.floor(progressVal / 17), timeTexts.length - 1);
-                if (newTimeIndex > timeIndex) {
-                    timeIndex = newTimeIndex;
-                    timeEl.textContent = timeTexts[newTimeIndex];
-                }
+
+                if (!skipRequested) await sleep(1000);
+                transitionToMain();
             }
 
-            function simulateLoading() {
-                if (loaded || skipRequested) return;
-
-                const elapsed = Date.now() - startTime;
-                // 基于时间计算进度（带一点随机波动，更真实）
-                const baseProgress = Math.min((elapsed / totalDuration) * 100, 99);
-                // 添加 ±2% 的随机波动
-                const randomOffset = (Math.random() - 0.5) * 4;
-                progress = Math.min(Math.max(baseProgress + randomOffset, 0), 99);
-
-                progressBar.style.width = progress + '%';
-                progressText.textContent = '加载中 ' + Math.floor(progress) + '%';
-                updateStatus(progress);
-
-                if (elapsed >= totalDuration) {
-                    // 完成加载
-                    loaded = true;
-                    progress = 100;
-                    progressBar.style.width = '100%';
-                    progressText.textContent = '加载完成 100%';
-                    statusText.textContent = '✅ 准备就绪！';
-                    timeEl.textContent = '即将启动...';
-                    setTimeout(finishLoading, 300);
-                    return;
-                }
-
-                // 动态调整更新间隔（越往后越快）
-                const remaining = totalDuration - elapsed;
-                const delay = Math.min(50 + remaining * 0.02, 200);
-                setTimeout(simulateLoading, delay);
-            }
-
-            function finishLoading() {
-                if (!loadingScreen) return;
-                loadingScreen.classList.add('fade-out');
+            function transitionToMain() {
+                terminalOverlay.classList.add('hidden');
                 setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 600);
+                    terminalOverlay.style.display = 'none';
+                    // 显示主页面
+                    if (isLoggedIn) showMainApp();
+                    else showLogin();
+                }, 800);
             }
 
-            // 跳过加载
-            skipBtn.addEventListener('click', function() {
-                if (loaded) return;
+            window.skipBoot = function() {
+                if (skipRequested) return;
                 skipRequested = true;
-                progress = 100;
-                progressBar.style.width = '100%';
-                progressText.textContent = '加载完成 100%';
-                statusText.textContent = '⏭️ 已跳过加载';
-                timeEl.textContent = '即将启动...';
-                setTimeout(finishLoading, 300);
+            };
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') skipBoot();
             });
 
-            // 启动加载
-            setTimeout(simulateLoading, 200);
-
-            // 粒子生成
-            const container = document.getElementById('particles');
-            if (container) {
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
-                    particle.style.animationDelay = Math.random() * 10 + 's';
-                    particle.style.width = (Math.random() * 3 + 1) + 'px';
-                    particle.style.height = particle.style.width;
-                    container.appendChild(particle);
-                }
-            }
-
-            console.log(`⚙️ 加载总时长: ${(totalDuration/1000).toFixed(1)} 秒`);
+            // 启动
+            runBootSequence();
         })();
 
-        // ============================================================
-        //  2. 搜索增强（历史记录 + 高亮）
-        // ============================================================
-        let searchHistory = JSON.parse(localStorage.getItem('war_tycoon_search_history')) || [];
+        // ================================================================
+        //  原有全部功能
+        // ================================================================
 
-        function saveSearchHistory() {
-            localStorage.setItem('war_tycoon_search_history', JSON.stringify(searchHistory));
-        }
-
-        function addSearchHistory(term) {
-            if (!term.trim()) return;
-            term = term.trim();
-            searchHistory = searchHistory.filter(item => item !== term);
-            searchHistory.unshift(term);
-            if (searchHistory.length > 10) searchHistory.pop();
-            saveSearchHistory();
-        }
-
-        function clearSearchHistory() {
-            searchHistory = [];
-            saveSearchHistory();
-            renderSearchHistory();
-        }
-
-        function renderSearchHistory() {
-            const list = document.getElementById('searchHistoryList');
-            const dropdown = document.getElementById('searchHistoryDropdown');
-            if (!list) return;
-
-            if (searchHistory.length === 0) {
-                list.innerHTML = '<div class="text-center text-gray-500 text-xs py-3">暂无搜索历史</div>';
-                dropdown.classList.remove('show');
-                return;
-            }
-
-            list.innerHTML = searchHistory.map(term =>
-                `<div class="search-history-item" onclick="applySearchHistory('${term.replace(/'/g, "\\'")}')">
-                    <i class="fa-solid fa-clock-rotate-left"></i> ${term}
-                </div>`
-            ).join('');
-        }
-
-        function applySearchHistory(term) {
-            const input = document.getElementById('search-input');
-            input.value = term;
-            document.getElementById('searchHistoryDropdown').classList.remove('show');
-            searchTasksWithHistory();
-        }
-
-        function searchTasksWithHistory() {
-            const input = document.getElementById('search-input');
-            const val = input.value.trim();
-
-            if (val) {
-                addSearchHistory(val);
-            }
-
-            const filter = val.toLowerCase();
-            const container = document.getElementById('tasks-container');
-            const categorySelector = document.getElementById('category-selector');
-            const sectionDivider = document.getElementById('section-divider');
-            const infoText = document.getElementById('search-results-info');
-            const social = document.getElementById('social-section');
-            const factionSec = document.getElementById('faction-section');
-            const aboutSec = document.getElementById('aboutus-section');
-
-            container.innerHTML = '';
-
-            if (filter === "") {
-                categorySelector.classList.remove('hidden');
-                if (sectionDivider) sectionDivider.classList.remove('hidden');
-                if (social) social.style.display = 'block';
-                if (factionSec) factionSec.style.display = 'block';
-                if (aboutSec) aboutSec.style.display = 'block';
-                if (infoText) infoText.classList.add('hidden');
-
-                Object.keys(taskData).forEach(key => {
-                    const category = taskData[key];
-                    const section = document.createElement('section');
-                    section.id = `${key}-section`;
-                    section.className = "space-y-4 scroll-mt-20";
-                    section.innerHTML = `
-                        <div class="border-b border-gray-800 pb-2">
-                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                                <span class="w-1 h-5 bg-blue-500 rounded-full"></span>${category.title}
-                            </h2>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            ${category.tasks.map((task, index) => {
-                                const isTracked = trackedTasks.some(t => t.name === task.name);
-                                return `<div onclick="openTaskDetail('${key}', ${index})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item">
-                                    <div class="flex justify-between items-start">
-                                        <span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span>
-                                    </div>
-                                    <h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
-                                        <span>点击查看 →</span>
-                                        ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}
-                                    </div>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                    `;
-                    container.appendChild(section);
-                });
-                return;
-            }
-
-            categorySelector.classList.add('hidden');
-            if (sectionDivider) sectionDivider.classList.add('hidden');
-            if (social) social.style.display = 'none';
-            if (factionSec) factionSec.style.display = 'none';
-            if (aboutSec) aboutSec.style.display = 'none';
-            if (infoText) {
-                infoText.classList.remove('hidden');
-            }
-
-            let totalMatches = 0;
-            Object.keys(taskData).forEach(key => {
-                const category = taskData[key];
-                const filteredTasks = category.tasks
-                    .map((t, idx) => ({ ...t, originalIndex: idx }))
-                    .filter(t => t.name.toLowerCase().includes(filter) || t.requirement.toLowerCase().includes(filter));
-
-                if (filteredTasks.length > 0) {
-                    totalMatches += filteredTasks.length;
-                    const section = document.createElement('section');
-                    section.className = "space-y-4";
-                    section.innerHTML = `
-                        <div class="border-b border-gray-800 pb-2">
-                            <h2 class="text-lg font-bold text-white">${category.title}</h2>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            ${filteredTasks.map(task => {
-                                const isTracked = trackedTasks.some(t => t.name === task.name);
-                                let displayName = task.name;
-                                let displayReq = task.requirement;
-                                if (filter) {
-                                    const regex = new RegExp(filter, 'gi');
-                                    displayName = task.name.replace(regex, match => `<span class="search-highlight">${match}</span>`);
-                                    displayReq = task.requirement.replace(regex, match => `<span class="search-highlight">${match}</span>`);
-                                }
-                                return `<div onclick="openTaskDetail('${key}', ${task.originalIndex})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item">
-                                    <div class="flex justify-between items-start">
-                                        <span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span>
-                                    </div>
-                                    <h4 class="text-sm font-bold text-white truncate my-2">${displayName}</h4>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
-                                        <span class="text-gray-400 text-[10px] truncate max-w-[120px]">${displayReq}</span>
-                                        ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}
-                                    </div>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                    `;
-                    container.appendChild(section);
-                }
-            });
-
-            if (infoText) {
-                if (totalMatches === 0) {
-                    infoText.innerText = `❌ 未找到匹配项目，试试其他关键词`;
-                } else {
-                    infoText.innerText = `找到 ${totalMatches} 个匹配项目（名称/解锁条件）`;
-                }
-            }
-
-            setTimeout(() => {
-                document.querySelectorAll('.task-card-item').forEach(el => observer.observe(el));
-            }, 50);
-        }
-
-        // 搜索框焦点事件
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('search-input');
-            const dropdown = document.getElementById('searchHistoryDropdown');
-
-            if (searchInput) {
-                searchInput.addEventListener('focus', function() {
-                    if (searchHistory.length > 0) {
-                        renderSearchHistory();
-                        dropdown.classList.add('show');
-                    }
-                });
-                searchInput.addEventListener('blur', function() {
-                    setTimeout(() => {
-                        dropdown.classList.remove('show');
-                    }, 300);
-                });
-                searchInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        dropdown.classList.remove('show');
-                    }
-                });
-            }
-
-            const clearBtn = document.getElementById('clearSearchHistory');
-            if (clearBtn) {
-                clearBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    clearSearchHistory();
-                });
-            }
-        });
-
-        // ============================================================
-        //  3. AI 助手优化（超时 + 离线回复 + 响应时间 + Momo 表情）
-        // ============================================================
-        const momoEmojis = ['(◕‿◕)', '(✧∀✧)', '(´｡• ᵕ •｡`)', '(￣▽￣)ノ', '♪(´▽｀)', '（＾∀＾）', '(◠‿◠)', '✧⁺⸜(●′▾‵●)⸝⁺✧'];
-
-        function getRandomMomoEmoji() {
-            return momoEmojis[Math.floor(Math.random() * momoEmojis.length)];
-        }
-
-        const offlineReplies = [
-            '🤖 网络好像有点问题，但我可以先告诉你：战争大亨的坦克任务有 16 个，直升机有 10 个，飞机有 17 个！要问具体哪个？',
-            '🌐 连不上 AI 了，不过我记得 M1 艾布拉姆斯需要摧毁 30 辆坦克 & 偷取 10 个零件箱哦！',
-            '📡 信号不太好... 要不你先去派系历史看看？那里有 BNS 的完整编年史！',
-            '⚡ AI 暂时离线，但我知道 F_22 需要驾驶飞机通过圆环收集 400 积分 & 占领捕捉点 1800 秒！'
-        ];
-
-        function getRandomOfflineReply() {
-            return offlineReplies[Math.floor(Math.random() * offlineReplies.length)];
-        }
-
-        function fetchWithTimeout(url, options = {}, timeout = 15000) {
-            return Promise.race([
-                fetch(url, options),
-                new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('请求超时')), timeout)
-                )
-            ]);
-        }
-
-        // ============================================================
-        //  原有全部脚本（仅保留必要的变量和函数）
-        // ============================================================
+        // 像素雨背景
         const canvas = document.getElementById('pixel-canvas');
         let ctx, width, height, columns, drops, pixelSize = 10;
 
@@ -1709,6 +1539,7 @@
             }
             requestAnimationFrame(drawPixelRain);
         }
+
         window.addEventListener('resize', () => {
             if (ctx) {
                 width = window.innerWidth;
@@ -1779,6 +1610,7 @@
             isLoggedIn = true;
             showMainApp();
         });
+
         document.getElementById('registerFormNew').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('regNameNew').value.trim();
@@ -1837,6 +1669,7 @@
             "social_community": { name: "社群之友", desc: "点击任意官方社群链接", icon: "fa-users" },
             "easter_egg": { name: "秘境探索者", desc: "点击彩蛋按钮", icon: "fa-dragon" }
         };
+
         let userAchievements = JSON.parse(localStorage.getItem('war_tycoon_achievements')) || [];
 
         function saveAchievements() {
@@ -1914,6 +1747,189 @@
 
         let trackedTasks = JSON.parse(localStorage.getItem('wtt_tracked')) || [];
         let activeModalTask = null;
+
+        // 搜索功能
+        let searchHistory = JSON.parse(localStorage.getItem('war_tycoon_search_history')) || [];
+
+        function saveSearchHistory() {
+            localStorage.setItem('war_tycoon_search_history', JSON.stringify(searchHistory));
+        }
+
+        function addSearchHistory(term) {
+            if (!term.trim()) return;
+            term = term.trim();
+            searchHistory = searchHistory.filter(item => item !== term);
+            searchHistory.unshift(term);
+            if (searchHistory.length > 10) searchHistory.pop();
+            saveSearchHistory();
+        }
+
+        function clearSearchHistory() {
+            searchHistory = [];
+            saveSearchHistory();
+            renderSearchHistory();
+        }
+
+        function renderSearchHistory() {
+            const list = document.getElementById('searchHistoryList');
+            const dropdown = document.getElementById('searchHistoryDropdown');
+            if (!list) return;
+            if (searchHistory.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-500 text-xs py-3">暂无搜索历史</div>';
+                dropdown.classList.remove('show');
+                return;
+            }
+            list.innerHTML = searchHistory.map(term =>
+                `<div class="search-history-item" onclick="applySearchHistory('${term.replace(/'/g, "\\'")}')">
+                    <i class="fa-solid fa-clock-rotate-left"></i> ${term}
+                </div>`
+            ).join('');
+        }
+
+        function applySearchHistory(term) {
+            const input = document.getElementById('search-input');
+            input.value = term;
+            document.getElementById('searchHistoryDropdown').classList.remove('show');
+            searchTasksWithHistory();
+        }
+
+        function searchTasksWithHistory() {
+            const input = document.getElementById('search-input');
+            const val = input.value.trim();
+            if (val) addSearchHistory(val);
+            const filter = val.toLowerCase();
+            const container = document.getElementById('tasks-container');
+            const categorySelector = document.getElementById('category-selector');
+            const sectionDivider = document.getElementById('section-divider');
+            const infoText = document.getElementById('search-results-info');
+            const social = document.getElementById('social-section');
+            const factionSec = document.getElementById('faction-section');
+            const aboutSec = document.getElementById('aboutus-section');
+
+            container.innerHTML = '';
+            if (filter === "") {
+                categorySelector.classList.remove('hidden');
+                if (sectionDivider) sectionDivider.classList.remove('hidden');
+                if (social) social.style.display = 'block';
+                if (factionSec) factionSec.style.display = 'block';
+                if (aboutSec) aboutSec.style.display = 'block';
+                if (infoText) infoText.classList.add('hidden');
+                Object.keys(taskData).forEach(key => {
+                    const category = taskData[key];
+                    const section = document.createElement('section');
+                    section.id = `${key}-section`;
+                    section.className = "space-y-4 scroll-mt-20";
+                    section.innerHTML = `
+                        <div class="border-b border-gray-800 pb-2">
+                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="w-1 h-5 bg-blue-500 rounded-full"></span>${category.title}
+                            </h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            ${category.tasks.map((task, index) => {
+                                const isTracked = trackedTasks.some(t => t.name === task.name);
+                                return `<div onclick="openTaskDetail('${key}', ${index})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white truncate my-2">${task.name}</h4>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
+                                        <span>点击查看 →</span>
+                                        ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}
+                                    </div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    `;
+                    container.appendChild(section);
+                });
+                return;
+            }
+
+            categorySelector.classList.add('hidden');
+            if (sectionDivider) sectionDivider.classList.add('hidden');
+            if (social) social.style.display = 'none';
+            if (factionSec) factionSec.style.display = 'none';
+            if (aboutSec) aboutSec.style.display = 'none';
+            if (infoText) infoText.classList.remove('hidden');
+
+            let totalMatches = 0;
+            Object.keys(taskData).forEach(key => {
+                const category = taskData[key];
+                const filteredTasks = category.tasks
+                    .map((t, idx) => ({ ...t, originalIndex: idx }))
+                    .filter(t => t.name.toLowerCase().includes(filter) || t.requirement.toLowerCase().includes(filter));
+                if (filteredTasks.length > 0) {
+                    totalMatches += filteredTasks.length;
+                    const section = document.createElement('section');
+                    section.className = "space-y-4";
+                    section.innerHTML = `
+                        <div class="border-b border-gray-800 pb-2">
+                            <h2 class="text-lg font-bold text-white">${category.title}</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            ${filteredTasks.map(task => {
+                                const isTracked = trackedTasks.some(t => t.name === task.name);
+                                let displayName = task.name;
+                                let displayReq = task.requirement;
+                                if (filter) {
+                                    const regex = new RegExp(filter, 'gi');
+                                    displayName = task.name.replace(regex, match => `<span class="search-highlight">${match}</span>`);
+                                    displayReq = task.requirement.replace(regex, match => `<span class="search-highlight">${match}</span>`);
+                                }
+                                return `<div onclick="openTaskDetail('${key}', ${task.originalIndex})" class="task-card p-4 cursor-pointer flex flex-col justify-between h-36 task-card-item">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs text-blue-400 font-medium bg-blue-500/20 px-1.5 py-0.5 rounded">载具/装备</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white truncate my-2">${displayName}</h4>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
+                                        <span class="text-gray-400 text-[10px] truncate max-w-[120px]">${displayReq}</span>
+                                        ${isTracked ? '<span class="text-[10px] text-green-400 bg-green-500/20 px-1.5 py-0.5 rounded">追踪中</span>' : ''}
+                                    </div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    `;
+                    container.appendChild(section);
+                }
+            });
+            if (infoText) {
+                if (totalMatches === 0) {
+                    infoText.innerText = `❌ 未找到匹配项目，试试其他关键词`;
+                } else {
+                    infoText.innerText = `找到 ${totalMatches} 个匹配项目（名称/解锁条件）`;
+                }
+            }
+            setTimeout(() => {
+                document.querySelectorAll('.task-card-item').forEach(el => observer.observe(el));
+            }, 50);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const dropdown = document.getElementById('searchHistoryDropdown');
+            if (searchInput) {
+                searchInput.addEventListener('focus', function() {
+                    if (searchHistory.length > 0) {
+                        renderSearchHistory();
+                        dropdown.classList.add('show');
+                    }
+                });
+                searchInput.addEventListener('blur', function() {
+                    setTimeout(() => { dropdown.classList.remove('show'); }, 300);
+                });
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') dropdown.classList.remove('show');
+                });
+            }
+            const clearBtn = document.getElementById('clearSearchHistory');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clearSearchHistory();
+                });
+            }
+        });
 
         function openTaskDetail(categoryKey, index) {
             const category = taskData[categoryKey];
@@ -2059,9 +2075,23 @@
 
         function setLoginDecorations(visible) { /* 原有函数，此处保留空实现 */ }
 
-        // ============================================================
+        // ================================================================
         //  AI 三模式逻辑
-        // ============================================================
+        // ================================================================
+        const momoEmojis = ['(◕‿◕)', '(✧∀✧)', '(´｡• ᵕ •｡`)', '(￣▽￣)ノ', '♪(´▽｀)', '（＾∀＾）', '(◠‿◠)', '✧⁺⸜(●′▾‵●)⸝⁺✧'];
+        const MOMO_FIXED_REPLY = '有人說其實這個答非所問，那我把這個給刪了';
+
+        function getRandomMomoEmoji() {
+            return momoEmojis[Math.floor(Math.random() * momoEmojis.length)];
+        }
+
+        function fetchWithTimeout(url, options = {}, timeout = 15000) {
+            return Promise.race([
+                fetch(url, options),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('请求超时')), timeout))
+            ]);
+        }
+
         let currentMode = 'professional';
         let convHistory = [];
 
@@ -2112,7 +2142,7 @@
         modeNormalBtn.addEventListener('click', () => setMode('normal'));
         modeMomoBtn.addEventListener('click', () => setMode('momo'));
 
-        // ----- 专业模式 -----
+        // 专业模式
         function getFullSectionContent(question) {
             const lower = question.toLowerCase();
             if (lower.includes('派系历史') || lower.includes('编年史') || lower.includes('王朝历史') || lower.includes('bns')) {
@@ -2206,8 +2236,8 @@
             }
         }
 
-        // ----- 普通模式 & Momo模式 -----
-        async function callPollinationsAPI(question, personality = 'normal') {
+        // 普通模式
+        async function callPollinationsAPI(question) {
             const startTime = Date.now();
             let context = "";
             if (convHistory.length > 0) {
@@ -2219,14 +2249,7 @@
                 context += '\n';
             }
 
-            let personalityPrompt = '';
-            if (personality === 'momo') {
-                const emoji = getRandomMomoEmoji();
-                personalityPrompt = `你是一个狡猾、搞笑、有趣、像正常人类一样懂得思考的AI，名叫Momo。你的回答要充满幽默感，偶尔搞怪，可以适当使用颜文字和表情（比如 ${emoji}），但逻辑清晰，像一个真实的人在聊天。始终使用简体中文。`;
-            } else {
-                personalityPrompt = '请用简体中文回答用户的问题。';
-            }
-
+            const personalityPrompt = '请用简体中文回答用户的问题。';
             const fullPrompt = `${personalityPrompt}\n${context}User: ${question}\nAssistant:`;
             const url = `https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?model=openai`;
 
@@ -2242,26 +2265,24 @@
                 if (!text || text.length < 5) {
                     return { text: "⚠️ AI 未返回有效内容，请换个问题试试。", time: Date.now() - startTime };
                 }
-                let finalText = text;
-                if (personality === 'momo' && Math.random() > 0.5) {
-                    finalText += '\n\n' + getRandomMomoEmoji();
-                }
-                return { text: finalText, time: Date.now() - startTime };
+                return { text: text, time: Date.now() - startTime };
             } catch (error) {
                 console.error('Pollinations 调用失败:', error);
                 if (error.message === '请求超时') {
-                    return { text: "⏰ 请求超时，请稍后重试。\n\n💡 " + getRandomOfflineReply(), time: Date.now() - startTime };
+                    return { text: "⏰ 请求超时，请稍后重试。", time: Date.now() - startTime };
                 }
-                return { text: "⚠️ AI 服务暂时不可用，请稍后重试。\n\n💡 " + getRandomOfflineReply(), time: Date.now() - startTime };
+                return { text: "⚠️ AI 服务暂时不可用，请稍后重试。", time: Date.now() - startTime };
             }
         }
 
         async function generateNormalAnswer(question) {
-            return await callPollinationsAPI(question, 'normal');
+            return await callPollinationsAPI(question);
         }
 
+        // Momo 模式：固定回复
         async function generateMomoAnswer(question) {
-            return await callPollinationsAPI(question, 'momo');
+            await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 100));
+            return { text: MOMO_FIXED_REPLY, time: 0 };
         }
 
         async function generateAnswer(question) {
@@ -2282,14 +2303,12 @@
             bubble.className = `ai-bubble ${isUser ? 'ai-user-bubble' : 'ai-bot-bubble'}`;
             bubble.innerText = text;
             aiMsgArea.appendChild(bubble);
-
             if (!isUser && responseTime !== null && currentMode !== 'professional') {
                 const timeEl = document.createElement('div');
                 timeEl.className = 'ai-response-time';
                 timeEl.innerText = `⏱ ${responseTime}ms`;
                 aiMsgArea.appendChild(timeEl);
             }
-
             aiMsgArea.scrollTop = aiMsgArea.scrollHeight;
             if (currentMode !== 'professional') {
                 convHistory.push({ role: isUser ? 'user' : 'assistant', content: text });
@@ -2336,9 +2355,9 @@
             setMode('professional');
         });
 
-        // ============================================================
+        // ================================================================
         //  滚动观察器
-        // ============================================================
+        // ================================================================
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -2352,11 +2371,15 @@
                 .forEach(el => observer.observe(el));
         }
 
-        // 启动
+        // ================================================================
+        //  启动
+        // ================================================================
         initPixelCanvas();
         drawPixelRain();
-        if (isLoggedIn) showMainApp();
-        else showLogin();
+
+        // 注意：showMainApp / showLogin 会在终端动画完成后调用
+        // 但为了处理已登录状态，先保存 isLoggedIn 供终端使用
+        // 终端动画脚本中已引用 isLoggedIn
     </script>
 </body>
 </html>
