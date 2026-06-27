@@ -963,9 +963,55 @@
             .terminal-body { font-size: 0.85rem; max-height: 300px; }
             .progress-bar { width: 120px; }
         }
+                @keyframes flashRed {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(255, 0, 0, 0.3); }
+        }
+        .flash-red {
+            animation: flashRed 0.3s ease-in-out;
+        }
     </style>
 <base target="_blank">
 </head>
+        <!-- ===== Logo 5-Click Easter Egg ===== -->
+    <script>
+    (function() {
+        let logoClicks = 0;
+        let lastClick = 0;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const logo = document.querySelector('.login-wrap .logo');
+            if (!logo) return;
+            
+            logo.style.cursor = 'pointer';
+            
+            logo.addEventListener('click', function(e) {
+                const now = Date.now();
+                if (now - lastClick > 800) {
+                    logoClicks = 0;
+                }
+                logoClicks++;
+                lastClick = now;
+                
+                if (logoClicks === 5) {
+                    document.body.classList.add('flash-red');
+                    setTimeout(function() {
+                        document.body.classList.remove('flash-red');
+                    }, 300);
+                    
+                    setTimeout(function() {
+                        alert('⚠ 權限不足 — 檢測到未授權訪問');
+                    }, 150);
+                    
+                    console.log('[SECURITY] Unauthorized access attempt detected');
+                    console.log('[SYSTEM] Admin privileges required');
+                    
+                    logoClicks = 0;
+                }
+            });
+        });
+    })();
+    </script>
 <body>
 
     <!-- ===== 动态背景（保留） ===== -->
